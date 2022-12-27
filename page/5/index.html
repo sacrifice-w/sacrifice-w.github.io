@@ -22,7 +22,7 @@
     <meta name="description" content="Per aspera ad astra">
 <meta property="og:type" content="website">
 <meta property="og:title" content="小吴的Blog">
-<meta property="og:url" content="http://example.com/archives/2022/09/index.html">
+<meta property="og:url" content="http://example.com/page/5/index.html">
 <meta property="og:site_name" content="小吴的Blog">
 <meta property="og:description" content="Per aspera ad astra">
 <meta property="og:locale" content="zh_CN">
@@ -30,14 +30,14 @@
 <meta name="twitter:card" content="summary">
 
 
-<link rel="canonical" href="http://example.com/archives/2022/09/">
+<link rel="canonical" href="http://example.com/page/5/">
 
 
 
-<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":false,"lang":"zh-CN","comments":"","permalink":"","path":"archives/2022/09/index.html","title":""}</script>
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":true,"isPost":false,"lang":"zh-CN","comments":"","permalink":"","path":"page/5/index.html","title":""}</script>
 
 <script class="next-config" data-name="calendar" type="application/json">""</script>
-<title>归档 | 小吴的Blog</title>
+<title>小吴的Blog</title>
   
 
 
@@ -160,50 +160,107 @@
 
     </div>
 
-    <div class="main-inner archive posts-collapse">
+    <div class="main-inner index posts-expand">
+
+    
 
 
+<div class="post-block">
   
   
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2022/03/12/html%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="Wh&CC">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="小吴的Blog">
+      <meta itemprop="description" content="Per aspera ad astra">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="undefined | 小吴的Blog">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          <a href="/2022/03/12/html%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/" class="post-title-link" itemprop="url">HTML学习笔记</a>
+        </h2>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+
+      <time title="创建时间：2022-03-12 19:59:15" itemprop="dateCreated datePublished" datetime="2022-03-12T19:59:15+08:00">2022-03-12</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar-check"></i>
+      </span>
+      <span class="post-meta-item-text">更新于</span>
+      <time title="修改时间：2022-12-26 15:04:59" itemprop="dateModified" datetime="2022-12-26T15:04:59+08:00">2022-12-26</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">分类于</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/%E5%89%8D%E7%AB%AF%E7%9F%A5%E8%AF%86/" itemprop="url" rel="index"><span itemprop="name">前端知识</span></a>
+        </span>
+    </span>
+
   
-  <div class="post-block">
-    <div class="post-content">
-      <div class="collection-title">
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+          <p><strong>HTML负责网页的结构，CSS负责网页的表现</strong> <strong>浏览器解析网页时，会自动对网页中不符合规范的内容进行修正</strong></p>
+<h2 id="一、标签"><a href="#一、标签" class="headerlink" title="一、标签"></a>一、标签</h2><p>使用HTML标签时，应该关注标签的语义，而不是样式，样式可以通过CSS来改变</p>
+<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&lt;!doctype <span class="keyword">html</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">html</span>&gt;</span></span><br><span class="line">      <span class="tag">&lt;<span class="name">head</span>&gt;</span></span><br><span class="line">          <span class="tag">&lt;<span class="name">meta</span> <span class="attr">charset</span>=<span class="string">&#x27;utf-8&#x27;</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">title</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;/<span class="name">title</span>&gt;</span></span><br><span class="line">     <span class="tag">&lt;/<span class="name">head</span>&gt;</span></span><br><span class="line">     <span class="tag">&lt;<span class="name">body</span>&gt;</span></span><br><span class="line">         <span class="tag">&lt;<span class="name">h1</span>&gt;</span>hello world<span class="tag">&lt;/<span class="name">h1</span>&gt;</span></span><br><span class="line">         <span class="tag">&lt;<span class="name">h2</span>&gt;</span>wh<span class="tag">&lt;<span class="name">h2</span>&gt;</span></span><br><span class="line">         <span class="tag">&lt;<span class="name">p</span>&gt;</span>hhh<span class="tag">&lt;/<span class="name">p</span>&gt;</span></span><br><span class="line">     <span class="tag">&lt;/<span class="name">body</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">html</span>&gt;</span></span><br></pre></td></tr></table></figure>
+
+<p><code>&lt;head&gt;</code>中的内容不会出现在网页中，其提供给浏览器解析 <code>&lt;title&gt;</code>中的内容会显示在网页中的标题栏，也是搜索结果超链接上的文字 <code>&lt;body&gt;</code>中的内容会出现在网页中给用户浏览（也就是可见内容） 标签一般是成对出现，但也存在自结束标签</p>
+          <!--noindex-->
+            <div class="post-button">
+              <a class="btn" href="/2022/03/12/html%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/#more" rel="contents">
+                阅读全文 &raquo;
+              </a>
+            </div>
+          <!--/noindex-->
         
-        <span class="collection-header">还行! 目前共计 41 篇日志。 继续努力。</span>
-      </div>
-
       
-    <div class="collection-year">
-      <span class="collection-header">2022</span>
     </div>
 
-  <article itemscope itemtype="http://schema.org/Article">
-    <header class="post-header">
-      <div class="post-meta-container">
-        <time itemprop="dateCreated"
-              datetime="2022-09-26T15:38:48+08:00"
-              content="2022-09-26">
-          09-26
-        </time>
-      </div>
+    
+    
+    
 
-      <div class="post-title">
-          <a class="post-title-link" href="/2022/09/26/finediving-a-fine-grained-dataset-for-procedure-aware-action-quality-assessment/" itemprop="url">
-            <span itemprop="name">FineDiving: A Fine-grained Dataset for Procedure-aware Action Quality Assessment</span>
-          </a>
-      </div>
-
+    <footer class="post-footer">
+        <div class="post-eof"></div>
       
-    </header>
+    </footer>
   </article>
+</div>
 
 
-    </div>
-  </div>
-  
-  
-  
+
+
+  <nav class="pagination">
+    <a class="extend prev" rel="prev" title="上一页" aria-label="上一页" href="/page/4/"><i class="fa fa-angle-left"></i></a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/4/">4</a><span class="page-number current">5</span>
+  </nav>
 
 </div>
   </main>

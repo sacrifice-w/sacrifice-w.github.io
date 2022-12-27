@@ -125,7 +125,7 @@
   <nav class="site-state">
       <div class="site-state-item site-state-posts">
         <a href="/archives/">
-          <span class="site-state-item-count">39</span>
+          <span class="site-state-item-count">41</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
@@ -161,6 +161,205 @@
     </div>
 
     <div class="main-inner index posts-expand">
+
+    
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2022/04/15/js%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="Wh&CC">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="小吴的Blog">
+      <meta itemprop="description" content="Per aspera ad astra">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="undefined | 小吴的Blog">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          <a href="/2022/04/15/js%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/" class="post-title-link" itemprop="url">js学习笔记</a>
+        </h2>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+
+      <time title="创建时间：2022-04-15 10:58:59" itemprop="dateCreated datePublished" datetime="2022-04-15T10:58:59+08:00">2022-04-15</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar-check"></i>
+      </span>
+      <span class="post-meta-item-text">更新于</span>
+      <time title="修改时间：2022-12-27 12:34:19" itemprop="dateModified" datetime="2022-12-27T12:34:19+08:00">2022-12-27</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">分类于</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/%E5%89%8D%E7%AB%AF%E7%9F%A5%E8%AF%86/" itemprop="url" rel="index"><span itemprop="name">前端知识</span></a>
+        </span>
+    </span>
+
+  
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+          <p>Javascript 实现包含三个部分： ECMAScript、DOM、BOM</p>
+<h2 id="1-1-HELLO-WORLD"><a href="#1-1-HELLO-WORLD" class="headerlink" title="1.1 HELLO WORLD"></a>1.1 HELLO WORLD</h2><p>JS 标签需要编写到 script 标签中，位于 head 里</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">&lt;script&gt;</span><br><span class="line"><span class="comment">// 控制浏览器弹出一个警告框</span></span><br><span class="line">   <span class="title function_">alert</span>(<span class="string">&quot;Hello World&quot;</span>);</span><br><span class="line"><span class="comment">// 让计算机在页面中输出一个内容,在body里输出</span></span><br><span class="line"><span class="comment">// 想输出一个换行可以通过&quot;&lt;br&gt;&quot;来实现</span></span><br><span class="line">   <span class="variable language_">document</span>.<span class="title function_">write</span>(<span class="string">&quot;Hello World&quot;</span>);</span><br><span class="line"><span class="comment">// 向控制台输出一个内容</span></span><br><span class="line">   <span class="variable language_">console</span>.<span class="title function_">log</span>(<span class="string">&quot;Hello World&quot;</span>);</span><br><span class="line"><span class="comment">/* 会弹出一个框用于输入值，输入的值会返回,并且返回的是string</span></span><br><span class="line"><span class="comment">   title是显示给用户的文本</span></span><br><span class="line"><span class="comment">   default指定input框的初始值，此处表示的是default并非是必须的 */</span></span><br><span class="line">   <span class="title function_">prompt</span>(<span class="string">&quot;title&quot;</span>,[<span class="keyword">default</span>]);</span><br><span class="line"><span class="comment">// confirm点击确定返回true，点击取消或按下esc返回false</span></span><br><span class="line">   result = <span class="title function_">confirm</span>(question);</span><br><span class="line">&lt;/script&gt;</span><br></pre></td></tr></table></figure>
+
+<p>alert 弹出的这个带有信息的小窗口被称为<strong>模态窗</strong>。“modal” 意味着用户不能与页面的其他部分（例如点击其他按钮等）进行交互，直到他们处理完窗口。在上面示例这种情况下 —— 直到用户点击“确定”按钮。 prompt 主要提供的是一个可以输入的窗口 confirm 提供的主要是一个确定或者取消 这些方法都是模态的：它们暂停脚本的执行，并且不允许用户与该页面的其余部分进行交互，直到窗口被解除。 上述所有方法共有两个限制：</p>
+<ol>
+<li>模态窗口的确切位置由浏览器决定。通常在页面中心。</li>
+<li>窗口的确切外观也取决于浏览器。我们不能修改它。 这就是简单的代价。还有其他一些方法可以显示更漂亮的窗口，并与用户进行更丰富的交互，但如果“花里胡哨”不是非常重要，那使用本节讲的这些方法也挺好。</li>
+</ol>
+          <!--noindex-->
+            <div class="post-button">
+              <a class="btn" href="/2022/04/15/js%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/#more" rel="contents">
+                阅读全文 &raquo;
+              </a>
+            </div>
+          <!--/noindex-->
+        
+      
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+</div>
+
+
+
+
+    
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2022/04/14/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E7%AC%AC%E4%BA%8C%E5%A4%A9/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="Wh&CC">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="小吴的Blog">
+      <meta itemprop="description" content="Per aspera ad astra">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="undefined | 小吴的Blog">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          <a href="/2022/04/14/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E7%AC%AC%E4%BA%8C%E5%A4%A9/" class="post-title-link" itemprop="url">数据结构第二天</a>
+        </h2>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+
+      <time title="创建时间：2022-04-14 18:51:47" itemprop="dateCreated datePublished" datetime="2022-04-14T18:51:47+08:00">2022-04-14</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar-check"></i>
+      </span>
+      <span class="post-meta-item-text">更新于</span>
+      <time title="修改时间：2022-12-26 14:17:39" itemprop="dateModified" datetime="2022-12-26T14:17:39+08:00">2022-12-26</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">分类于</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/LeetCode/" itemprop="url" rel="index"><span itemprop="name">LeetCode</span></a>
+        </span>
+    </span>
+
+  
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+          <p><strong>第三题 两数之和</strong> 给定一个整数数组<strong>nums</strong>和一个整数目标值<strong>target</strong>，请你在该数组中找出 和为目标值<strong>target</strong>的那两个整数，并返回它们的数组下标。 你可以假设每种输入只会对应一个答案。但是，数组中同一个元素在答案里不能重复出现。 你可以按任意顺序返回答案。 示例：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">输入：nums = [2,7,11,15], target = 9</span><br><span class="line">输出：[0,1]</span><br><span class="line">解释：因为 nums[0] + nums[1] == 9 ，返回 [0, 1] 。</span><br></pre></td></tr></table></figure>
+
+<p>答案：</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> twoSum = <span class="keyword">function</span>(<span class="params">nums, target</span>) &#123;</span><br><span class="line">    <span class="keyword">let</span> map = <span class="keyword">new</span> <span class="title class_">Map</span>();</span><br><span class="line">    <span class="keyword">for</span>(i = <span class="number">0</span>;i&lt;nums.<span class="property">length</span>;i++)&#123;</span><br><span class="line">        <span class="keyword">if</span>(map.<span class="title function_">has</span>(target-nums[i]))&#123;</span><br><span class="line">            <span class="keyword">return</span> [map.<span class="title function_">get</span>(target-nums[i]),i];</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">else</span>&#123;</span><br><span class="line">            map.<span class="title function_">set</span>(nums[i],i);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+
+<p>解析： 这道题的思路是运用<strong>哈希表</strong>，首先创造一个哈希表，也就是map。再在循环中通过**set()<strong>方法为map设置值，set的意思就是将每一个nums[i]和i的值相对应，并将其传入哈希表中，之后通过</strong>get()<strong>方法就能够返回i的值。 通过</strong>has()**方法来判断哈希表中是否存在target-nums[i]的值，如果这个值存在，则证明存在两数之和等于target的情况，所以再返回数组即可。 而为什么i在后面，get值在前面呢，因为在循环中，两数之和前面的数，因为一开始还不能匹配，所以会传入哈希表中，所以i肯定是数组中较大的那个数，所以是这个顺序。</p>
+<p><strong>第四题 合并两个有序数组</strong> 给你两个按 非递减顺序 排列的整数数组 nums1 和 nums2，另有两个整数 m 和 n ，分别表示 nums1 和 nums2 中的元素数目。 请你 合并 nums2 到 nums1 中，使合并后的数组同样按 非递减顺序 排列。 注意：最终，合并后数组不应由函数返回，而是存储在数组 nums1 中。为了应对这种情况，nums1 的初始长度为 m + n，其中前 m 个元素表示应合并的元素，后 n 个元素为 0 ，应忽略。nums2 的长度为 n 。</p>
+<p>示例：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">输入：nums1 = [1,2,3,0,0,0], m = 3, nums2 = [2,5,6], n = 3</span><br><span class="line">输出：[1,2,2,3,5,6]</span><br><span class="line">解释：需要合并 [1,2,3] 和 [2,5,6] 。</span><br><span class="line">合并结果是 [1,2,2,3,5,6] ，其中斜体加粗标注的为 nums1 中的元素。</span><br></pre></td></tr></table></figure>
+
+<p>答案：</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> merge = <span class="keyword">function</span>(<span class="params">nums1, m, nums2, n</span>) &#123;</span><br><span class="line">    <span class="keyword">for</span>(i=m;i&lt;m+n;i++)&#123;</span><br><span class="line">        nums1[i] = nums2[i-m];</span><br><span class="line">    &#125;</span><br><span class="line">    nums1.<span class="title function_">sort</span>(<span class="keyword">function</span>(<span class="params">a,b</span>)&#123;<span class="keyword">return</span> a-b&#125;);</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+
+<p>解析： 因为这道题中，nums1中的数组长度会提前给nums2预留长度，所以可以将nums2中的数直接插入到nums1中后再进行排序，就可以完成合并了。 当然这是一种时间复杂度比较高的算法，之后会用双指针再做一遍。 但是js中的<code>sort()</code>方法有问题，它的排序是通过Unicode编码来排序的，所以在数字排序中，会出现问题，如果需要进行排序，需要使用回调函数，来进行排序，也就是<code>nums1.sort(function(a,b)&#123;return a-b&#125;)</code>即是升序排序，b-a就是降序排序。</p>
+
+      
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+</div>
+
+
+
 
     
 
@@ -305,7 +504,7 @@
         <i class="far fa-calendar-check"></i>
       </span>
       <span class="post-meta-item-text">更新于</span>
-      <time title="修改时间：2022-12-26 15:04:35" itemprop="dateModified" datetime="2022-12-26T15:04:35+08:00">2022-12-26</time>
+      <time title="修改时间：2022-12-27 12:20:05" itemprop="dateModified" datetime="2022-12-27T12:20:05+08:00">2022-12-27</time>
     </span>
     <span class="post-meta-item">
       <span class="post-meta-item-icon">
@@ -397,7 +596,7 @@
         <i class="far fa-calendar-check"></i>
       </span>
       <span class="post-meta-item-text">更新于</span>
-      <time title="修改时间：2022-12-26 15:07:31" itemprop="dateModified" datetime="2022-12-26T15:07:31+08:00">2022-12-26</time>
+      <time title="修改时间：2022-12-27 12:35:26" itemprop="dateModified" datetime="2022-12-27T12:35:26+08:00">2022-12-27</time>
     </span>
     <span class="post-meta-item">
       <span class="post-meta-item-icon">
@@ -420,7 +619,7 @@
     
     <div class="post-body" itemprop="articleBody">
           <p><strong>Swin Transformer: Hierarchical Vision Transformer using Shifted Windows</strong></p>
-<h2 id="1概述"><a href="#1概述" class="headerlink" title="1概述"></a>1概述</h2><p>swin transformer是一种新型视觉transformer，可以用作计算机视觉的<strong>通用backbone</strong>。 <img src="https://whcoding.cc/wp-content/uploads/2022/04/image-1649229164821.png" alt="file"> 和语言模型相比，视觉任务中图像像素分辨率更高，而且图像尺寸差异很大，这些都是问题。 为了使transformer从nlp模型中更适应于计算机视觉，swin transformer提出了一个分层的Transformer，其表示是通过移动窗口来计算的。 </p>
+<h2 id="1-概述"><a href="#1-概述" class="headerlink" title="1 概述"></a>1 概述</h2><p>swin transformer 是一种新型视觉 transformer，可以用作计算机视觉的<strong>通用 backbone</strong>。 <img src="https://blogwh.oss-cn-beijing.aliyuncs.com/img/image-1649229164821.png" alt="file"> 和语言模型相比，视觉任务中图像像素分辨率更高，而且图像尺寸差异很大，这些都是问题。 为了使 transformer 从 nlp 模型中更适应于计算机视觉，swin transformer 提出了一个分层的 Transformer，其表示是通过移动窗口来计算的。</p>
           <!--noindex-->
             <div class="post-button">
               <a class="btn" href="/2022/04/06/swin-transformer/#more" rel="contents">
@@ -490,7 +689,7 @@
         <i class="far fa-calendar-check"></i>
       </span>
       <span class="post-meta-item-text">更新于</span>
-      <time title="修改时间：2022-12-26 15:07:17" itemprop="dateModified" datetime="2022-12-26T15:07:17+08:00">2022-12-26</time>
+      <time title="修改时间：2022-12-27 12:35:11" itemprop="dateModified" datetime="2022-12-27T12:35:11+08:00">2022-12-27</time>
     </span>
     <span class="post-meta-item">
       <span class="post-meta-item-icon">
@@ -515,7 +714,7 @@
           <p><strong>Skeleton-based Action Recognition via Spatial and Temporal Transformer Networks</strong> 基于骨骼通过时空变换网络的行为识别</p>
 <h2 id="1-1-摘要"><a href="#1-1-摘要" class="headerlink" title="1.1 摘要"></a>1.1 摘要</h2><p>Spatial-Temporal Transformer network (ST-TR)–&gt;时空变换网络</p>
 <ul>
-<li><p>Transformer self-attention operator。基于双流的Transformer-based模型，空间时间维度都采用了self-attention对关节之间依赖关系建模</p>
+<li><p>Transformer self-attention operator。基于双流的 Transformer-based 模型，空间时间维度都采用了 self-attention 对关节之间依赖关系建模</p>
 </li>
 <li><p>spatial self-attention(SSA)：用于了解不同身体部位之间的帧内交互；动态建立骨骼关节之间的链接，代表人体各部分之间的关系，有条件地取决于动作，并且独立于自然的人体结构</p>
 </li>
@@ -589,7 +788,7 @@
         <i class="far fa-calendar-check"></i>
       </span>
       <span class="post-meta-item-text">更新于</span>
-      <time title="修改时间：2022-12-26 14:17:39" itemprop="dateModified" datetime="2022-12-26T14:17:39+08:00">2022-12-26</time>
+      <time title="修改时间：2022-12-27 12:35:11" itemprop="dateModified" datetime="2022-12-27T12:35:11+08:00">2022-12-27</time>
     </span>
     <span class="post-meta-item">
       <span class="post-meta-item-icon">
@@ -611,17 +810,17 @@
     
     
     <div class="post-body" itemprop="articleBody">
-          <h2 id="1-1-ssl证书问题"><a href="#1-1-ssl证书问题" class="headerlink" title="1.1 ssl证书问题"></a>1.1 ssl证书问题</h2><p>环境为Nginx，申请的为阿里云免费证书，在阿里云控制台中的ssl证书服务中的免费证书处申请。 <img src="https://whcoding.cc/wp-content/uploads/2022/03/image-1647917909681.png" alt="file"> 因为是轻量级应用服务器，不能够直接用阿里云部署，所以需要自己手动部署。但是按照阿里云官方的ssl证书部署教程来的话，就会导致WordPress无法进入，而且就算修改了nginx.conf文件里的location还是不太行，会报403&#x2F;404&#x2F;405的错，因为俺也是新手，所以不是很懂为什么。 就是如果只开放443端口的话，就能通过服务器直接进入，但是网页不能够登入。开放80端口将http转成https就会导致两种方式都无法登录。 最后使用的是一种取巧的办法，因为在网络安全这里可以看到网站的协议是https。 <img src="https://whcoding.cc/wp-content/uploads/2022/03/image-1647918330801.png" alt="file"> 所以我想可不可以直接将证书植入到原有的ssl中，做一个替换操作。 所以在&#x2F;usr&#x2F;local&#x2F;nginx&#x2F;conf&#x2F;ssl中看到了示例用的ssl证书，再将这里面的内容进行替换。 <img src="https://whcoding.cc/wp-content/uploads/2022/03/image-1647918494078.png" alt="file"> 但是阿里云下载的Nginx的ssl证书没有crt文件，所以又用腾讯云做了一下转换，在腾讯云上上传证书，再重新下载下来，就会有如图所示的三个文件，将这三个文件进行替换，http就转换为https了。 当然这是一种取巧的办法，如果有更好的方法不建议这么做。</p>
-<h2 id="1-2-WordPress问题"><a href="#1-2-WordPress问题" class="headerlink" title="1.2 WordPress问题"></a>1.2 WordPress问题</h2><p>登录问题可以通过修改&#x2F;data&#x2F;wwwroot&#x2F;wordpress&#x2F;wp-config.php文件来进行。 在<code>@package WordPress</code>下方加就能进行正常的https登录了。</p>
-<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"> *</span><br><span class="line"> * @link https:<span class="comment">//wordpress.org/support/article/editing-wp-config-php/</span></span><br><span class="line"> *</span><br><span class="line"> * @package WordPress</span><br><span class="line"> */</span><br><span class="line"> <span class="comment">/*开启HTTPS登录*/</span> </span><br><span class="line"><span class="variable">$_SERVER</span>[<span class="string">&#x27;HTTPS&#x27;</span>] = <span class="string">&#x27;on&#x27;</span>;</span><br><span class="line"><span class="title function_ invoke__">define</span>(<span class="string">&#x27;FORCE_SSL_LOGIN&#x27;</span>, <span class="literal">true</span>);</span><br><span class="line"><span class="title function_ invoke__">define</span>(<span class="string">&#x27;FORCE_SSL_ADMIN&#x27;</span>, <span class="literal">true</span>);</span><br></pre></td></tr></table></figure>
+          <h2 id="1-1-ssl-证书问题"><a href="#1-1-ssl-证书问题" class="headerlink" title="1.1 ssl 证书问题"></a>1.1 ssl 证书问题</h2><p>环境为 Nginx，申请的为阿里云免费证书，在阿里云控制台中的 ssl 证书服务中的免费证书处申请。 <img src="https://blogwh.oss-cn-beijing.aliyuncs.com/img/image-1647917909681.png" alt="file"> 因为是轻量级应用服务器，不能够直接用阿里云部署，所以需要自己手动部署。但是按照阿里云官方的 ssl 证书部署教程来的话，就会导致 WordPress 无法进入，而且就算修改了 nginx.conf 文件里的 location 还是不太行，会报 403&#x2F;404&#x2F;405 的错，因为俺也是新手，所以不是很懂为什么。 就是如果只开放 443 端口的话，就能通过服务器直接进入，但是网页不能够登入。开放 80 端口将 http 转成 https 就会导致两种方式都无法登录。 最后使用的是一种取巧的办法，因为在网络安全这里可以看到网站的协议是 https。 <img src="https://blogwh.oss-cn-beijing.aliyuncs.com/img/image-1647918330801.png" alt="file"> 所以我想可不可以直接将证书植入到原有的 ssl 中，做一个替换操作。 所以在&#x2F;usr&#x2F;local&#x2F;nginx&#x2F;conf&#x2F;ssl 中看到了示例用的 ssl 证书，再将这里面的内容进行替换。 <img src="https://blogwh.oss-cn-beijing.aliyuncs.com/img/image-1647918494078.png" alt="file"> 但是阿里云下载的 Nginx 的 ssl 证书没有 crt 文件，所以又用腾讯云做了一下转换，在腾讯云上上传证书，再重新下载下来，就会有如图所示的三个文件，将这三个文件进行替换，http 就转换为 https 了。 当然这是一种取巧的办法，如果有更好的方法不建议这么做。</p>
+<h2 id="1-2-WordPress-问题"><a href="#1-2-WordPress-问题" class="headerlink" title="1.2 WordPress 问题"></a>1.2 WordPress 问题</h2><p>登录问题可以通过修改&#x2F;data&#x2F;wwwroot&#x2F;wordpress&#x2F;wp-config.php 文件来进行。 在<code>@package WordPress</code>下方加就能进行正常的 https 登录了。</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"> *</span><br><span class="line"> * @link https:<span class="comment">//wordpress.org/support/article/editing-wp-config-php/</span></span><br><span class="line"> *</span><br><span class="line"> * @package WordPress</span><br><span class="line"> */</span><br><span class="line"> <span class="comment">/*开启HTTPS登录*/</span></span><br><span class="line"><span class="variable">$_SERVER</span>[<span class="string">&#x27;HTTPS&#x27;</span>] = <span class="string">&#x27;on&#x27;</span>;</span><br><span class="line"><span class="title function_ invoke__">define</span>(<span class="string">&#x27;FORCE_SSL_LOGIN&#x27;</span>, <span class="literal">true</span>);</span><br><span class="line"><span class="title function_ invoke__">define</span>(<span class="string">&#x27;FORCE_SSL_ADMIN&#x27;</span>, <span class="literal">true</span>);</span><br></pre></td></tr></table></figure>
 
-<p>图片显示问题可以在自身使用的主题里&#x2F;data&#x2F;wwwroot&#x2F;wordpress&#x2F;wp-content&#x2F;themes&#x2F;自身主题下的functions.php中最下面添加就可以解决。</p>
+<p>图片显示问题可以在自身使用的主题里&#x2F;data&#x2F;wwwroot&#x2F;wordpress&#x2F;wp-content&#x2F;themes&#x2F;自身主题下的 functions.php 中最下面添加就可以解决。</p>
 <figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">my_content_manipulator</span>(<span class="params"><span class="variable">$content</span></span>)</span>&#123;</span><br><span class="line">    <span class="keyword">if</span>( <span class="title function_ invoke__">is_ssl</span>() )&#123;</span><br><span class="line">        <span class="variable">$content</span> = <span class="title function_ invoke__">str_replace</span>(<span class="string">&#x27;http://whcoding.cc/wp-content/uploads&#x27;</span>, <span class="string">&#x27;https://whcoding.cc/wp-content/uploads&#x27;</span>, <span class="variable">$content</span>);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> <span class="variable">$content</span>;</span><br><span class="line">&#125;</span><br><span class="line"><span class="title function_ invoke__">add_filter</span>(<span class="string">&#x27;the_content&#x27;</span>, <span class="string">&#x27;my_content_manipulator&#x27;</span>);</span><br></pre></td></tr></table></figure>
 
-<p>最后在&#x2F;data&#x2F;wwwroot&#x2F;wordpress&#x2F;wp-includes&#x2F;functions.php中的第8行左右有一个<code>require ABSPATH . WPINC . &#39;/option.php&#39;;</code>的下面添加完成设置。</p>
-<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="title function_ invoke__">add_filter</span>(<span class="string">&#x27;script_loader_src&#x27;</span>, <span class="string">&#x27;agnostic_script_loader_src&#x27;</span>, <span class="number">20</span>,<span class="number">2</span>); <span class="function"><span class="keyword">function</span> <span class="title">agnostic_script_loader_src</span>(<span class="params"><span class="variable">$src</span>, <span class="variable">$handle</span></span>) </span>&#123; <span class="keyword">return</span> <span class="title function_ invoke__">preg_replace</span>(<span class="string">&#x27;/^(httphttps):/&#x27;</span>, <span class="string">&#x27;&#x27;</span>, <span class="variable">$src</span>); &#125; </span><br><span class="line"><span class="title function_ invoke__">add_filter</span>(<span class="string">&#x27;style_loader_src&#x27;</span>, <span class="string">&#x27;agnostic_style_loader_src&#x27;</span>, <span class="number">20</span>,<span class="number">2</span>); <span class="function"><span class="keyword">function</span> <span class="title">agnostic_style_loader_src</span>(<span class="params"><span class="variable">$src</span>, <span class="variable">$handle</span></span>) </span>&#123; <span class="keyword">return</span> <span class="title function_ invoke__">preg_replace</span>(<span class="string">&#x27;/^(httphttps):/&#x27;</span>, <span class="string">&#x27;&#x27;</span>, <span class="variable">$src</span>); &#125;</span><br></pre></td></tr></table></figure>
+<p>最后在&#x2F;data&#x2F;wwwroot&#x2F;wordpress&#x2F;wp-includes&#x2F;functions.php 中的第 8 行左右有一个<code>require ABSPATH . WPINC . &#39;/option.php&#39;;</code>的下面添加完成设置。</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="title function_ invoke__">add_filter</span>(<span class="string">&#x27;script_loader_src&#x27;</span>, <span class="string">&#x27;agnostic_script_loader_src&#x27;</span>, <span class="number">20</span>,<span class="number">2</span>); <span class="function"><span class="keyword">function</span> <span class="title">agnostic_script_loader_src</span>(<span class="params"><span class="variable">$src</span>, <span class="variable">$handle</span></span>) </span>&#123; <span class="keyword">return</span> <span class="title function_ invoke__">preg_replace</span>(<span class="string">&#x27;/^(httphttps):/&#x27;</span>, <span class="string">&#x27;&#x27;</span>, <span class="variable">$src</span>); &#125;</span><br><span class="line"><span class="title function_ invoke__">add_filter</span>(<span class="string">&#x27;style_loader_src&#x27;</span>, <span class="string">&#x27;agnostic_style_loader_src&#x27;</span>, <span class="number">20</span>,<span class="number">2</span>); <span class="function"><span class="keyword">function</span> <span class="title">agnostic_style_loader_src</span>(<span class="params"><span class="variable">$src</span>, <span class="variable">$handle</span></span>) </span>&#123; <span class="keyword">return</span> <span class="title function_ invoke__">preg_replace</span>(<span class="string">&#x27;/^(httphttps):/&#x27;</span>, <span class="string">&#x27;&#x27;</span>, <span class="variable">$src</span>); &#125;</span><br></pre></td></tr></table></figure>
 
-<p>最后在WordPress仪表盘中的设置页面将这两个改为https完成最终的设置。 <img src="https://whcoding.cc/wp-content/uploads/2022/03/image-1647919074860.png" alt="file"></p>
+<p>最后在 WordPress 仪表盘中的设置页面将这两个改为 https 完成最终的设置。 <img src="https://blogwh.oss-cn-beijing.aliyuncs.com/img/image-1647919074860.png" alt="file"></p>
 
       
     </div>
@@ -778,7 +977,7 @@
         <i class="far fa-calendar-check"></i>
       </span>
       <span class="post-meta-item-text">更新于</span>
-      <time title="修改时间：2022-12-26 15:04:16" itemprop="dateModified" datetime="2022-12-26T15:04:16+08:00">2022-12-26</time>
+      <time title="修改时间：2022-12-27 12:32:25" itemprop="dateModified" datetime="2022-12-27T12:32:25+08:00">2022-12-27</time>
     </span>
     <span class="post-meta-item">
       <span class="post-meta-item-icon">
@@ -930,104 +1129,8 @@
 
 
 
-    
-
-
-<div class="post-block">
-  
-  
-
-  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
-    <link itemprop="mainEntityOfPage" href="http://example.com/2022/03/12/html%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="Wh&CC">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="小吴的Blog">
-      <meta itemprop="description" content="Per aspera ad astra">
-    </span>
-
-    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
-      <meta itemprop="name" content="undefined | 小吴的Blog">
-      <meta itemprop="description" content="">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          <a href="/2022/03/12/html%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/" class="post-title-link" itemprop="url">HTML学习笔记</a>
-        </h2>
-
-        <div class="post-meta-container">
-          <div class="post-meta">
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar"></i>
-      </span>
-      <span class="post-meta-item-text">发表于</span>
-
-      <time title="创建时间：2022-03-12 19:59:15" itemprop="dateCreated datePublished" datetime="2022-03-12T19:59:15+08:00">2022-03-12</time>
-    </span>
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar-check"></i>
-      </span>
-      <span class="post-meta-item-text">更新于</span>
-      <time title="修改时间：2022-12-26 15:04:59" itemprop="dateModified" datetime="2022-12-26T15:04:59+08:00">2022-12-26</time>
-    </span>
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-folder"></i>
-      </span>
-      <span class="post-meta-item-text">分类于</span>
-        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-          <a href="/categories/%E5%89%8D%E7%AB%AF%E7%9F%A5%E8%AF%86/" itemprop="url" rel="index"><span itemprop="name">前端知识</span></a>
-        </span>
-    </span>
-
-  
-</div>
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-          <p><strong>HTML负责网页的结构，CSS负责网页的表现</strong> <strong>浏览器解析网页时，会自动对网页中不符合规范的内容进行修正</strong></p>
-<h2 id="一、标签"><a href="#一、标签" class="headerlink" title="一、标签"></a>一、标签</h2><p>使用HTML标签时，应该关注标签的语义，而不是样式，样式可以通过CSS来改变</p>
-<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&lt;!doctype <span class="keyword">html</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">html</span>&gt;</span></span><br><span class="line">      <span class="tag">&lt;<span class="name">head</span>&gt;</span></span><br><span class="line">          <span class="tag">&lt;<span class="name">meta</span> <span class="attr">charset</span>=<span class="string">&#x27;utf-8&#x27;</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">title</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;/<span class="name">title</span>&gt;</span></span><br><span class="line">     <span class="tag">&lt;/<span class="name">head</span>&gt;</span></span><br><span class="line">     <span class="tag">&lt;<span class="name">body</span>&gt;</span></span><br><span class="line">         <span class="tag">&lt;<span class="name">h1</span>&gt;</span>hello world<span class="tag">&lt;/<span class="name">h1</span>&gt;</span></span><br><span class="line">         <span class="tag">&lt;<span class="name">h2</span>&gt;</span>wh<span class="tag">&lt;<span class="name">h2</span>&gt;</span></span><br><span class="line">         <span class="tag">&lt;<span class="name">p</span>&gt;</span>hhh<span class="tag">&lt;/<span class="name">p</span>&gt;</span></span><br><span class="line">     <span class="tag">&lt;/<span class="name">body</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">html</span>&gt;</span></span><br></pre></td></tr></table></figure>
-
-<p><code>&lt;head&gt;</code>中的内容不会出现在网页中，其提供给浏览器解析 <code>&lt;title&gt;</code>中的内容会显示在网页中的标题栏，也是搜索结果超链接上的文字 <code>&lt;body&gt;</code>中的内容会出现在网页中给用户浏览（也就是可见内容） 标签一般是成对出现，但也存在自结束标签</p>
-          <!--noindex-->
-            <div class="post-button">
-              <a class="btn" href="/2022/03/12/html%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/#more" rel="contents">
-                阅读全文 &raquo;
-              </a>
-            </div>
-          <!--/noindex-->
-        
-      
-    </div>
-
-    
-    
-    
-
-    <footer class="post-footer">
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-</div>
-
-
-
-
   <nav class="pagination">
-    <a class="extend prev" rel="prev" title="上一页" aria-label="上一页" href="/page/3/"><i class="fa fa-angle-left"></i></a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/3/">3</a><span class="page-number current">4</span>
+    <a class="extend prev" rel="prev" title="上一页" aria-label="上一页" href="/page/3/"><i class="fa fa-angle-left"></i></a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/3/">3</a><span class="page-number current">4</span><a class="page-number" href="/page/5/">5</a><a class="extend next" rel="next" title="下一页" aria-label="下一页" href="/page/5/"><i class="fa fa-angle-right"></i></a>
   </nav>
 
 </div>

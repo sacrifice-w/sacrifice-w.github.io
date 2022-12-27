@@ -26,13 +26,13 @@
 <meta property="og:site_name" content="小吴的Blog">
 <meta property="og:description" content="网页主要分为三部分： 结构（HTML） 表现（CSS）——层叠样式表 行为（JavaScript） 1.1 CSS基础通过CSS可以分别为网页的每一层设置样式  （行内样式表）在标签内部通过style属性来设置元素的样式(不推荐使用)，只对一个标签生效，的确有点蠢-.- &lt;p style&#x3D;&quot;color:red; font-size: 60px;&quot;&gt; HELLO WO">
 <meta property="og:locale" content="zh_CN">
-<meta property="og:image" content="http://121.40.200.50/wp-content/uploads/2022/03/brother-300x124.png">
-<meta property="og:image" content="http://121.40.200.50/wp-content/uploads/2022/03/boxmodel-300x300.png">
+<meta property="og:image" content="https://blogwh.oss-cn-beijing.aliyuncs.com/img/brother.png">
+<meta property="og:image" content="https://blogwh.oss-cn-beijing.aliyuncs.com/img/boxmodel.png">
 <meta property="article:published_time" content="2022-03-15T08:26:04.000Z">
-<meta property="article:modified_time" content="2022-12-26T07:04:16.405Z">
+<meta property="article:modified_time" content="2022-12-27T04:32:25.547Z">
 <meta property="article:author" content="Wh&amp;CC">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:image" content="http://121.40.200.50/wp-content/uploads/2022/03/brother-300x124.png">
+<meta name="twitter:image" content="https://blogwh.oss-cn-beijing.aliyuncs.com/img/brother.png">
 
 
 <link rel="canonical" href="http://example.com/2022/03/15/css%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/">
@@ -131,7 +131,7 @@
   <nav class="site-state">
       <div class="site-state-item site-state-posts">
         <a href="/archives/">
-          <span class="site-state-item-count">39</span>
+          <span class="site-state-item-count">41</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
@@ -213,7 +213,7 @@
         <i class="far fa-calendar-check"></i>
       </span>
       <span class="post-meta-item-text">更新于</span>
-      <time title="修改时间：2022-12-26 15:04:16" itemprop="dateModified" datetime="2022-12-26T15:04:16+08:00">2022-12-26</time>
+      <time title="修改时间：2022-12-27 12:32:25" itemprop="dateModified" datetime="2022-12-27T12:32:25+08:00">2022-12-27</time>
     </span>
     <span class="post-meta-item">
       <span class="post-meta-item-icon">
@@ -313,20 +313,23 @@
 <figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">div</span>&gt;</span></span><br><span class="line">    我是div</span><br><span class="line">    <span class="tag">&lt;<span class="name">p</span>&gt;</span></span><br><span class="line">        我是div中的p元素</span><br><span class="line">        <span class="tag">&lt;<span class="name">span</span>&gt;</span>我是p元素中的span<span class="tag">&lt;/<span class="name">span</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;/<span class="name">p</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">span</span>&gt;</span>我是div中的span元素<span class="tag">&lt;/<span class="name">span</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">span</span>&gt;</span>我是div中的span元素<span class="tag">&lt;/<span class="name">span</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">span</span>&gt;</span>我是div中的span元素<span class="tag">&lt;/<span class="name">span</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">span</span>&gt;</span>我是div中的span元素<span class="tag">&lt;/<span class="name">span</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">div</span>&gt;</span></span><br></pre></td></tr></table></figure>
 
 <ol>
-<li><strong>子元素选择器</strong><ul>
+<li><p><strong>子元素选择器</strong></p>
+<ul>
 <li>作用：选中指定父元素的指定子元素</li>
 <li>语法：父元素&gt;子元素{}</li>
 <li>例子：div&gt;span{}(这里选择的就是div中的span元素)</li>
 <li>注释：这个大于号可以无限叠加，从而一直寻找下去</li>
 </ul>
 </li>
-<li><strong>后代元素选择器</strong><ul>
+<li><p><strong>后代元素选择器</strong></p>
+<ul>
 <li>作用：选中指定元素的指定后代元素</li>
 <li>语法：祖先元素 后代元素{}</li>
 <li>例子：div span{}(这里选择的就是p中的span元素和div中的span元素)nth-cih</li>
 </ul>
 </li>
-<li><strong>兄弟元素选择器</strong><ul>
+<li><p><strong>兄弟元素选择器</strong></p>
+<ul>
 <li><p>作用：选中指定元素的下一个兄弟元素</p>
 </li>
 <li><p>语法：前一个元素+后一个元素{}</p>
@@ -336,7 +339,7 @@
 </li>
 <li><p>语法：兄元素~弟元素{}</p>
 </li>
-<li><p>例子：p~span{}(这里选择的就是所有div中的span元素) <img src="http://121.40.200.50/wp-content/uploads/2022/03/brother-300x124.png"></p>
+<li><p>例子：p~span{}(这里选择的就是所有div中的span元素) <img src="https://blogwh.oss-cn-beijing.aliyuncs.com/img/brother.png"></p>
 <h4 id="1-2-2-4-属性选择器"><a href="#1-2-2-4-属性选择器" class="headerlink" title="1.2.2.4 属性选择器"></a>1.2.2.4 属性选择器</h4><p><code>[属性名]</code>选择含有指定属性的元素 <code>[属性名=属性值]</code>选择含有指定属性和属性值的元素 <code>[属性名^=属性值]</code>选择属性值以指定值开头的元素 <code>[属性名$=属性值]</code>选择属性值以指定值结尾的元素 <code>[属性名*=属性值]</code>选择属性值含有某值的元素 <code>p[title$=abc]&#123;color:orange;&#125;</code></p>
 <h4 id="1-2-2-5-伪类选择器"><a href="#1-2-2-5-伪类选择器" class="headerlink" title="1.2.2.5 伪类选择器"></a>1.2.2.5 伪类选择器</h4><p>伪类用来描述一个元素的特殊状态（eg：第一个子元素、被点击的元素、鼠标移入的元素） 伪类一般情况下都是以:开头 <code>ul&gt;li:first-child</code>表示列表中的第一个子元素 <code>:nth-child(n)</code>选中第n个子元素,这里这个n是一个数组，表示[0,+无穷]，2n或者even就是选择偶数，2n+1或者odd表示奇数 <code>:first-of-type</code>表示的是同类型元素排序 <code>:not</code>表示否定 <em>超链接的伪类</em> <code>:link</code>表示的是正常的链接 <code>:visited</code>表示的是已经访问过的链接，但是因为隐私问题，这个伪类只能修改颜色。 <code>:hover</code>表示鼠标移入的状态 <code>:active</code>表示鼠标点击的状态</p>
 <h3 id="1-2-3-伪元素"><a href="#1-2-3-伪元素" class="headerlink" title="1.2.3 伪元素"></a>1.2.3 伪元素</h3><p>伪元素表示的是页面中一些特殊位置的元素，比如用在开头 用::表示 <code>::first-letter</code>表示第一个字母 <code>::first-line</code>表示第一行 <code>::selection</code>表示选中的内容 <code>::before</code>和<code>::after</code>分别表示元素的开始和最后，但是他必须结合content属性使用</p>
@@ -382,7 +385,7 @@
 </li>
 </ul>
 <h3 id="1-2-8-盒子模型（box-model）"><a href="#1-2-8-盒子模型（box-model）" class="headerlink" title="1.2.8 盒子模型（box model）"></a>1.2.8 盒子模型（box model）</h3><p>CSS将页面中的所有元素都设置为一个矩形的盒子 将元素设置为矩形盒子后，对页面的布局就是将不同的盒子摆放到不同的位置</p>
-<p>组成部分：内容区（content） 边框（border）：需要至少设置三个样式：border-width，border-color，border-style。边框的大小会影响盒子的大小 内边距（padding） 外边距（margin） <img src="http://121.40.200.50/wp-content/uploads/2022/03/boxmodel-300x300.png"></p>
+<p>组成部分：内容区（content） 边框（border）：需要至少设置三个样式：border-width，border-color，border-style。边框的大小会影响盒子的大小 内边距（padding） 外边距（margin） <img src="https://blogwh.oss-cn-beijing.aliyuncs.com/img/boxmodel.png"></p>
 <p><strong>盒子的可见框的大小，由内容区、内边距和边框共同决定</strong></p>
 <h4 id="1-2-8-1-内容区（content）"><a href="#1-2-8-1-内容区（content）" class="headerlink" title="1.2.8.1 内容区（content）"></a>1.2.8.1 内容区（content）</h4><p>元素中的所有子元素和文本内容都在内容区中排列 大小由width和height设置</p>
 <h4 id="1-2-8-2-边框（border）"><a href="#1-2-8-2-边框（border）" class="headerlink" title="1.2.8.2 边框（border）"></a>1.2.8.2 边框（border）</h4><ul>
@@ -628,7 +631,7 @@
 </ul>
 </li>
 <li><p>Z轴平移 调整元素在z轴的位置，正常情况是调整元素和人眼之间的距离；距离越大，元素离人越近 但是z轴平移属于立体效果（近大远小），默认情况下网页不支持透视，所以需要设置网页的视距<code>html:&#123;perspective: 800px;&#125;</code></p>
-<h2 id="2-4-旋转"><a href="#2-4-旋转" class="headerlink" title="2.4 旋转"></a>2.4 旋转</h2><p>通过旋转可以使元素沿着x y 或z旋转指定的角度 <code>transform: rotateX(45deg);</code>deg表示度数，turn表示圈数 旋转的前提是设置网页的视距 rotateX()横向边往网页的内外转 rotateY()纵向边往网页的内外转 totateZ()顺逆时针转 <code>backface-visibility: hidden;</code>设置图片背面是否显示 练习：<a target="_blank" rel="noopener" href="https://whcoding.cc/wp-content/uploads/2022/03/%E5%8A%A8%E7%94%BB%E8%A1%A8.html" title="动画表">动画表</a></p>
+<h2 id="2-4-旋转"><a href="#2-4-旋转" class="headerlink" title="2.4 旋转"></a>2.4 旋转</h2><p>通过旋转可以使元素沿着x y 或z旋转指定的角度 <code>transform: rotateX(45deg);</code>deg表示度数，turn表示圈数 旋转的前提是设置网页的视距 rotateX()横向边往网页的内外转 rotateY()纵向边往网页的内外转 totateZ()顺逆时针转 <code>backface-visibility: hidden;</code>设置图片背面是否显示</p>
 <h2 id="2-5-缩放"><a href="#2-5-缩放" class="headerlink" title="2.5 缩放"></a>2.5 缩放</h2><p>通过transform来对元素进行缩放 scaleX()水平方向缩放 scaleY()垂直方向缩放 scale()双方向的缩放 <code>transform-origin:0px 0px;</code>变形的原点，默认值为center</p>
 <h1 id="3-移动端适配"><a href="#3-移动端适配" class="headerlink" title="3 移动端适配"></a>3 移动端适配</h1></li>
 </ul>
