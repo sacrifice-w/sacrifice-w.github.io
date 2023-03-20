@@ -1,0 +1,669 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+<meta name="theme-color" content="#222"><meta name="generator" content="Hexo 6.3.0">
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.1/css/all.min.css" integrity="sha256-Z1K5uhUaJXA7Ll0XrZ/0JhX4lAtZFpT6jkKrEDT0drU=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.1.1/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
+
+<script class="next-config" data-name="main" type="application/json">{"hostname":"example.com","root":"/","images":"/images","scheme":"Pisces","darkmode":false,"version":"8.14.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12},"copycode":{"enable":false,"style":null},"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"stickytabs":false,"motion":{"enable":true,"async":false,"transition":{"menu_item":"fadeInDown","post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"}}</script><script src="/js/config.js"></script>
+
+    <meta name="description" content="1.1 处理Sequence数据的模型transformer使用self-attention机制，所以模型可以并行化训练，而且能够拥有全局信息 Sequence to Sequence model：序列到序列的转换模型框架 vector sequence：向量序列 RNN的输入是一串vector sequence ，输出也是一串vector sequence，但是RNN的问题就是不容易并行化（ha">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Transformer知识点">
+<meta property="og:url" content="http://example.com/2022/03/14/transformer%E7%9F%A5%E8%AF%86%E7%82%B9/index.html">
+<meta property="og:site_name" content="小吴的Blog">
+<meta property="og:description" content="1.1 处理Sequence数据的模型transformer使用self-attention机制，所以模型可以并行化训练，而且能够拥有全局信息 Sequence to Sequence model：序列到序列的转换模型框架 vector sequence：向量序列 RNN的输入是一串vector sequence ，输出也是一串vector sequence，但是RNN的问题就是不容易并行化（ha">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="http://whcoding.cc//wp-content/uploads/2022/03/image-1647248054390.png">
+<meta property="og:image" content="http://whcoding.cc/wp-content/uploads/2022/03/image-1647248071578.png">
+<meta property="og:image" content="http://whcoding.cc/wp-content/uploads/2022/03/image-1647248093002.png">
+<meta property="og:image" content="http://whcoding.cc/wp-content/uploads/2022/03/image-1647248114020.png">
+<meta property="og:image" content="http://whcoding.cc/wp-content/uploads/2022/03/image-1647248163553.png">
+<meta property="og:image" content="https://www.zhihu.com/equation?tex=X%5Cin+R+(n_x,N)">
+<meta property="og:image" content="https://www.zhihu.com/equation?tex=W%5EX%5Cin+R+(d,n_x)">
+<meta property="og:image" content="https://www.zhihu.com/equation?tex=I%5Cin+R+(d,N)">
+<meta property="og:image" content="https://www.zhihu.com/equation?tex=E%5Cin+R+(d,N)">
+<meta property="og:image" content="https://www.zhihu.com/equation?tex=N">
+<meta property="og:image" content="https://www.zhihu.com/equation?tex=I%5Cin+R+(d,N)">
+<meta property="og:image" content="https://www.zhihu.com/equation?tex=O%5Cin+R+(d,N)">
+<meta property="og:image" content="https://www.zhihu.com/equation?tex=I%5Cin+R+(d,N)">
+<meta property="og:image" content="https://www.zhihu.com/equation?tex=O%5Cin+R+(d,N)">
+<meta property="og:image" content="http://whcoding.cc/wp-content/uploads/2022/03/image-1647248183408.png">
+<meta property="og:image" content="https://www.zhihu.com/equation?tex=%5Cmu=0,%5Csigma=1">
+<meta property="og:image" content="https://www.zhihu.com/equation?tex=%5Cmu=0,%5Csigma=1">
+<meta property="og:image" content="https://www.zhihu.com/equation?tex=%5Ccolor%7Bdarkgreen%7D%7BO_1%7D=%5Ccolor%7Bgreen%7D%7B%5Ctext%7BLayer+Normalization%7D%7D(%5Ccolor%7Bteal%7D%7BI%7D+%5Ccolor%7Bcrimson%7D%7B%5Ctext%7BMulti-head+Self-Attention%7D%7D(%5Ccolor%7Bteal%7D%7BI%7D))%5Ctag%7B6%7D">
+<meta property="og:image" content="https://www.zhihu.com/equation?tex=%5Ccolor%7Bdarkgreen%7D%7BO_2%7D=%5Ccolor%7Bgreen%7D%7B%5Ctext%7BLayer+Normalization%7D%7D(%5Ccolor%7Bteal%7D%7BO_1%7D+%5Ccolor%7Bcrimson%7D%7B%5Ctext%7BFeed+Forward+Network%7D%7D(%5Ccolor%7Bteal%7D%7BO_1%7D))%5Ctag%7B7%7D">
+<meta property="og:image" content="https://www.zhihu.com/equation?tex=%5Ccolor%7Bgreen%7D%7B%5Ctext%7BBlock%7D%7D(%5Ccolor%7Bteal%7D%7BI%7D)=%5Ccolor%7Bgreen%7D%7BO_2%7D+%5Ctag%7B8%7D">
+<meta property="og:image" content="https://www.zhihu.com/equation?tex=%5Ccolor%7Bpurple%7D%7B%5Ctext%7BEncoder%7D%7D(%5Ccolor%7Bdarkgreen%7D%7BI%7D)=%5Ccolor%7Bdarkgreen%7D%7B%5Ctext%7BBlock%7D%7D(...%5Ccolor%7Bdarkgreen%7D%7B%5Ctext%7BBlock%7D%7D(%5Ccolor%7Bdarkgreen%7D%7B%5Ctext%7BBlock%7D%7D)(%5Ccolor%7Bteal%7D%7BI%7D))%5C%5C%5Cquad+N%5C;times+%5Ctag%7B9%7D+">
+<meta property="og:image" content="https://www.zhihu.com/equation?tex=I%5Cin+R+(d,N)">
+<meta property="og:image" content="https://www.zhihu.com/equation?tex=E%5Cin+R+(d,N)">
+<meta property="og:image" content="https://www.zhihu.com/equation?tex=N">
+<meta property="og:image" content="https://www.zhihu.com/equation?tex=%5Ccolor%7Bcrimson%7D%7Bi%7D">
+<meta property="og:image" content="https://www.zhihu.com/equation?tex=%5Ccolor%7Bpurple%7D%7BEncoder%7D">
+<meta property="og:image" content="https://www.zhihu.com/equation?tex=%5Ccolor%7Bcrimson%7D%7Bi-1%7D">
+<meta property="og:image" content="https://www.zhihu.com/equation?tex=%5Ccolor%7Bcrimson%7D%7BDecoder%7D">
+<meta property="og:image" content="https://www.zhihu.com/equation?tex=RNN">
+<meta property="og:image" content="https://www.zhihu.com/equation?tex=%5Ccolor%7Bcrimson%7D%7Bi%7D">
+<meta property="og:image" content="https://www.zhihu.com/equation?tex=C">
+<meta property="og:image" content="http://whcoding.cc/wp-content/uploads/2022/03/image-1647248218150.png">
+<meta property="og:image" content="http://whcoding.cc/wp-content/uploads/2022/03/image-1647248253535.png">
+<meta property="og:image" content="http://whcoding.cc/wp-content/uploads/2022/03/image-1647248444456.png">
+<meta property="og:image" content="https://www.zhihu.com/equation?tex=N">
+<meta property="og:image" content="https://www.zhihu.com/equation?tex=N">
+<meta property="og:image" content="https://www.zhihu.com/equation?tex=x_%7B%5Ctext%7Bimg%7D%7D%5Cin+B%5Ctimes+3%5Ctimes+H_0+%5Ctimes+W_0">
+<meta property="og:image" content="https://www.zhihu.com/equation?tex=f%5Cin+R%5E%7BB%5Ctimes+C%5Ctimes+H%5Ctimes+W%7D">
+<meta property="og:image" content="https://www.zhihu.com/equation?tex=C+=+2048%E6%88%96256,+H+=+%5Cfrac%7BH_0%7D%7B32%7D,+W+=+%5Cfrac%7BW_0%7D%7B32%7D">
+<meta property="og:image" content="https://www.zhihu.com/equation?tex=f%5Cin+R%5E%7BB%5Ctimes+C%5Ctimes+H%5Ctimes+W%7D">
+<meta property="og:image" content="https://www.zhihu.com/equation?tex=1%5Ctimes+1">
+<meta property="og:image" content="https://www.zhihu.com/equation?tex=C">
+<meta property="og:image" content="https://www.zhihu.com/equation?tex=d">
+<meta property="og:image" content="https://www.zhihu.com/equation?tex=z_0%5Cin+R%5E%7BB%5Ctimes+d%5Ctimes+H%5Ctimes+W%7D">
+<meta property="og:image" content="https://www.zhihu.com/equation?tex=z_0%5Cin+R%5E%7BB%5Ctimes+d%5Ctimes+H%5Ctimes+W%7D(d=256)">
+<meta property="og:image" content="https://www.zhihu.com/equation?tex=(HW,B,256)">
+<meta property="og:image" content="https://www.zhihu.com/equation?tex=z_0%5Cin+R%5E%7BB%5Ctimes+d%5Ctimes+H%5Ctimes+W%7D">
+<meta property="og:image" content="https://www.zhihu.com/equation?tex=z_0%5Cin+R%5E%7BB%5Ctimes+d%5Ctimes+H%5Ctimes+W%7D">
+<meta property="og:image" content="https://www.zhihu.com/equation?tex=%5Cbegin%7Balign%7DPE_%7B(pos,+2i)%7D+=+sin(pos/10000%5E%7B2i/d%7D)+%5C%5C+PE_%7B(pos,+2i+1)%7D+=+cos(pos/10000%5E%7B2i/d%7D)++%5Cend%7Balign%7D%5Ctag%7B10%7D">
+<meta property="og:image" content="https://www.zhihu.com/equation?tex=d">
+<meta property="og:image" content="https://www.zhihu.com/equation?tex=d%5Ctimes+HW">
+<meta property="og:image" content="https://www.zhihu.com/equation?tex=pos%5Cin+%5B1,HW%5D">
+<meta property="og:image" content="https://www.zhihu.com/equation?tex=HW">
+<meta property="og:image" content="https://www.zhihu.com/equation?tex=pos=0">
+<meta property="og:image" content="https://www.zhihu.com/equation?tex=i">
+<meta property="og:image" content="https://www.zhihu.com/equation?tex=2i">
+<meta property="og:image" content="https://www.zhihu.com/equation?tex=2i+1">
+<meta property="og:image" content="https://www.zhihu.com/equation?tex=i">
+<meta property="og:image" content="https://www.zhihu.com/equation?tex=%5Cleft%5B+0,%5Cldots+,%7B%7B%7Bd%7D%7D%7D/%7B2%7D%5C;+%5Cright)">
+<meta property="og:image" content="https://www.zhihu.com/equation?tex=pos">
+<meta property="og:image" content="https://www.zhihu.com/equation?tex=PE%5Cleft(+1+%5Cright)=%5Cleft%5B+%5Csin+%5Cleft(+%7B1%7D/%7B%7B%7B10000%7D%5E%7B%7B0%7D/%7B256%7D%5C;%7D%7D%7D%5C;+%5Cright),%5Ccos+%5Cleft(+%7B1%7D/%7B%7B%7B10000%7D%5E%7B%7B0%7D/%7B256%7D%5C;%7D%7D%7D%5C;+%5Cright),%5Csin+%5Cleft(+%7B1%7D/%7B%7B%7B10000%7D%5E%7B%7B2%7D/%7B256%7D%5C;%7D%7D%7D%5C;+%5Cright),%5Ccos+%5Cleft(+%7B1%7D/%7B%7B%7B10000%7D%5E%7B%7B2%7D/%7B256%7D%5C;%7D%7D%7D%5C;+%5Cright),%5Cldots++%5Cright%5D">
+<meta property="og:image" content="https://www.zhihu.com/equation?tex=%7B%7Bd%7D_%7B%7D%7D=256">
+<meta property="og:image" content="https://www.zhihu.com/equation?tex=x">
+<meta property="og:image" content="https://www.zhihu.com/equation?tex=xy">
+<meta property="og:image" content="https://www.zhihu.com/equation?tex=%5Ctext%7Bsin+cos%7D">
+<meta property="og:image" content="https://www.zhihu.com/equation?tex=xy">
+<meta property="og:image" content="https://www.zhihu.com/equation?tex=d%5Ctimes+HW">
+<meta property="og:image" content="https://www.zhihu.com/equation?tex=%5B1,HW%5D">
+<meta property="og:image" content="https://www.zhihu.com/equation?tex=xy">
+<meta property="og:image" content="https://www.zhihu.com/equation?tex=(B,d,H,W),d=256">
+<meta property="og:image" content="https://www.zhihu.com/equation?tex=d">
+<meta property="og:image" content="https://www.zhihu.com/equation?tex=H,W">
+<meta property="og:image" content="https://www.zhihu.com/equation?tex=(H_1,W_1)">
+<meta property="og:image" content="https://www.zhihu.com/equation?tex=H_1">
+<meta property="og:image" content="https://www.zhihu.com/equation?tex=W_1">
+<meta property="og:image" content="https://www.zhihu.com/equation?tex=%5Cbegin%7Balign%7Da)%5Cquad+PE_%7B(pos_x,+2i)%7D+=+sin(pos_x/10000%5E%7B2i/128%7D)+%5C%5C+b)%5Cquad+PE_%7B(pos_x,+2i+1)%7D+=+cos(pos_x/10000%5E%7B2i/128%7D)+%5C%5Cc)%5Cquad+PE_%7B(pos_y,+2i)%7D+=+sin(pos_y/10000%5E%7B2i/128%7D)+%5C%5C+d)%5Cquad+PE_%7B(pos_y,+2i+1)%7D+=+cos(pos_y/10000%5E%7B2i/128%7D)+%5Cend%7Balign%7D%5Ctag%7B11%7D">
+<meta property="og:image" content="https://www.zhihu.com/equation?tex=(pos_x,pos_y),pos_x%5Cin+%5B1,HW%5D,pos_y%5Cin+%5B1,HW%5D">
+<meta property="og:image" content="https://www.zhihu.com/equation?tex=pos_x">
+<meta property="og:image" content="https://www.zhihu.com/equation?tex=a">
+<meta property="og:image" content="https://www.zhihu.com/equation?tex=b">
+<meta property="og:image" content="https://www.zhihu.com/equation?tex=pos_x">
+<meta property="og:image" content="https://www.zhihu.com/equation?tex=pos_y">
+<meta property="og:image" content="https://www.zhihu.com/equation?tex=c">
+<meta property="og:image" content="https://www.zhihu.com/equation?tex=d">
+<meta property="og:image" content="https://www.zhihu.com/equation?tex=pos_y">
+<meta property="og:image" content="https://www.zhihu.com/equation?tex=(pos_x,pos_y)">
+<meta property="og:image" content="https://www.zhihu.com/equation?tex=(256,H,W)">
+<meta property="og:image" content="https://www.zhihu.com/equation?tex=(B,256,H,W)">
+<meta property="og:image" content="https://www.zhihu.com/equation?tex=(HW,B,256)">
+<meta property="og:image" content="https://www.zhihu.com/equation?tex=(HW,B,256)">
+<meta property="og:image" content="http://whcoding.cc/wp-content/uploads/2022/03/image-1647248424599.png">
+<meta property="og:image" content="https://www.zhihu.com/equation?tex=(HW,B,256)">
+<meta property="og:image" content="https://www.zhihu.com/equation?tex=(HW,B,256)">
+<meta property="og:image" content="https://www.zhihu.com/equation?tex=(H%5Ccdot+W,b,256)">
+<meta property="og:image" content="https://www.zhihu.com/equation?tex=(100,b,256)">
+<meta property="og:image" content="https://www.zhihu.com/equation?tex=(100,b,256)">
+<meta property="og:image" content="https://www.zhihu.com/equation?tex=(hw,b,256)">
+<meta property="og:image" content="https://www.zhihu.com/equation?tex=(100,b,256)">
+<meta property="og:image" content="https://www.zhihu.com/equation?tex=(hw,b,256)">
+<meta property="og:image" content="https://www.zhihu.com/equation?tex=(100,b,256)">
+<meta property="og:image" content="https://www.zhihu.com/equation?tex=(1,b,100,256)">
+<meta property="og:image" content="http://whcoding.cc/wp-content/uploads/2022/03/image-1647248359191.png">
+<meta property="og:image" content="https://www.zhihu.com/equation?tex=(b,100,256)">
+<meta property="og:image" content="https://www.zhihu.com/equation?tex=N=100">
+<meta property="og:image" content="https://www.zhihu.com/equation?tex=(b,100,%5Ccolor%7Bcrimson%7D%7B%5Ctext%7Bclass%7D+1%7D)">
+<meta property="og:image" content="https://www.zhihu.com/equation?tex=(b,100,%5Ccolor%7Bpurple%7D%7B4%7D)">
+<meta property="og:image" content="https://www.zhihu.com/equation?tex=%5Ccolor%7Bcrimson%7D%7B%5Ctext%7Bclass%7D+1=92%7D">
+<meta property="og:image" content="https://www.zhihu.com/equation?tex=%5Ccolor%7Bpurple%7D%7B4%7D">
+<meta property="og:image" content="https://www.zhihu.com/equation?tex=(c_x,c_y,w,h)">
+<meta property="og:image" content="https://www.zhihu.com/equation?tex=(b,100,%5Ccolor%7Bcrimson%7D%7B%5Ctext%7Bclass%7D+1%7D)">
+<meta property="og:image" content="https://www.zhihu.com/equation?tex=(b,100,%5Ccolor%7Bpurple%7D%7B4%7D)">
+<meta property="og:image" content="https://www.zhihu.com/equation?tex=(b,100)">
+<meta property="og:image" content="https://www.zhihu.com/equation?tex=GT+%5C;+%5Ctext%7BBounding+Box%7D">
+<meta property="og:image" content="https://www.zhihu.com/equation?tex=i">
+<meta property="og:image" content="https://www.zhihu.com/equation?tex=y_i=(c_i,b_i)">
+<meta property="og:image" content="https://www.zhihu.com/equation?tex=c_i">
+<meta property="og:image" content="https://www.zhihu.com/equation?tex=%5Ccolor%7Bcrimson%7D%7B%5Ctext%7Bclass%7D%7D">
+<meta property="og:image" content="https://www.zhihu.com/equation?tex=b_i">
+<meta property="og:image" content="https://www.zhihu.com/equation?tex=%5Ccolor%7Bpurple%7D%7B%5Ctext%7BBounding+Box%7D%7D">
+<meta property="og:image" content="https://www.zhihu.com/equation?tex=%5Chat+y+=+%5C%7B%5Chat+y_i%5C%7D_%7Bi=1%7D%5E%7BN%7D">
+<meta property="og:image" content="https://www.zhihu.com/equation?tex=N">
+<meta property="og:image" content="https://www.zhihu.com/equation?tex=i">
+<meta property="og:image" content="https://www.zhihu.com/equation?tex=GT">
+<meta property="og:image" content="https://www.zhihu.com/equation?tex=%5Csigma(i)">
+<meta property="og:image" content="https://www.zhihu.com/equation?tex=GT_i">
+<meta property="og:image" content="https://www.zhihu.com/equation?tex=i=3,%5Csigma(i)=18">
+<meta property="og:image" content="https://www.zhihu.com/equation?tex=%5Cbegin%7Bequation%7D+%5Clabel%7Beq:matching%7D+++++%5Chat%7B%5Csigma%7D+=+%5Carg%5Cmin_%7B%5Csigma%5Cin%5CSigma_N%7D+%5Csum_%7Bi%7D%5E%7BN%7D+L_%7Bmatch%7D(y_i,+%5Chat+y_%7B%5Csigma(i)%7D),+%5Cend%7Bequation%7D+%5Ctag%7B12%7D">
+<meta property="og:image" content="https://www.zhihu.com/equation?tex=y_i">
+<meta property="og:image" content="https://www.zhihu.com/equation?tex=%5Chat+y_%7B%5Csigma(i)%7D">
+<meta property="og:image" content="http://whcoding.cc/wp-content/uploads/2022/03/image-1647248322879.png">
+<meta property="og:image" content="https://www.zhihu.com/equation?tex=L_%7Bmatch%7D">
+<meta property="og:image" content="https://www.zhihu.com/equation?tex=y_i">
+<meta property="og:image" content="https://www.zhihu.com/equation?tex=%5Chat+y_%7B%5Csigma(i)%7D">
+<meta property="og:image" content="https://www.zhihu.com/equation?tex=L_%7Bmatch%7D">
+<meta property="og:image" content="https://www.zhihu.com/equation?tex=-%5Cmathbb%7B1%7D_%7B%5Cleft%5C%7B+c_i%5Cneq%5Cvarnothing+%5Cright%5C%7D%7D%5Chat+p_%7B%5Csigma(i)%7D(c_i)+++%5Cmathbb%7B1%7D_%7B%5Cleft%5C%7B+c_i%5Cneq%5Cvarnothing+%5Cright%5C%7D%7D+L_%7Bbox%7D(%7Bb_%7Bi%7D,+%5Chat+b_%7B%5Csigma(i)%7D%7D)+%5Ctag%7B13%7D">
+<meta property="og:image" content="https://www.zhihu.com/equation?tex=%5Csigma">
+<meta property="og:image" content="https://www.zhihu.com/equation?tex=i">
+<meta property="og:image" content="https://www.zhihu.com/equation?tex=%5Csigma(i)">
+<meta property="og:image" content="https://www.zhihu.com/equation?tex=%5Chat+p_%7B%5Csigma(i)%7D(c_i)+">
+<meta property="og:image" content="https://www.zhihu.com/equation?tex=L_%7Bmatch%7D">
+<meta property="og:image" content="https://www.zhihu.com/equation?tex=%5Chat+b_%7B%5Csigma(i)%7D">
+<meta property="og:image" content="https://www.zhihu.com/equation?tex=%5Ccolor%7Bpurple%7D%7B%5Ctext%7BBounding+Box%7D%7D">
+<meta property="og:image" content="https://www.zhihu.com/equation?tex=L_%7Bbox%7D(%7Bb_%7Bi%7D,+%5Chat+b_%7B%5Csigma(i)%7D%7D)">
+<meta property="og:image" content="https://www.zhihu.com/equation?tex=L_%7Bmatch%7D">
+<meta property="og:image" content="https://www.zhihu.com/equation?tex=L_%7Bmatch%7D">
+<meta property="og:image" content="https://www.zhihu.com/equation?tex=%5Chat%5Csigma">
+<meta property="og:image" content="https://www.zhihu.com/equation?tex=i">
+<meta property="og:image" content="https://www.zhihu.com/equation?tex=%5Chat%5Csigma(i)">
+<meta property="og:image" content="https://www.zhihu.com/equation?tex=%5Chat%5Csigma">
+<meta property="og:image" content="https://www.zhihu.com/equation?tex=L_%7B%5Ctext%7BHungarian%7D%7D(%7By,+%5Chat+y%7D)+=+%5Csum_%7Bi=1%7D%5EN+%5Cleft%5B-%5Clog++%5Chat+p_%7B%5Chat%7B%5Csigma%7D(i)%7D(c_%7Bi%7D)+++%5Cmathbb%7B1%7D_%7B%5Cleft%5C%7B+c_i%5Cneq%5Cvarnothing+%5Cright%5C%7D%7D++%5C+L_%7Bbox%7D%7B(b_%7Bi%7D,+%5Chat+b_%7B%5Chat%7B%5Csigma%7D(i)%7D%7D)%5Cright%5D+%5Ctag%7B14%7D">
+<meta property="og:image" content="https://www.zhihu.com/equation?tex=L_%7Bbox%7D">
+<meta property="og:image" content="https://www.zhihu.com/equation?tex=L_%7Bbox%7D%7B(b_%7Bi%7D,+%5Chat+b_%7B%5Chat%7B%5Csigma%7D(i)%7D%7D)+=+%5Clambda_%7B%5Crm+iou%7DL_%7Biou%7D(%7Bb_%7Bi%7D,+%5Chat+b_%7B%5Csigma(i)%7D%7D)++%5Clambda_%7B%5Crm+L1%7D%7C%7Cb_%7Bi%7D-+%5Chat+b_%7B%5Csigma(i)%7D%7C%7C_1+,%5C;+where+%5C;%5Clambda_%7B%5Crm+iou%7D,+%5Clambda_%7B%5Crm+L1%7D%5Cin+R+%5Ctag%7B15%7D">
+<meta property="og:image" content="https://www.zhihu.com/equation?tex=L_1+%5C;loss">
+<meta property="og:image" content="https://www.zhihu.com/equation?tex=%5Ccolor%7Bpurple%7D%7B%5Ctext%7BBounding+Box%7D%7D">
+<meta property="og:image" content="https://www.zhihu.com/equation?tex=L_1+%5C;loss">
+<meta property="og:image" content="https://www.zhihu.com/equation?tex=L_%7Biou%7D">
+<meta property="og:image" content="https://www.zhihu.com/equation?tex=L_%7Bmatch%7D">
+<meta property="og:image" content="https://www.zhihu.com/equation?tex=M">
+<meta property="og:image" content="https://www.zhihu.com/equation?tex=%5Ctext%7BGT%7D%5C;%5Ccolor%7Bpurple%7D%7B%5Ctext%7BBounding+Box%7D%7D">
+<meta property="og:image" content="https://www.zhihu.com/equation?tex=N">
+<meta property="og:image" content="https://www.zhihu.com/equation?tex=%5Ctext%7BPredict%7D%5C;%5Ccolor%7Bpurple%7D%7B%5Ctext%7BBounding+Box%7D%7D">
+<meta property="og:image" content="https://www.zhihu.com/equation?tex=%5Ctext%7BGT%7D%5C;%5Ccolor%7Bpurple%7D%7B%5Ctext%7BBounding+Box%7D%7D">
+<meta property="og:image" content="https://www.zhihu.com/equation?tex=%5Ccolor%7Borange%7D%7B%5Ctext%7BCar%7D%7D,%5Ccolor%7Bgreen%7D%7B%5Ctext%7BDog%7D%7D,%5Ccolor%7Bdarkturquoise%7D%7B%5Ctext%7BHorse%7D%7D">
+<meta property="og:image" content="https://www.zhihu.com/equation?tex=(%5Ctext%7Blabel%7D_%7B%5Ccolor%7Borange%7D%7B%5Ctext%7BCar%7D%7D%7D=3,%5Ctext%7Blabel%7D_%7B%5Ccolor%7Bgreen%7D%7B%5Ctext%7BDog%7D%7D%7D=24,%5Ctext%7Blabel%7D_%7B%5Ccolor%7Borange%7D%7B%5Ccolor%7Bdarkturquoise%7D%7B%5Ctext%7BHorse%7D%7D%7D%7D=75)%5C%5C">
+<meta property="og:image" content="https://www.zhihu.com/equation?tex=%5Ccolor%7Borange%7D%7B%5Ctext%7BCar%7D%7D">
+<meta property="og:image" content="https://www.zhihu.com/equation?tex=%5Ccolor%7Bgreen%7D%7B%5Ctext%7BDog%7D%7D">
+<meta property="og:image" content="https://www.zhihu.com/equation?tex=%5Ccolor%7Bdarkturquoise%7D%7B%5Ctext%7BHorse%7D%7D">
+<meta property="og:image" content="https://www.zhihu.com/equation?tex=(100,3)">
+<meta property="og:image" content="https://www.zhihu.com/equation?tex=(13)">
+<meta property="og:image" content="https://www.zhihu.com/equation?tex=(1,1)">
+<meta property="og:image" content="https://www.zhihu.com/equation?tex=%5Ccolor%7Borange%7D%7B%5Ctext%7BCar%7D%7D(%5Ctext%7Blabel%7D=3)">
+<meta property="og:image" content="https://www.zhihu.com/equation?tex=L_%7Bmatch%7D">
+<meta property="og:image" content="https://www.zhihu.com/equation?tex=23">
+<meta property="og:image" content="https://www.zhihu.com/equation?tex=%5Ccolor%7Borange%7D%7B%5Ctext%7BCar%7D%7D">
+<meta property="og:image" content="https://www.zhihu.com/equation?tex=44">
+<meta property="og:image" content="https://www.zhihu.com/equation?tex=%5Ccolor%7Bgreen%7D%7B%5Ctext%7BDog%7D%7D">
+<meta property="og:image" content="https://www.zhihu.com/equation?tex=95">
+<meta property="og:image" content="https://www.zhihu.com/equation?tex=%5Ccolor%7Bdarkturquoise%7D%7B%5Ctext%7BHorse%7D%7D">
+<meta property="og:image" content="https://www.zhihu.com/equation?tex=23,44,95">
+<meta property="og:image" content="https://www.zhihu.com/equation?tex=(14)">
+<meta property="og:image" content="https://www.zhihu.com/equation?tex=%5Ctext%7BObject%7D">
+<meta property="og:image" content="https://www.zhihu.com/equation?tex=%5Ctext%7BPredict%7D%5C;%5Ccolor%7Bpurple%7D%7B%5Ctext%7BBounding+Box%7D%7D">
+<meta property="og:image" content="https://www.zhihu.com/equation?tex=%5Ccolor%7Borange%7D%7B%5Ctext%7BCar%7D%7D(%5Ctext%7Blabel%7D=3)">
+<meta property="og:image" content="https://www.zhihu.com/equation?tex=%5Ctext%7BPredict%7D%5C;%5Ccolor%7Bpurple%7D%7B%5Ctext%7BBounding+Box%7D%7D">
+<meta property="og:image" content="https://www.zhihu.com/equation?tex=%5Ccolor%7Bchocolate%7D%7B%5Ctext%7BBus%7D%7D(%5Ctext%7Blabel%7D=16)">
+<meta property="og:image" content="https://www.zhihu.com/equation?tex=%5Ctext%7BPredict%7D%5C;%5Ccolor%7Bpurple%7D%7B%5Ctext%7BBounding+Box%7D%7D">
+<meta property="og:image" content="https://www.zhihu.com/equation?tex=%5Ccolor%7Blightskyblue%7D%7B%5Ctext%7BSky%7D%7D(%5Ctext%7Blabel%7D=21)">
+<meta property="og:image" content="https://www.zhihu.com/equation?tex=%5Ctext%7BPredict%7D%5C;%5Ccolor%7Bpurple%7D%7B%5Ctext%7BBounding+Box%7D%7D">
+<meta property="og:image" content="https://www.zhihu.com/equation?tex=%5Ccolor%7Bgreen%7D%7B%5Ctext%7BDog%7D%7D(%5Ctext%7Blabel%7D=24)">
+<meta property="og:image" content="https://www.zhihu.com/equation?tex=%5Ctext%7BPredict%7D%5C;%5Ccolor%7Bpurple%7D%7B%5Ctext%7BBounding+Box%7D%7D">
+<meta property="og:image" content="https://www.zhihu.com/equation?tex=%5Ccolor%7Bdarkturquoise%7D%7B%5Ctext%7BHorse%7D%7D(%5Ctext%7Blabel%7D=75)">
+<meta property="og:image" content="https://www.zhihu.com/equation?tex=%5Ctext%7BPredict%7D%5C;%5Ccolor%7Bpurple%7D%7B%5Ctext%7BBounding+Box%7D%7D">
+<meta property="og:image" content="https://www.zhihu.com/equation?tex=%5Ccolor%7Bdimgray%7D%7B%5Cvarnothing+%7D(%5Ctext%7Blabel%7D=92)">
+<meta property="og:image" content="https://www.zhihu.com/equation?tex=%5Ctext%7BObject%7D">
+<meta property="og:image" content="https://www.zhihu.com/equation?tex=%5Ctext%7BObject%7D">
+<meta property="og:image" content="https://www.zhihu.com/equation?tex=(100,b,256)">
+<meta property="og:image" content="https://www.zhihu.com/equation?tex=0">
+<meta property="og:image" content="https://www.zhihu.com/equation?tex=b">
+<meta property="og:image" content="https://www.zhihu.com/equation?tex=(100,256)">
+<meta property="og:image" content="https://www.zhihu.com/equation?tex=%5Ctext%7BObject%7D">
+<meta property="og:image" content="https://www.zhihu.com/equation?tex=%5Ccolor%7Borange%7D%7B%5Ctext%7BCar%7D%7D">
+<meta property="og:image" content="https://www.zhihu.com/equation?tex=%5Ctext%7BObject%7D">
+<meta property="og:image" content="https://www.zhihu.com/equation?tex=%5Ccolor%7Borange%7D%7B%5Ctext%7BCar%7D%7D">
+<meta property="og:image" content="https://www.zhihu.com/equation?tex=%5Ccolor%7Borange%7D%7B%5Ctext%7BCar%7D%7D">
+<meta property="og:image" content="https://www.zhihu.com/equation?tex=%5Ccolor%7Borange%7D%7B%5Ctext%7BCar%7D%7D,%5Ccolor%7Bgreen%7D%7B%5Ctext%7BDog%7D%7D,%5Ccolor%7Bdarkturquoise%7D%7B%5Ctext%7BHorse%7D%7D">
+<meta property="og:image" content="https://www.zhihu.com/equation?tex=%5Ctext%7BObject%7D">
+<meta property="og:image" content="https://www.zhihu.com/equation?tex=%5Ccolor%7Borange%7D%7B%5Ctext%7BCar%7D%7D">
+<meta property="og:image" content="https://www.zhihu.com/equation?tex=%5Ccolor%7Blightskyblue%7D%7B%5Ctext%7BSky%7D%7D">
+<meta property="og:image" content="https://www.zhihu.com/equation?tex=%5Ccolor%7Blightskyblue%7D%7B%5Ctext%7BSky%7D%7D">
+<meta property="og:image" content="https://www.zhihu.com/equation?tex=%5Ccolor%7Borange%7D%7B%5Ctext%7BCar%7D%7D,%5Ccolor%7Bgreen%7D%7B%5Ctext%7BDog%7D%7D,%5Ccolor%7Bdarkturquoise%7D%7B%5Ctext%7BHorse%7D%7D">
+<meta property="og:image" content="https://www.zhihu.com/equation?tex=FFN">
+<meta property="og:image" content="https://www.zhihu.com/equation?tex=N">
+<meta property="og:image" content="https://www.zhihu.com/equation?tex=%5Ccolor%7Borange%7D%7B%5Ctext%7BCar%7D%7D">
+<meta property="og:image" content="https://www.zhihu.com/equation?tex=FFN">
+<meta property="article:published_time" content="2022-03-14T09:00:56.000Z">
+<meta property="article:modified_time" content="2023-03-20T08:32:37.834Z">
+<meta property="article:author" content="Wh&amp;CC">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://whcoding.cc//wp-content/uploads/2022/03/image-1647248054390.png">
+
+
+<link rel="canonical" href="http://example.com/2022/03/14/transformer%E7%9F%A5%E8%AF%86%E7%82%B9/">
+
+
+
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"zh-CN","comments":true,"permalink":"http://example.com/2022/03/14/transformer%E7%9F%A5%E8%AF%86%E7%82%B9/","path":"2022/03/14/transformer知识点/","title":"Transformer知识点"}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">""</script>
+<title>Transformer知识点 | 小吴的Blog</title>
+  
+
+
+
+
+
+
+  <script async defer data-website-id="" src=""></script>
+
+  <script defer data-domain="" src=""></script>
+
+  <noscript>
+    <link rel="stylesheet" href="/css/noscript.css">
+  </noscript>
+<link rel="alternate" href="/atom.xml" title="小吴的Blog" type="application/atom+xml">
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <div class="headband"></div>
+
+  <main class="main">
+    <div class="column">
+      <header class="header" itemscope itemtype="http://schema.org/WPHeader"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏" role="button">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <p class="site-title">小吴的Blog</p>
+      <i class="logo-line"></i>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger" aria-label="搜索" role="button">
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu"><li class="menu-item menu-item-home"><a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a></li><li class="menu-item menu-item-about"><a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>关于</a></li><li class="menu-item menu-item-tags"><a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签</a></li><li class="menu-item menu-item-categories"><a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类</a></li><li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档</a></li>
+  </ul>
+</nav>
+
+
+
+
+</header>
+        
+  
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#1-1-%E5%A4%84%E7%90%86Sequence%E6%95%B0%E6%8D%AE%E7%9A%84%E6%A8%A1%E5%9E%8B"><span class="nav-number">1.</span> <span class="nav-text">1.1 处理Sequence数据的模型</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#1-2-self-attention"><span class="nav-number">2.</span> <span class="nav-text">1.2 self-attention</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#2-1-transformer%E5%8E%9F%E7%90%86"><span class="nav-number">3.</span> <span class="nav-text">2.1 transformer原理</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#2-1-1-encoder"><span class="nav-number">3.1.</span> <span class="nav-text">2.1.1 encoder</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-1-2-decoder"><span class="nav-number">3.2.</span> <span class="nav-text">2.1.2 decoder</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#3-1-DETR"><span class="nav-number">4.</span> <span class="nav-text">3.1 DETR</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#3-1-1-backbone"><span class="nav-number">4.1.</span> <span class="nav-text">3.1.1 backbone</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3-1-2-encoder"><span class="nav-number">4.2.</span> <span class="nav-text">3.1.2 encoder</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3-1-3-decoder"><span class="nav-number">4.3.</span> <span class="nav-text">3.1.3 decoder</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3-1-4-loss"><span class="nav-number">4.4.</span> <span class="nav-text">3.1.4 loss</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3-1-4-%E8%AE%AD%E7%BB%83"><span class="nav-number">4.5.</span> <span class="nav-text">3.1.4 训练</span></a></li></ol></li></ol></div>
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-author animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="Wh&CC"
+      src="/images/avatar.gif">
+  <p class="site-author-name" itemprop="name">Wh&CC</p>
+  <div class="site-description" itemprop="description">Per aspera ad astra</div>
+</div>
+<div class="site-state-wrap animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+        <a href="/archives/">
+          <span class="site-state-item-count">45</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+          <a href="/categories/">
+        <span class="site-state-item-count">3</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author animated">
+      <span class="links-of-author-item">
+        <a href="https://github.com/sacrifice-w" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;sacrifice-w" rel="noopener me" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="mailto:761612239@qq.com" title="E-Mail → mailto:761612239@qq.com" rel="noopener me" target="_blank"><i class="fa fa-envelope fa-fw"></i>E-Mail</a>
+      </span>
+  </div>
+
+        </div>
+      </div>
+    </div>
+
+    
+  </aside>
+
+
+    </div>
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2022/03/14/transformer%E7%9F%A5%E8%AF%86%E7%82%B9/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="Wh&CC">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="小吴的Blog">
+      <meta itemprop="description" content="Per aspera ad astra">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="Transformer知识点 | 小吴的Blog">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          Transformer知识点
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+
+      <time title="创建时间：2022-03-14 17:00:56" itemprop="dateCreated datePublished" datetime="2022-03-14T17:00:56+08:00">2022-03-14</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar-check"></i>
+      </span>
+      <span class="post-meta-item-text">更新于</span>
+      <time title="修改时间：2023-03-20 16:32:37" itemprop="dateModified" datetime="2023-03-20T16:32:37+08:00">2023-03-20</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">分类于</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/%E8%AE%A1%E7%AE%97%E6%9C%BA%E8%A7%86%E8%A7%89/" itemprop="url" rel="index"><span itemprop="name">计算机视觉</span></a>
+        </span>
+    </span>
+
+  
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+        <h2 id="1-1-处理Sequence数据的模型"><a href="#1-1-处理Sequence数据的模型" class="headerlink" title="1.1 处理Sequence数据的模型"></a>1.1 <strong>处理Sequence数据的模型</strong></h2><p>transformer使用self-attention机制，所以模型可以<strong>并行化训练</strong>，而且能够拥有<strong>全局信息</strong></p>
+<p>Sequence to Sequence model：序列到序列的转换模型框架</p>
+<p>vector sequence：向量序列</p>
+<p>RNN的输入是一串vector sequence ，输出也是一串vector sequence，但是RNN的问题就是不容易并行化（hard to parallel）</p>
+<p>CNN的并行化不错，但是还有个问题就是他注意力不够，只能考虑非常有限的内容</p>
+<span id="more"></span>
+
+<p><img src="http://whcoding.cc//wp-content/uploads/2022/03/image-1647248054390.png" alt="file"></p>
+<p>所以说self-attention就是一种可以并行计算的，并且每个输出都能够看过整个输入的sequence</p>
+<h2 id="1-2-self-attention"><a href="#1-2-self-attention" class="headerlink" title="1.2 self-attention"></a>1.2 self-attention</h2><p>self-attention在sequence2sequence model里面是怎么使用的，我们可以把Encoder-Decoder中的RNN用self-attention取代掉。</p>
+<p><img src="http://whcoding.cc/wp-content/uploads/2022/03/image-1647248071578.png" alt="file"></p>
+<p>在使用self-attention去处理一张图片的时候，1的那个pixel产生query，其他的各个pixel产生key。在做inner-product的时候，考虑的不是一个小的范围，而是一整张图片。</p>
+<p>但是在做CNN的时候是只考虑感受野红框里面的资讯，而不是图片的全局信息。所以CNN可以看作是一种简化版本的self-attention。</p>
+<p>或者可以反过来说，self-attention是一种复杂化的CNN，在做CNN的时候是只考虑感受野红框里面的资讯，而感受野的范围和大小是由人决定的。但是self-attention由attention找到相关的pixel，就好像是感受野的范围和大小是自动被学出来的，所以CNN可以看做是self-attention的特例。</p>
+<p><img src="http://whcoding.cc/wp-content/uploads/2022/03/image-1647248093002.png" alt="file"> CNN考虑的感受野范围只是红框里的内容，但是self-attention感受的是整张图片</p>
+<p><img src="http://whcoding.cc/wp-content/uploads/2022/03/image-1647248114020.png" alt="file"> 所以说CNN可以说是self-attention的一部分</p>
+<p>既然self-attention是更广义的CNN，则这个模型更加flexible。而我们认为，一个模型越flexible，训练它所需要的数据量就越多，所以在训练self-attention模型时就需要更多的数据，这一点在下面介绍的论文 ViT 中有印证，它需要的数据集是有3亿张图片的JFT-300，而如果不使用这么多数据而只使用ImageNet，则性能不如CNN。</p>
+<h2 id="2-1-transformer原理"><a href="#2-1-transformer原理" class="headerlink" title="2.1 transformer原理"></a>2.1 transformer原理</h2><p><img src="http://whcoding.cc/wp-content/uploads/2022/03/image-1647248163553.png" alt="file"></p>
+<p>左侧是encoder block也就是编码器模块，右侧为decoder block（译码器模块）</p>
+<p>Multi-Head Attention，是由多个Self-Attention组成的</p>
+<h3 id="2-1-1-encoder"><a href="#2-1-1-encoder" class="headerlink" title="2.1.1 encoder"></a>2.1.1 encoder</h3><p>add&amp;norm层中，add层表示残差连接（Residual connection）用来防止网络退化，norm层用于对每一层的激活值进行归一化</p>
+<p>首先输入 <img src="https://www.zhihu.com/equation?tex=X%5Cin+R+(n_x,N)" alt="[公式]"> 通过一个Input Embedding的转移矩阵 <img src="https://www.zhihu.com/equation?tex=W%5EX%5Cin+R+(d,n_x)" alt="[公式]">变为了一个张量，即 <img src="https://www.zhihu.com/equation?tex=I%5Cin+R+(d,N)" alt="[公式]">，再加上一个表示位置的Positional Encoding <img src="https://www.zhihu.com/equation?tex=E%5Cin+R+(d,N)" alt="[公式]">，得到一个张量，去往后面的操作。它进入了这个绿色的block，这个绿色的block会重复 <img src="https://www.zhihu.com/equation?tex=N" alt="[公式]"> 次。这个绿色的block里面有什么呢？它的第1层是一个上文讲的multi-head的attention。你现在一个sequence <img src="https://www.zhihu.com/equation?tex=I%5Cin+R+(d,N)" alt="[公式]"> ，经过一个multi-head的attention，你会得到另外一个sequence <img src="https://www.zhihu.com/equation?tex=O%5Cin+R+(d,N)" alt="[公式]"> 。</p>
+<p>下一个Layer是Add &amp; Norm，这个意思是说：把multi-head的attention的layer的输入 <img src="https://www.zhihu.com/equation?tex=I%5Cin+R+(d,N)" alt="[公式]"> 和输出 <img src="https://www.zhihu.com/equation?tex=O%5Cin+R+(d,N)" alt="[公式]"> 进行相加以后，再做Layer Normalization。</p>
+<p><img src="http://whcoding.cc/wp-content/uploads/2022/03/image-1647248183408.png" alt="file"></p>
+<p>Batch Normalization强行让一个batch的数据的某个channel的 <img src="https://www.zhihu.com/equation?tex=%5Cmu=0,%5Csigma=1" alt="[公式]"> ，而Layer Normalization让一个数据的所有channel的<img src="https://www.zhihu.com/equation?tex=%5Cmu=0,%5Csigma=1" alt="[公式]">。</p>
+<p>接着是一个Feed Forward的前馈网络和一个Add &amp; Norm Layer。</p>
+<p>所以，这一个绿色的block的前2个Layer操作的表达式为：</p>
+<p><img src="https://www.zhihu.com/equation?tex=%5Ccolor%7Bdarkgreen%7D%7BO_1%7D=%5Ccolor%7Bgreen%7D%7B%5Ctext%7BLayer+Normalization%7D%7D(%5Ccolor%7Bteal%7D%7BI%7D+%5Ccolor%7Bcrimson%7D%7B%5Ctext%7BMulti-head+Self-Attention%7D%7D(%5Ccolor%7Bteal%7D%7BI%7D))%5Ctag%7B6%7D" alt="[公式]"></p>
+<p>这一个绿色的block的后2个Layer操作的表达式为：</p>
+<p><img src="https://www.zhihu.com/equation?tex=%5Ccolor%7Bdarkgreen%7D%7BO_2%7D=%5Ccolor%7Bgreen%7D%7B%5Ctext%7BLayer+Normalization%7D%7D(%5Ccolor%7Bteal%7D%7BO_1%7D+%5Ccolor%7Bcrimson%7D%7B%5Ctext%7BFeed+Forward+Network%7D%7D(%5Ccolor%7Bteal%7D%7BO_1%7D))%5Ctag%7B7%7D" alt="[公式]"></p>
+<p><img src="https://www.zhihu.com/equation?tex=%5Ccolor%7Bgreen%7D%7B%5Ctext%7BBlock%7D%7D(%5Ccolor%7Bteal%7D%7BI%7D)=%5Ccolor%7Bgreen%7D%7BO_2%7D+%5Ctag%7B8%7D" alt="[公式]"></p>
+<p>所以Transformer的Encoder的整体操作为：</p>
+<p><img src="https://www.zhihu.com/equation?tex=%5Ccolor%7Bpurple%7D%7B%5Ctext%7BEncoder%7D%7D(%5Ccolor%7Bdarkgreen%7D%7BI%7D)=%5Ccolor%7Bdarkgreen%7D%7B%5Ctext%7BBlock%7D%7D(...%5Ccolor%7Bdarkgreen%7D%7B%5Ctext%7BBlock%7D%7D(%5Ccolor%7Bdarkgreen%7D%7B%5Ctext%7BBlock%7D%7D)(%5Ccolor%7Bteal%7D%7BI%7D))%5C%5C%5Cquad+N%5C;times+%5Ctag%7B9%7D+" alt="[公式]"></p>
+<p>残差连接<strong>将输出表述为输入和输入的一个非线性变换的线性叠加</strong></p>
+<p>f，g，k大家可以自行脑补为卷积，激活，分类器。一旦其中某一个导数很小，多次连乘后梯度可能越来越小， <strong>这就是常说的梯度消散</strong> ，对于深层网络，传到浅层几乎就没了。但是如果使用了残差， <strong>每一个导数就加上了一个恒等项1，dh&#x2F;dx&#x3D;d(f+x)&#x2F;dx&#x3D;1+df&#x2F;dx</strong> 。此时就算原来的导数df&#x2F;dx很小，这时候误差仍然能够有效的反向传播，这就是核心思想。</p>
+<p><strong>神经网络的退化才是难以训练深层网络根本原因所在，而不是梯度消散。</strong> 虽然梯度范数大，但是如果网络的可用自由度对这些范数的贡献非常不均衡，<strong>也就是每个层中只有少量的隐藏单元对不同的输入改变它们的激活值，而大部分隐藏单元对不同的输入都是相同的反应，此时整个权重矩阵的秩不高。并且随着网络层数的增加，连乘后使得整个秩变的更低。</strong></p>
+<p>这也是我们常说的网络退化问题，虽然是一个很高维的矩阵，但是大部分维度却没有信息，表达能力没有看起来那么强大。</p>
+<p><strong>残差连接正是强制打破了网络的对称性。</strong></p>
+<h3 id="2-1-2-decoder"><a href="#2-1-2-decoder" class="headerlink" title="2.1.2 decoder"></a>2.1.2 decoder</h3><p>输入包括2部分，下方是前一个time step的输出的embedding，即上文所述的 <img src="https://www.zhihu.com/equation?tex=I%5Cin+R+(d,N)" alt="[公式]">，再加上一个表示位置的Positional Encoding <img src="https://www.zhihu.com/equation?tex=E%5Cin+R+(d,N)" alt="[公式]">，得到一个张量，去往后面的操作。它进入了这个绿色的block，这个绿色的block会重复 <img src="https://www.zhihu.com/equation?tex=N" alt="[公式]">次。</p>
+<p>首先是Masked Multi-Head Self-attention，masked的意思是使attention只会attend on已经产生的sequence，这个很合理，因为还没有产生出来的东西不存在，就无法做attention。</p>
+<p><strong>输出是：</strong> 对应 <img src="https://www.zhihu.com/equation?tex=%5Ccolor%7Bcrimson%7D%7Bi%7D" alt="[公式]"> 位置的输出词的概率分布。</p>
+<p><strong>输入是：</strong> <img src="https://www.zhihu.com/equation?tex=%5Ccolor%7Bpurple%7D%7BEncoder%7D" alt="[公式]"> 的输出 和 对应 <strong><img src="https://www.zhihu.com/equation?tex=%5Ccolor%7Bcrimson%7D%7Bi-1%7D" alt="[公式]"> 位置decoder的输出</strong> 。所以中间的attention不是self-attention，它的Key和Value来自encoder，Query来自上一位置 <img src="https://www.zhihu.com/equation?tex=%5Ccolor%7Bcrimson%7D%7BDecoder%7D" alt="[公式]"> 的输出。</p>
+<p><strong>解码：这里要特别注意一下，编码可以并行计算，一次性全部Encoding出来，但解码不是一次把所有序列解出来的，而是像</strong> <img src="https://www.zhihu.com/equation?tex=RNN" alt="[公式]"> <strong>一样一个一个解出来的</strong> ，因为要用上一个位置的输入当作attention的query。</p>
+<ul>
+<li><p>包含两个 Multi-Head Attention 层。</p>
+</li>
+<li><p>第一个 Multi-Head Attention 层采用了 Masked 操作。</p>
+<p>因为训练时的output都是Ground Truth，这样可以确保预测第 <img src="https://www.zhihu.com/equation?tex=%5Ccolor%7Bcrimson%7D%7Bi%7D" alt="[公式]"> 个位置时不会接触到未来的信息。</p>
+</li>
+<li><p>第二个 Multi-Head Attention 层的Key，Value矩阵使用 Encoder 的编码信息矩阵 <img src="https://www.zhihu.com/equation?tex=C" alt="[公式]"> 进行计算，而Query使用上一个 Decoder block 的输出计算。</p>
+</li>
+<li><p>最后有一个 Softmax 层计算下一个翻译单词的概率。</p>
+</li>
+</ul>
+<p><img src="http://whcoding.cc/wp-content/uploads/2022/03/image-1647248218150.png" alt="file"></p>
+<h2 id="3-1-DETR"><a href="#3-1-DETR" class="headerlink" title="3.1 DETR"></a>3.1 DETR</h2><p>End-to-End Object Detection with Transformers</p>
+<p>objecct detection(目标检测)</p>
+<p>DETR第一个使用End to End的方式解决检测问题，解决的方法是把检测问题视作是一个set prediction problem</p>
+<p><img src="http://whcoding.cc/wp-content/uploads/2022/03/image-1647248253535.png" alt="file"></p>
+<p>一次预测，端到端训练，set loss function和二分匹配</p>
+<p>DETR整体结构可以分为四个部分：backbone，encoder，decoder和FFN</p>
+<p><img src="http://whcoding.cc/wp-content/uploads/2022/03/image-1647248444456.png" alt="file"></p>
+<p><strong>第一个是用transformer的encoder-decoder架构一次性生成</strong> <img src="https://www.zhihu.com/equation?tex=N" alt="[公式]"> <strong>个box prediction。其中</strong> <img src="https://www.zhihu.com/equation?tex=N" alt="[公式]"> <strong>是一个事先设定的、比远远大于image中object个数的一个整数。</strong></p>
+<p><strong>第二个是设计了bipartite matching loss，基于预测的boxex和ground truth boxes的二分图匹配计算loss的大小，从而使得预测的box的位置和类别更接近于ground truth。</strong></p>
+<h3 id="3-1-1-backbone"><a href="#3-1-1-backbone" class="headerlink" title="3.1.1 backbone"></a>3.1.1 backbone</h3><p>CNN backbone处理 <img src="https://www.zhihu.com/equation?tex=x_%7B%5Ctext%7Bimg%7D%7D%5Cin+B%5Ctimes+3%5Ctimes+H_0+%5Ctimes+W_0" alt="[公式]">维的图像，把它转换为<img src="https://www.zhihu.com/equation?tex=f%5Cin+R%5E%7BB%5Ctimes+C%5Ctimes+H%5Ctimes+W%7D" alt="[公式]">维的feature map（一般来说 <img src="https://www.zhihu.com/equation?tex=C+=+2048%E6%88%96256,+H+=+%5Cfrac%7BH_0%7D%7B32%7D,+W+=+%5Cfrac%7BW_0%7D%7B32%7D" alt="[公式]">），backbone只做这一件事。</p>
+<p>backbone把图像变成了特征图</p>
+<h3 id="3-1-2-encoder"><a href="#3-1-2-encoder" class="headerlink" title="3.1.2 encoder"></a>3.1.2 encoder</h3><p>encoder的输入是<img src="https://www.zhihu.com/equation?tex=f%5Cin+R%5E%7BB%5Ctimes+C%5Ctimes+H%5Ctimes+W%7D" alt="[公式]">维的feature map，接下来依次进行以下过程：</p>
+<ul>
+<li><strong>通道数压缩：</strong> 先用 <img src="https://www.zhihu.com/equation?tex=1%5Ctimes+1" alt="[公式]"> convolution（1×1卷积）处理，将channels数量从 <img src="https://www.zhihu.com/equation?tex=C" alt="[公式]"> 压缩到 <img src="https://www.zhihu.com/equation?tex=d" alt="[公式]">，即得到<img src="https://www.zhihu.com/equation?tex=z_0%5Cin+R%5E%7BB%5Ctimes+d%5Ctimes+H%5Ctimes+W%7D" alt="[公式]">维的新feature map。</li>
+<li><strong>转化为序列化数据：</strong> 将空间的维度（高和宽）压缩为一个维度，即把上一步得到的<img src="https://www.zhihu.com/equation?tex=z_0%5Cin+R%5E%7BB%5Ctimes+d%5Ctimes+H%5Ctimes+W%7D(d=256)" alt="[公式]">维的feature map通过reshape（矩阵变维）成<img src="https://www.zhihu.com/equation?tex=(HW,B,256)" alt="[公式]">维的feature map。</li>
+<li><strong>位置编码：</strong> 在得到了<img src="https://www.zhihu.com/equation?tex=z_0%5Cin+R%5E%7BB%5Ctimes+d%5Ctimes+H%5Ctimes+W%7D" alt="[公式]">维的feature map之后，正式输入encoder之前，需要进行 <strong>Positional Encoding</strong> 。这一步在第2节讲解transformer的时候已经提到过，因为 <strong>在self-attention中需要有表示位置的信息</strong> ，否则你的sequence &#x3D; “A打了B” 还是sequence &#x3D; “B打了A”的效果是一样的。 <strong>但是transformer encoder这个结构本身却无法体现出位置信息。</strong> 也就是说，我们需要对这个 <img src="https://www.zhihu.com/equation?tex=z_0%5Cin+R%5E%7BB%5Ctimes+d%5Ctimes+H%5Ctimes+W%7D" alt="[公式]"> 维的feature map做positional encoding。</li>
+</ul>
+<p>原版Transformer和Vision Transformer (第4节讲述)的Positional Encoding的表达式为：</p>
+<p><img src="https://www.zhihu.com/equation?tex=%5Cbegin%7Balign%7DPE_%7B(pos,+2i)%7D+=+sin(pos/10000%5E%7B2i/d%7D)+%5C%5C+PE_%7B(pos,+2i+1)%7D+=+cos(pos/10000%5E%7B2i/d%7D)++%5Cend%7Balign%7D%5Ctag%7B10%7D" alt="[公式]"></p>
+<p>式中， <img src="https://www.zhihu.com/equation?tex=d" alt="[公式]"> 就是这个 <img src="https://www.zhihu.com/equation?tex=d%5Ctimes+HW" alt="[公式]"> 维的feature map的第一维， <img src="https://www.zhihu.com/equation?tex=pos%5Cin+%5B1,HW%5D" alt="[公式]"> 。表示token在sequence中的位置，sequence的长度是 <img src="https://www.zhihu.com/equation?tex=HW" alt="[公式]"> ，例如第一个token 的 <img src="https://www.zhihu.com/equation?tex=pos=0" alt="[公式]"> 。</p>
+<p><img src="https://www.zhihu.com/equation?tex=i" alt="[公式]"> ，或者准确意义上是 <img src="https://www.zhihu.com/equation?tex=2i" alt="[公式]"> 和 <img src="https://www.zhihu.com/equation?tex=2i+1" alt="[公式]"> 表示了Positional Encoding的维度，<img src="https://www.zhihu.com/equation?tex=i" alt="[公式]"> 的取值范围是： <img src="https://www.zhihu.com/equation?tex=%5Cleft%5B+0,%5Cldots+,%7B%7B%7Bd%7D%7D%7D/%7B2%7D%5C;+%5Cright)" alt="[公式]"> 。所以当 <img src="https://www.zhihu.com/equation?tex=pos" alt="[公式]"> 为1时，对应的Positional Encoding可以写成：</p>
+<p><img src="https://www.zhihu.com/equation?tex=PE%5Cleft(+1+%5Cright)=%5Cleft%5B+%5Csin+%5Cleft(+%7B1%7D/%7B%7B%7B10000%7D%5E%7B%7B0%7D/%7B256%7D%5C;%7D%7D%7D%5C;+%5Cright),%5Ccos+%5Cleft(+%7B1%7D/%7B%7B%7B10000%7D%5E%7B%7B0%7D/%7B256%7D%5C;%7D%7D%7D%5C;+%5Cright),%5Csin+%5Cleft(+%7B1%7D/%7B%7B%7B10000%7D%5E%7B%7B2%7D/%7B256%7D%5C;%7D%7D%7D%5C;+%5Cright),%5Ccos+%5Cleft(+%7B1%7D/%7B%7B%7B10000%7D%5E%7B%7B2%7D/%7B256%7D%5C;%7D%7D%7D%5C;+%5Cright),%5Cldots++%5Cright%5D" alt="[公式]"></p>
+<p>式中， <img src="https://www.zhihu.com/equation?tex=%7B%7Bd%7D_%7B%7D%7D=256" alt="[公式]">。</p>
+<p><strong>第一点不同的是</strong> ，原版Transformer只考虑 <img src="https://www.zhihu.com/equation?tex=x" alt="[公式]"> 方向的位置编码，但是DETR考虑了 <img src="https://www.zhihu.com/equation?tex=xy" alt="[公式]"> 方向的位置编码，因为图像特征是2-D特征。采用的依然是 <img src="https://www.zhihu.com/equation?tex=%5Ctext%7Bsin+cos%7D" alt="[公式]"> 模式，但是需要考虑 <img src="https://www.zhihu.com/equation?tex=xy" alt="[公式]"> 两个方向。不是类似vision transoformer做法简单的将其拉伸为 <img src="https://www.zhihu.com/equation?tex=d%5Ctimes+HW" alt="[公式]"> ，然后从 <img src="https://www.zhihu.com/equation?tex=%5B1,HW%5D" alt="[公式]"> 进行长度为256的位置编码，而是考虑了 <img src="https://www.zhihu.com/equation?tex=xy" alt="[公式]"> 方向同时编码，每个方向各编码128维向量，这种编码方式更符合图像特点。</p>
+<p>Positional Encoding的输出张量是： <img src="https://www.zhihu.com/equation?tex=(B,d,H,W),d=256" alt="[公式]"> ，其中 <img src="https://www.zhihu.com/equation?tex=d" alt="[公式]"> 代表位置编码的长度， <img src="https://www.zhihu.com/equation?tex=H,W" alt="[公式]"> 代表张量的位置。意思是说，这个特征图上的任意一个点 <img src="https://www.zhihu.com/equation?tex=(H_1,W_1)" alt="[公式]"> 有个位置编码，这个编码的长度是256，其中，前128维代表 <img src="https://www.zhihu.com/equation?tex=H_1" alt="[公式]"> 的位置编码，后128维代表 <img src="https://www.zhihu.com/equation?tex=W_1" alt="[公式]"> 的位置编码。</p>
+<p><img src="https://www.zhihu.com/equation?tex=%5Cbegin%7Balign%7Da)%5Cquad+PE_%7B(pos_x,+2i)%7D+=+sin(pos_x/10000%5E%7B2i/128%7D)+%5C%5C+b)%5Cquad+PE_%7B(pos_x,+2i+1)%7D+=+cos(pos_x/10000%5E%7B2i/128%7D)+%5C%5Cc)%5Cquad+PE_%7B(pos_y,+2i)%7D+=+sin(pos_y/10000%5E%7B2i/128%7D)+%5C%5C+d)%5Cquad+PE_%7B(pos_y,+2i+1)%7D+=+cos(pos_y/10000%5E%7B2i/128%7D)+%5Cend%7Balign%7D%5Ctag%7B11%7D" alt="[公式]"></p>
+<p>假设你想计算任意一个位置 <img src="https://www.zhihu.com/equation?tex=(pos_x,pos_y),pos_x%5Cin+%5B1,HW%5D,pos_y%5Cin+%5B1,HW%5D" alt="[公式]"> 的Positional Encoding，把 <img src="https://www.zhihu.com/equation?tex=pos_x" alt="[公式]"> 代入(11)式的 <img src="https://www.zhihu.com/equation?tex=a" alt="[公式]"> 式和 <img src="https://www.zhihu.com/equation?tex=b" alt="[公式]"> 式可以计算得到 <strong>128维的向量</strong> ，它代表 <img src="https://www.zhihu.com/equation?tex=pos_x" alt="[公式]"> 的位置编码，再把 <img src="https://www.zhihu.com/equation?tex=pos_y" alt="[公式]"> 代入(11)式的 <img src="https://www.zhihu.com/equation?tex=c" alt="[公式]"> 式和 <img src="https://www.zhihu.com/equation?tex=d" alt="[公式]"> 式可以计算得到 <strong>128维的向量</strong> ，它代表 <img src="https://www.zhihu.com/equation?tex=pos_y" alt="[公式]"> 的位置编码，把这2个128维的向量拼接起来，就得到了一个 <strong>256维的向量</strong> ，它代表 <img src="https://www.zhihu.com/equation?tex=(pos_x,pos_y)" alt="[公式]"> 的位置编码。</p>
+<p>计算所有位置的编码，就得到了 <img src="https://www.zhihu.com/equation?tex=(256,H,W)" alt="[公式]"> 的张量，代表这个batch的位置编码。编码矩阵的维度是 <img src="https://www.zhihu.com/equation?tex=(B,256,H,W)" alt="[公式]"> ，也把它<strong>序列化成维度为</strong> <img src="https://www.zhihu.com/equation?tex=(HW,B,256)" alt="[公式]"> 维的张量。</p>
+<p><strong>准备与<img src="https://www.zhihu.com/equation?tex=(HW,B,256)" alt="[公式]"> 维的feature map相加以后输入Encoder。</strong></p>
+<p><img src="http://whcoding.cc/wp-content/uploads/2022/03/image-1647248424599.png" alt="file"></p>
+<p><strong>DETR</strong>在Encoder的每一个Multi-head Self-attention之前都使用了Positional Encoding，且<strong>只对Query和Key使用了Positional Encoding，即：只把维度为<img src="https://www.zhihu.com/equation?tex=(HW,B,256)" alt="[公式]"> 维的位置编码与维度为<img src="https://www.zhihu.com/equation?tex=(HW,B,256)" alt="[公式]"> 维的Query和Key相加，而不与Value相加。</strong></p>
+<p>可以发现，除了Positional Encoding设置的不一样外，Encoder其他的结构是一致的。每个Encoder Layer包含一个multi-head self-attention 的module和一个前馈网络Feed Forward Network。</p>
+<p><strong>Encoder最终输出的是 <img src="https://www.zhihu.com/equation?tex=(H%5Ccdot+W,b,256)" alt="[公式]"> 维的编码矩阵Embedding，按照原版Transformer的做法，把这个东西给Decoder。</strong></p>
+<p><strong>ecoder总结：</strong></p>
+<ul>
+<li>输入编码器的位置编码需要考虑2-D空间位置。</li>
+<li>位置编码向量需要加入到每个Encoder Layer中。</li>
+<li>在编码器内部位置编码Positional Encoding仅仅作用于Query和Key，即只与Query和Key相加，Value不做任何处理。</li>
+</ul>
+<h3 id="3-1-3-decoder"><a href="#3-1-3-decoder" class="headerlink" title="3.1.3 decoder"></a>3.1.3 decoder</h3><p>DETR的Transformer Decoder是一次性处理全部的object queries，即一次性输出全部的predictions；而不像原始的Transformer是auto-regressive的，从左到右一个词一个词地输出。这个过程我们表达为：<strong>decodes the N objects in parallel at each decoder layer。</strong></p>
+<p>DETR的Decoder主要有两个输入：</p>
+<ol>
+<li><strong>Transformer Encoder输出的Embedding与 position encoding 之和。</strong></li>
+<li><strong>Object queries。</strong></li>
+</ol>
+<p>object queries是一个维度为 <img src="https://www.zhihu.com/equation?tex=(100,b,256)" alt="[公式]">维的张量，数值类型是nn.Embedding，说明这个张量是可以学习的，即：我们的Object queries是可学习的。Object queries矩阵内部通过学习建模了100个物体之间的全局关系，例如房间里面的桌子旁边(A类)一般是放椅子(B类)，而不会是放一头大象(C类)，那么在推理时候就可以利用该全局注意力更好的进行解码预测输出。</p>
+<p>Decoder的输入一开始也初始化成维度为 <img src="https://www.zhihu.com/equation?tex=(100,b,256)" alt="[公式]"> 维的全部元素都为0的张量，和Object queries加在一起之后 <strong>充当第1个multi-head self-attention的Query和Key。第一个multi-head self-attention的Value为Decoder的输入</strong> ，也就是全0的张量。</p>
+<p>到了每个Decoder的第2个multi-head self-attention，它的Key和Value来自Encoder的输出张量，维度为 <img src="https://www.zhihu.com/equation?tex=(hw,b,256)" alt="[公式]">，其中Key值还进行位置编码。Query值一部分来自第1个Add and Norm的输出，维度为 <img src="https://www.zhihu.com/equation?tex=(100,b,256)" alt="[公式]"> 的张量，另一部分来自Object queries，充当可学习的位置编码。所以，第2个multi-head self-attention的Key和Value的维度为 <img src="https://www.zhihu.com/equation?tex=(hw,b,256)" alt="[公式]">，而Query的维度为<img src="https://www.zhihu.com/equation?tex=(100,b,256)" alt="[公式]">。</p>
+<p>每个Decoder的输出维度为 <img src="https://www.zhihu.com/equation?tex=(1,b,100,256)" alt="[公式]"> ，送入后面的前馈网络。</p>
+<p><img src="http://whcoding.cc/wp-content/uploads/2022/03/image-1647248359191.png" alt="file"></p>
+<p>Object queries充当的其实是位置编码的作用，只不过它是可以学习的位置编码。</p>
+<h3 id="3-1-4-loss"><a href="#3-1-4-loss" class="headerlink" title="3.1.4 loss"></a>3.1.4 loss</h3><p>Decoder输出维度为 <img src="https://www.zhihu.com/equation?tex=(b,100,256)" alt="[公式]">的张量。接下来要送入2个前馈网络FFN得到class和Bounding Box（边界框）。它们会得到 <img src="https://www.zhihu.com/equation?tex=N=100" alt="[公式]">个预测目标，包含类别和Bounding Box，当然这个100肯定是大于图中的目标总数的。如果不够100，则采用背景填充，计算loss时候回归分支分支仅仅计算有物体位置，背景集合忽略。所以，DETR输出张量的维度为输出的张量的维度是 <img src="https://www.zhihu.com/equation?tex=(b,100,%5Ccolor%7Bcrimson%7D%7B%5Ctext%7Bclass%7D+1%7D)" alt="[公式]"> 和 <img src="https://www.zhihu.com/equation?tex=(b,100,%5Ccolor%7Bpurple%7D%7B4%7D)" alt="[公式]">。对应COCO数据集来说， <img src="https://www.zhihu.com/equation?tex=%5Ccolor%7Bcrimson%7D%7B%5Ctext%7Bclass%7D+1=92%7D" alt="[公式]">， <img src="https://www.zhihu.com/equation?tex=%5Ccolor%7Bpurple%7D%7B4%7D" alt="[公式]"> 指的是每个预测目标归一化的 <img src="https://www.zhihu.com/equation?tex=(c_x,c_y,w,h)" alt="[公式]"> 。归一化就是除以图片宽高进行归一化。</p>
+<p>它输出的张量的维度是 <strong>分类分支：</strong><img src="https://www.zhihu.com/equation?tex=(b,100,%5Ccolor%7Bcrimson%7D%7B%5Ctext%7Bclass%7D+1%7D)" alt="[公式]"> 和<strong>回归分支：</strong> <img src="https://www.zhihu.com/equation?tex=(b,100,%5Ccolor%7Bpurple%7D%7B4%7D)" alt="[公式]">，其中，前者是指100个预测框的类型，后者是指100个预测框的Bounding Box，但是读者可能会有疑问：预测框和真值是怎么一一对应的？换句话说：你怎么知道第47个预测框对应图片里的狗，第88个预测框对应图片里的车？等等。</p>
+<p>DETR最大特点是将目标检测问题转化为无序集合预测问题(set prediction)。论文中特意指出Faster R-CNN这种设置一大堆anchor，然后基于anchor进行分类和回归其实属于代理做法即不是最直接做法， <strong>目标检测任务就是输出无序集合</strong> ，而Faster R-CNN等算法通过各种操作，并结合复杂后处理最终才得到无序集合属于绕路了，而DETR就比较纯粹了。</p>
+<p>输出的 <img src="https://www.zhihu.com/equation?tex=(b,100)" alt="[公式]"> 个检测结果是无序的，如何和 <img src="https://www.zhihu.com/equation?tex=GT+%5C;+%5Ctext%7BBounding+Box%7D" alt="[公式]">计算loss？这就需要用到经典的双边匹配算法了，也就是常说的匈牙利算法，该算法广泛应用于最优分配问题。</p>
+<p>一幅图片，我们把第 <img src="https://www.zhihu.com/equation?tex=i" alt="[公式]"> 个物体的真值表达为 <img src="https://www.zhihu.com/equation?tex=y_i=(c_i,b_i)" alt="[公式]">，其中， <img src="https://www.zhihu.com/equation?tex=c_i" alt="[公式]">表示它的 <img src="https://www.zhihu.com/equation?tex=%5Ccolor%7Bcrimson%7D%7B%5Ctext%7Bclass%7D%7D" alt="[公式]">， <img src="https://www.zhihu.com/equation?tex=b_i" alt="[公式]"> 表示它的 <img src="https://www.zhihu.com/equation?tex=%5Ccolor%7Bpurple%7D%7B%5Ctext%7BBounding+Box%7D%7D" alt="[公式]">。我们定义 <img src="https://www.zhihu.com/equation?tex=%5Chat+y+=+%5C%7B%5Chat+y_i%5C%7D_%7Bi=1%7D%5E%7BN%7D" alt="[公式]">为网络输出的 <img src="https://www.zhihu.com/equation?tex=N" alt="[公式]"> 个预测值。对于第 <img src="https://www.zhihu.com/equation?tex=i" alt="[公式]"> 个 <img src="https://www.zhihu.com/equation?tex=GT" alt="[公式]">， <img src="https://www.zhihu.com/equation?tex=%5Csigma(i)" alt="[公式]">为匈牙利算法得到的与 <img src="https://www.zhihu.com/equation?tex=GT_i" alt="[公式]">对应的prediction的索引。我举个栗子，比如 <img src="https://www.zhihu.com/equation?tex=i=3,%5Csigma(i)=18" alt="[公式]">，意思就是：与第3个真值对应的预测值是第18个。</p>
+<p><img src="https://www.zhihu.com/equation?tex=%5Cbegin%7Bequation%7D+%5Clabel%7Beq:matching%7D+++++%5Chat%7B%5Csigma%7D+=+%5Carg%5Cmin_%7B%5Csigma%5Cin%5CSigma_N%7D+%5Csum_%7Bi%7D%5E%7BN%7D+L_%7Bmatch%7D(y_i,+%5Chat+y_%7B%5Csigma(i)%7D),+%5Cend%7Bequation%7D+%5Ctag%7B12%7D" alt="[公式]"></p>
+<p>我们看看这个表达式是甚么意思，对于某一个真值 <img src="https://www.zhihu.com/equation?tex=y_i" alt="[公式]"> ，假设我们已经找到这个真值对应的预测值 <img src="https://www.zhihu.com/equation?tex=%5Chat+y_%7B%5Csigma(i)%7D" alt="[公式]"> ，这里的!<img src="http://whcoding.cc/wp-content/uploads/2022/03/image-1647248322879.png" alt="file">是所有可能的排列，代表 <strong>从真值索引到预测值索引的所有的映射</strong> ，然后用 <img src="https://www.zhihu.com/equation?tex=L_%7Bmatch%7D" alt="[公式]"> 最小化 <img src="https://www.zhihu.com/equation?tex=y_i" alt="[公式]"> 和 <img src="https://www.zhihu.com/equation?tex=%5Chat+y_%7B%5Csigma(i)%7D" alt="[公式]"> 的距离。这个 <img src="https://www.zhihu.com/equation?tex=L_%7Bmatch%7D" alt="[公式]"> 具体是：</p>
+<p><img src="https://www.zhihu.com/equation?tex=-%5Cmathbb%7B1%7D_%7B%5Cleft%5C%7B+c_i%5Cneq%5Cvarnothing+%5Cright%5C%7D%7D%5Chat+p_%7B%5Csigma(i)%7D(c_i)+++%5Cmathbb%7B1%7D_%7B%5Cleft%5C%7B+c_i%5Cneq%5Cvarnothing+%5Cright%5C%7D%7D+L_%7Bbox%7D(%7Bb_%7Bi%7D,+%5Chat+b_%7B%5Csigma(i)%7D%7D)+%5Ctag%7B13%7D" alt="[公式]"></p>
+<p>意思是：假设当前从真值索引到预测值索引的所有的映射为 <img src="https://www.zhihu.com/equation?tex=%5Csigma" alt="[公式]"> ，对于图片中的每个真值 <img src="https://www.zhihu.com/equation?tex=i" alt="[公式]"> ，先找到对应的预测值 <img src="https://www.zhihu.com/equation?tex=%5Csigma(i)" alt="[公式]"> ，再看看分类网络的结果 <img src="https://www.zhihu.com/equation?tex=%5Chat+p_%7B%5Csigma(i)%7D(c_i)+" alt="[公式]"> ，取反作为 <img src="https://www.zhihu.com/equation?tex=L_%7Bmatch%7D" alt="[公式]"> 的第1部分。再计算回归网络的结果 <img src="https://www.zhihu.com/equation?tex=%5Chat+b_%7B%5Csigma(i)%7D" alt="[公式]"> 与真值的 <img src="https://www.zhihu.com/equation?tex=%5Ccolor%7Bpurple%7D%7B%5Ctext%7BBounding+Box%7D%7D" alt="[公式]"> 的差异，即 <img src="https://www.zhihu.com/equation?tex=L_%7Bbox%7D(%7Bb_%7Bi%7D,+%5Chat+b_%7B%5Csigma(i)%7D%7D)" alt="[公式]"> ，作为 <img src="https://www.zhihu.com/equation?tex=L_%7Bmatch%7D" alt="[公式]"> 的第2部分。</p>
+<p>所以，可以使得 <img src="https://www.zhihu.com/equation?tex=L_%7Bmatch%7D" alt="[公式]"> 最小的排列 <img src="https://www.zhihu.com/equation?tex=%5Chat%5Csigma" alt="[公式]"> 就是我们要找的排列，<strong>即：对于图片中的每个真值 <img src="https://www.zhihu.com/equation?tex=i" alt="[公式]"> 来讲， <img src="https://www.zhihu.com/equation?tex=%5Chat%5Csigma(i)" alt="[公式]"> 就是这个真值所对应的预测值的索引。</strong></p>
+<p>请读者细品这个 寻找匹配的过程 ，这就是匈牙利算法的过程。是不是与Anchor或Proposal有异曲同工的地方，只是此时我们找的是一对一匹配。</p>
+<p>接下来就是使用上一步得到的排列 <img src="https://www.zhihu.com/equation?tex=%5Chat%5Csigma" alt="[公式]"> ，计算匈牙利损失：</p>
+<p><img src="https://www.zhihu.com/equation?tex=L_%7B%5Ctext%7BHungarian%7D%7D(%7By,+%5Chat+y%7D)+=+%5Csum_%7Bi=1%7D%5EN+%5Cleft%5B-%5Clog++%5Chat+p_%7B%5Chat%7B%5Csigma%7D(i)%7D(c_%7Bi%7D)+++%5Cmathbb%7B1%7D_%7B%5Cleft%5C%7B+c_i%5Cneq%5Cvarnothing+%5Cright%5C%7D%7D++%5C+L_%7Bbox%7D%7B(b_%7Bi%7D,+%5Chat+b_%7B%5Chat%7B%5Csigma%7D(i)%7D%7D)%5Cright%5D+%5Ctag%7B14%7D" alt="[公式]"></p>
+<p>式中的 <img src="https://www.zhihu.com/equation?tex=L_%7Bbox%7D" alt="[公式]"> 具体为：</p>
+<p><img src="https://www.zhihu.com/equation?tex=L_%7Bbox%7D%7B(b_%7Bi%7D,+%5Chat+b_%7B%5Chat%7B%5Csigma%7D(i)%7D%7D)+=+%5Clambda_%7B%5Crm+iou%7DL_%7Biou%7D(%7Bb_%7Bi%7D,+%5Chat+b_%7B%5Csigma(i)%7D%7D)++%5Clambda_%7B%5Crm+L1%7D%7C%7Cb_%7Bi%7D-+%5Chat+b_%7B%5Csigma(i)%7D%7C%7C_1+,%5C;+where+%5C;%5Clambda_%7B%5Crm+iou%7D,+%5Clambda_%7B%5Crm+L1%7D%5Cin+R+%5Ctag%7B15%7D" alt="[公式]"></p>
+<p>最常用的 <img src="https://www.zhihu.com/equation?tex=L_1+%5C;loss" alt="[公式]"> 对于大小 <img src="https://www.zhihu.com/equation?tex=%5Ccolor%7Bpurple%7D%7B%5Ctext%7BBounding+Box%7D%7D" alt="[公式]"> 会有不同的标度，即使它们的相对误差是相似的。为了缓解这个问题，作者使用了 <img src="https://www.zhihu.com/equation?tex=L_1+%5C;loss" alt="[公式]"> 和广义IoU损耗 <img src="https://www.zhihu.com/equation?tex=L_%7Biou%7D" alt="[公式]"> 的线性组合，它是比例不变的。</p>
+<p>Hungarian意思就是匈牙利，也就是前面的 <img src="https://www.zhihu.com/equation?tex=L_%7Bmatch%7D" alt="[公式]"> ，上述意思是需要计算 <img src="https://www.zhihu.com/equation?tex=M" alt="[公式]"> 个 <img src="https://www.zhihu.com/equation?tex=%5Ctext%7BGT%7D%5C;%5Ccolor%7Bpurple%7D%7B%5Ctext%7BBounding+Box%7D%7D" alt="[公式]"> 和 <img src="https://www.zhihu.com/equation?tex=N" alt="[公式]"> 个输预测出集合两两之间的广义距离， <strong>距离越近表示越可能是最优匹配关系</strong> ，也就是两者最密切。广义距离的计算考虑了分类分支和回归分支。</p>
+<h3 id="3-1-4-训练"><a href="#3-1-4-训练" class="headerlink" title="3.1.4 训练"></a>3.1.4 训练</h3><p>训练集里面的任何一张图片，假设第1张图片，我们通过模型产生100个预测框 <img src="https://www.zhihu.com/equation?tex=%5Ctext%7BPredict%7D%5C;%5Ccolor%7Bpurple%7D%7B%5Ctext%7BBounding+Box%7D%7D" alt="[公式]"> ，假设这张图片有只3个 <img src="https://www.zhihu.com/equation?tex=%5Ctext%7BGT%7D%5C;%5Ccolor%7Bpurple%7D%7B%5Ctext%7BBounding+Box%7D%7D" alt="[公式]"> ，它们分别是 <img src="https://www.zhihu.com/equation?tex=%5Ccolor%7Borange%7D%7B%5Ctext%7BCar%7D%7D,%5Ccolor%7Bgreen%7D%7B%5Ctext%7BDog%7D%7D,%5Ccolor%7Bdarkturquoise%7D%7B%5Ctext%7BHorse%7D%7D" alt="[公式]"></p>
+<p><img src="https://www.zhihu.com/equation?tex=(%5Ctext%7Blabel%7D_%7B%5Ccolor%7Borange%7D%7B%5Ctext%7BCar%7D%7D%7D=3,%5Ctext%7Blabel%7D_%7B%5Ccolor%7Bgreen%7D%7B%5Ctext%7BDog%7D%7D%7D=24,%5Ctext%7Blabel%7D_%7B%5Ccolor%7Borange%7D%7B%5Ccolor%7Bdarkturquoise%7D%7B%5Ctext%7BHorse%7D%7D%7D%7D=75)%5C%5C" alt="[公式]"></p>
+<p>问题是：我怎么知道这100个预测框哪个是对应 <img src="https://www.zhihu.com/equation?tex=%5Ccolor%7Borange%7D%7B%5Ctext%7BCar%7D%7D" alt="[公式]"> ，哪个是对应 <img src="https://www.zhihu.com/equation?tex=%5Ccolor%7Bgreen%7D%7B%5Ctext%7BDog%7D%7D" alt="[公式]"> ，哪个是对应 <img src="https://www.zhihu.com/equation?tex=%5Ccolor%7Bdarkturquoise%7D%7B%5Ctext%7BHorse%7D%7D" alt="[公式]"> ？</p>
+<p>我们建立一个 <img src="https://www.zhihu.com/equation?tex=(100,3)" alt="[公式]"> 的矩阵，矩阵里面的元素就是 <img src="https://www.zhihu.com/equation?tex=(13)" alt="[公式]"> 式的计算结果，举个例子：比如左上角的 <img src="https://www.zhihu.com/equation?tex=(1,1)" alt="[公式]"> 号元素的含义是：第1个预测框对应 <img src="https://www.zhihu.com/equation?tex=%5Ccolor%7Borange%7D%7B%5Ctext%7BCar%7D%7D(%5Ctext%7Blabel%7D=3)" alt="[公式]"> 的情况下的 <img src="https://www.zhihu.com/equation?tex=L_%7Bmatch%7D" alt="[公式]"> 值。我们用<strong>scipy.optimize</strong> 这个库中的 <strong>linear_sum_assignment</strong> 函数找到最优的匹配，这个过程我们称之为： <strong>“匈牙利算法 (Hungarian Algorithm)”</strong> 。</p>
+<p>假设<strong>linear_sum_assignment</strong>做完以后的结果是：第 <img src="https://www.zhihu.com/equation?tex=23" alt="[公式]"> 个预测框对应 <img src="https://www.zhihu.com/equation?tex=%5Ccolor%7Borange%7D%7B%5Ctext%7BCar%7D%7D" alt="[公式]"> ，第 <img src="https://www.zhihu.com/equation?tex=44" alt="[公式]"> 个预测框对应 <img src="https://www.zhihu.com/equation?tex=%5Ccolor%7Bgreen%7D%7B%5Ctext%7BDog%7D%7D" alt="[公式]"> ，第 <img src="https://www.zhihu.com/equation?tex=95" alt="[公式]"> 个预测框对应 <img src="https://www.zhihu.com/equation?tex=%5Ccolor%7Bdarkturquoise%7D%7B%5Ctext%7BHorse%7D%7D" alt="[公式]"> 。</p>
+<p>现在把第 <img src="https://www.zhihu.com/equation?tex=23,44,95" alt="[公式]"> 个预测框挑出来，按照 <img src="https://www.zhihu.com/equation?tex=(14)" alt="[公式]"> 式计算Loss，得到这个图片的Loss。</p>
+<p>把所有的图片按照这个模式去训练模型。</p>
+<p>训练完以后，你的模型学习到了一种能力，即：模型产生的100个预测框，它知道某个预测框该对应什么 <img src="https://www.zhihu.com/equation?tex=%5Ctext%7BObject%7D" alt="[公式]"> ，比如，模型学习到：</p>
+<p>第1个 <img src="https://www.zhihu.com/equation?tex=%5Ctext%7BPredict%7D%5C;%5Ccolor%7Bpurple%7D%7B%5Ctext%7BBounding+Box%7D%7D" alt="[公式]"> 对应 <img src="https://www.zhihu.com/equation?tex=%5Ccolor%7Borange%7D%7B%5Ctext%7BCar%7D%7D(%5Ctext%7Blabel%7D=3)" alt="[公式]"> ，第2个 <img src="https://www.zhihu.com/equation?tex=%5Ctext%7BPredict%7D%5C;%5Ccolor%7Bpurple%7D%7B%5Ctext%7BBounding+Box%7D%7D" alt="[公式]"> 对应 <img src="https://www.zhihu.com/equation?tex=%5Ccolor%7Bchocolate%7D%7B%5Ctext%7BBus%7D%7D(%5Ctext%7Blabel%7D=16)" alt="[公式]"> ，</p>
+<p>第3个 <img src="https://www.zhihu.com/equation?tex=%5Ctext%7BPredict%7D%5C;%5Ccolor%7Bpurple%7D%7B%5Ctext%7BBounding+Box%7D%7D" alt="[公式]"> 对应 <img src="https://www.zhihu.com/equation?tex=%5Ccolor%7Blightskyblue%7D%7B%5Ctext%7BSky%7D%7D(%5Ctext%7Blabel%7D=21)" alt="[公式]"> ，第4个 <img src="https://www.zhihu.com/equation?tex=%5Ctext%7BPredict%7D%5C;%5Ccolor%7Bpurple%7D%7B%5Ctext%7BBounding+Box%7D%7D" alt="[公式]"> 对应 <img src="https://www.zhihu.com/equation?tex=%5Ccolor%7Bgreen%7D%7B%5Ctext%7BDog%7D%7D(%5Ctext%7Blabel%7D=24)" alt="[公式]"> ，</p>
+<p>第5个 <img src="https://www.zhihu.com/equation?tex=%5Ctext%7BPredict%7D%5C;%5Ccolor%7Bpurple%7D%7B%5Ctext%7BBounding+Box%7D%7D" alt="[公式]"> 对应 <img src="https://www.zhihu.com/equation?tex=%5Ccolor%7Bdarkturquoise%7D%7B%5Ctext%7BHorse%7D%7D(%5Ctext%7Blabel%7D=75)" alt="[公式]"> ，第6-100个 <img src="https://www.zhihu.com/equation?tex=%5Ctext%7BPredict%7D%5C;%5Ccolor%7Bpurple%7D%7B%5Ctext%7BBounding+Box%7D%7D" alt="[公式]"> 对应 <img src="https://www.zhihu.com/equation?tex=%5Ccolor%7Bdimgray%7D%7B%5Cvarnothing+%7D(%5Ctext%7Blabel%7D=92)" alt="[公式]"> ，等等。</p>
+<p>以上只是我举的一个例子，意思是说：模型知道了自己的100个预测框每个该做什么事情，即：每个框该预测什么样的 <img src="https://www.zhihu.com/equation?tex=%5Ctext%7BObject%7D" alt="[公式]"> 。</p>
+<p><strong>为什么训练完以后，模型学习到了一种能力，即：模型产生的100个预测框，它知道某个预测框该对应什么 <img src="https://www.zhihu.com/equation?tex=%5Ctext%7BObject%7D" alt="[公式]"> ？</strong></p>
+<p>还记得前面说的Object queries吗？它是一个维度为 <img src="https://www.zhihu.com/equation?tex=(100,b,256)" alt="[公式]"> 维的张量，初始时元素全为 <img src="https://www.zhihu.com/equation?tex=0" alt="[公式]"> 。实现方式是 <strong>nn.Embedding(num_queries, hidden_dim)</strong> ，这里num_queries&#x3D;100，hidden_dim&#x3D;256，它是可训练的。这里的 <img src="https://www.zhihu.com/equation?tex=b" alt="[公式]"> 指的是batch size，我们考虑单张图片，所以假设Object queries是一个维度为 <img src="https://www.zhihu.com/equation?tex=(100,256)" alt="[公式]"> 维的张量。我们训练完模型以后，这个张量已经训练完了，那<strong>此时的Object queries究竟代表什么？</strong></p>
+<p>我们把此时的Object queries <strong>看成100个格子，每个格子是个256维的向量。</strong> 训练完以后，这100个格子里面 <strong>注入了不同 <img src="https://www.zhihu.com/equation?tex=%5Ctext%7BObject%7D" alt="[公式]"> 的位置信息和类别信息</strong> 。 <strong>比如第1个格子里面的这个256维的向量代表着 <img src="https://www.zhihu.com/equation?tex=%5Ccolor%7Borange%7D%7B%5Ctext%7BCar%7D%7D" alt="[公式]"> 这种 <img src="https://www.zhihu.com/equation?tex=%5Ctext%7BObject%7D" alt="[公式]"> 的位置信息，</strong> 这种信息是通过训练，考虑了所有图片的某个位置附近的 <img src="https://www.zhihu.com/equation?tex=%5Ccolor%7Borange%7D%7B%5Ctext%7BCar%7D%7D" alt="[公式]"> 编码特征，属于和位置有关的全局 <img src="https://www.zhihu.com/equation?tex=%5Ccolor%7Borange%7D%7B%5Ctext%7BCar%7D%7D" alt="[公式]"> 统计信息。</p>
+<p>测试时，假设图片中有 <img src="https://www.zhihu.com/equation?tex=%5Ccolor%7Borange%7D%7B%5Ctext%7BCar%7D%7D,%5Ccolor%7Bgreen%7D%7B%5Ctext%7BDog%7D%7D,%5Ccolor%7Bdarkturquoise%7D%7B%5Ctext%7BHorse%7D%7D" alt="[公式]"> 三种物体，该图片会输入到编码器中进行特征编码，假设特征没有丢失，Decoder的<strong>Key</strong>和<strong>Value</strong>就是编码器输出的编码向量，而Query就是Object queries，就是我们的100个格子。</p>
+<p><strong>Query可以视作代表不同 <img src="https://www.zhihu.com/equation?tex=%5Ctext%7BObject%7D" alt="[公式]"> 的信息，而Key和Value可以视作代表图像的全局信息。</strong></p>
+<p>现在通过注意力模块将<strong>Query</strong>和<strong>Key</strong>计算，然后加权<strong>Value</strong>得到解码器输出。对于第1个格子的<strong>Query</strong>会和<strong>Key</strong>中的所有向量进行计算，目的是查找某个位置附近有没有 <img src="https://www.zhihu.com/equation?tex=%5Ccolor%7Borange%7D%7B%5Ctext%7BCar%7D%7D" alt="[公式]"> ，如果有那么该特征就会加权输出，对于第3个格子的<strong>Query</strong>会和<strong>Key</strong>中的所有向量进行计算，目的是查找某个位置附近有没有 <img src="https://www.zhihu.com/equation?tex=%5Ccolor%7Blightskyblue%7D%7B%5Ctext%7BSky%7D%7D" alt="[公式]"> ，很遗憾，这个没有，所以输出的信息里面没有 <img src="https://www.zhihu.com/equation?tex=%5Ccolor%7Blightskyblue%7D%7B%5Ctext%7BSky%7D%7D" alt="[公式]"> 。</p>
+<p>整个过程计算完成后就可以把编码向量中的 <img src="https://www.zhihu.com/equation?tex=%5Ccolor%7Borange%7D%7B%5Ctext%7BCar%7D%7D,%5Ccolor%7Bgreen%7D%7B%5Ctext%7BDog%7D%7D,%5Ccolor%7Bdarkturquoise%7D%7B%5Ctext%7BHorse%7D%7D" alt="[公式]"> 的编码嵌入信息提取出来，然后后面接 <img src="https://www.zhihu.com/equation?tex=FFN" alt="[公式]"> 进行分类和回归就比较容易，因为特征已经对齐了。</p>
+<p>发现了吗？Object queries在训练过程中对于 <img src="https://www.zhihu.com/equation?tex=N" alt="[公式]"> 个格子会压缩入对应的和位置和类别相关的统计信息，在测试阶段就可以利用该<strong>Query</strong>去和<strong>某个图像的编码特征Key，Value</strong>计算，<strong>若图片中刚好有Query想找的特征，比如</strong> <img src="https://www.zhihu.com/equation?tex=%5Ccolor%7Borange%7D%7B%5Ctext%7BCar%7D%7D" alt="[公式]"> <strong>，则这个特征就能提取出来，最后通过2个</strong> <img src="https://www.zhihu.com/equation?tex=FFN" alt="[公式]"> <strong>进行分类和回归。</strong> 所以前面才会说Object queries作用非常类似Faster R-CNN中的anchor，这个anchor是可学习的，由于维度比较高，故可以表征的东西丰富，当然维度越高，训练时长就会越长。</p>
+
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/2022/03/12/html%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/" rel="prev" title="HTML学习笔记">
+                  <i class="fa fa-chevron-left"></i> HTML学习笔记
+                </a>
+            </div>
+            <div class="post-nav-item">
+                <a href="/2022/03/15/css%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/" rel="next" title="CSS学习笔记">
+                  CSS学习笔记 <i class="fa fa-chevron-right"></i>
+                </a>
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+
+<div class="copyright">
+  &copy; 
+  <span itemprop="copyrightYear">2023</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Wh&CC</span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io/" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.js.org/pisces/" rel="noopener" target="_blank">NexT.Pisces</a> 强力驱动
+  </div>
+
+    </div>
+  </footer>
+
+  
+  <div class="back-to-top" role="button" aria-label="返回顶部">
+    <i class="fa fa-arrow-up fa-lg"></i>
+    <span>0%</span>
+  </div>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+  
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.1/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous"></script>
+<script src="/js/comments.js"></script><script src="/js/utils.js"></script><script src="/js/motion.js"></script><script src="/js/next-boot.js"></script>
+
+  
+
+
+
+
+  
+
+
+
+
+
+</body>
+</html>

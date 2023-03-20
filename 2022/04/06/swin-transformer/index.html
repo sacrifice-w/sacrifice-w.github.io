@@ -1,0 +1,334 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+<meta name="theme-color" content="#222"><meta name="generator" content="Hexo 6.3.0">
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.1/css/all.min.css" integrity="sha256-Z1K5uhUaJXA7Ll0XrZ/0JhX4lAtZFpT6jkKrEDT0drU=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.1.1/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
+
+<script class="next-config" data-name="main" type="application/json">{"hostname":"example.com","root":"/","images":"/images","scheme":"Pisces","darkmode":false,"version":"8.14.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12},"copycode":{"enable":false,"style":null},"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"stickytabs":false,"motion":{"enable":true,"async":false,"transition":{"menu_item":"fadeInDown","post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"}}</script><script src="/js/config.js"></script>
+
+    <meta name="description" content="Swin Transformer: Hierarchical Vision Transformer using Shifted Windows 1 概述swin transformer 是一种新型视觉 transformer，可以用作计算机视觉的通用 backbone。  和语言模型相比，视觉任务中图像像素分辨率更高，而且图像尺寸差异很大，这些都是问题。 为了使 transformer 从 nlp">
+<meta property="og:type" content="article">
+<meta property="og:title" content="swin-transformer">
+<meta property="og:url" content="http://example.com/2022/04/06/swin-transformer/index.html">
+<meta property="og:site_name" content="小吴的Blog">
+<meta property="og:description" content="Swin Transformer: Hierarchical Vision Transformer using Shifted Windows 1 概述swin transformer 是一种新型视觉 transformer，可以用作计算机视觉的通用 backbone。  和语言模型相比，视觉任务中图像像素分辨率更高，而且图像尺寸差异很大，这些都是问题。 为了使 transformer 从 nlp">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://blogwh.oss-cn-beijing.aliyuncs.com/img/image-1649229164821.png">
+<meta property="og:image" content="https://blogwh.oss-cn-beijing.aliyuncs.com/img/image-1649231816708.png">
+<meta property="og:image" content="https://blogwh.oss-cn-beijing.aliyuncs.com/img/image-1649232524992.png">
+<meta property="og:image" content="https://blogwh.oss-cn-beijing.aliyuncs.com/img/image-1649232637113.png">
+<meta property="og:image" content="https://blogwh.oss-cn-beijing.aliyuncs.com/img/image-1649232649801.png">
+<meta property="og:image" content="https://blogwh.oss-cn-beijing.aliyuncs.com/img/image-1649232663730.png">
+<meta property="og:image" content="https://blogwh.oss-cn-beijing.aliyuncs.com/img/image-1649232691888.png">
+<meta property="article:published_time" content="2022-04-06T08:15:32.000Z">
+<meta property="article:modified_time" content="2023-03-20T08:32:37.405Z">
+<meta property="article:author" content="Wh&amp;CC">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://blogwh.oss-cn-beijing.aliyuncs.com/img/image-1649229164821.png">
+
+
+<link rel="canonical" href="http://example.com/2022/04/06/swin-transformer/">
+
+
+
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"zh-CN","comments":true,"permalink":"http://example.com/2022/04/06/swin-transformer/","path":"2022/04/06/swin-transformer/","title":"swin-transformer"}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">""</script>
+<title>swin-transformer | 小吴的Blog</title>
+  
+
+
+
+
+
+
+  <script async defer data-website-id="" src=""></script>
+
+  <script defer data-domain="" src=""></script>
+
+  <noscript>
+    <link rel="stylesheet" href="/css/noscript.css">
+  </noscript>
+<link rel="alternate" href="/atom.xml" title="小吴的Blog" type="application/atom+xml">
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <div class="headband"></div>
+
+  <main class="main">
+    <div class="column">
+      <header class="header" itemscope itemtype="http://schema.org/WPHeader"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏" role="button">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <p class="site-title">小吴的Blog</p>
+      <i class="logo-line"></i>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger" aria-label="搜索" role="button">
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu"><li class="menu-item menu-item-home"><a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a></li><li class="menu-item menu-item-about"><a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>关于</a></li><li class="menu-item menu-item-tags"><a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签</a></li><li class="menu-item menu-item-categories"><a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类</a></li><li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档</a></li>
+  </ul>
+</nav>
+
+
+
+
+</header>
+        
+  
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#1-%E6%A6%82%E8%BF%B0"><span class="nav-number">1.</span> <span class="nav-text">1 概述</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#2-%E4%BB%A3%E7%A0%81"><span class="nav-number">2.</span> <span class="nav-text">2 代码</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#2-1-Patch-Partition-x2F-Patch-Merging"><span class="nav-number">2.1.</span> <span class="nav-text">2.1 Patch Partition&#x2F;Patch Merging</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-2-Swin-Transformer-%E7%9A%84-Stage"><span class="nav-number">2.2.</span> <span class="nav-text">2.2 Swin Transformer 的 Stage</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-3-%E7%AA%97%E5%8F%A3%E5%A4%9A%E5%A4%B4%E8%87%AA%E6%B3%A8%E6%84%8F%E5%8A%9B%EF%BC%88Window-Multi-head-Self-Attention%EF%BC%8CW-MSA%EF%BC%89"><span class="nav-number">2.3.</span> <span class="nav-text">2.3 窗口多头自注意力（Window Multi-head Self Attention，W-MSA）</span></a></li></ol></li></ol></div>
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-author animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="Wh&CC"
+      src="/images/avatar.gif">
+  <p class="site-author-name" itemprop="name">Wh&CC</p>
+  <div class="site-description" itemprop="description">Per aspera ad astra</div>
+</div>
+<div class="site-state-wrap animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+        <a href="/archives/">
+          <span class="site-state-item-count">45</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+          <a href="/categories/">
+        <span class="site-state-item-count">3</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author animated">
+      <span class="links-of-author-item">
+        <a href="https://github.com/sacrifice-w" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;sacrifice-w" rel="noopener me" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="mailto:761612239@qq.com" title="E-Mail → mailto:761612239@qq.com" rel="noopener me" target="_blank"><i class="fa fa-envelope fa-fw"></i>E-Mail</a>
+      </span>
+  </div>
+
+        </div>
+      </div>
+    </div>
+
+    
+  </aside>
+
+
+    </div>
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2022/04/06/swin-transformer/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="Wh&CC">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="小吴的Blog">
+      <meta itemprop="description" content="Per aspera ad astra">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="swin-transformer | 小吴的Blog">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          swin-transformer
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+
+      <time title="创建时间：2022-04-06 16:15:32" itemprop="dateCreated datePublished" datetime="2022-04-06T16:15:32+08:00">2022-04-06</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar-check"></i>
+      </span>
+      <span class="post-meta-item-text">更新于</span>
+      <time title="修改时间：2023-03-20 16:32:37" itemprop="dateModified" datetime="2023-03-20T16:32:37+08:00">2023-03-20</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">分类于</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/%E8%AE%A1%E7%AE%97%E6%9C%BA%E8%A7%86%E8%A7%89/" itemprop="url" rel="index"><span itemprop="name">计算机视觉</span></a>
+        </span>
+    </span>
+
+  
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+        <p><strong>Swin Transformer: Hierarchical Vision Transformer using Shifted Windows</strong></p>
+<h2 id="1-概述"><a href="#1-概述" class="headerlink" title="1 概述"></a>1 概述</h2><p>swin transformer 是一种新型视觉 transformer，可以用作计算机视觉的<strong>通用 backbone</strong>。 <img src="https://blogwh.oss-cn-beijing.aliyuncs.com/img/image-1649229164821.png" alt="file"> 和语言模型相比，视觉任务中图像像素分辨率更高，而且图像尺寸差异很大，这些都是问题。 为了使 transformer 从 nlp 模型中更适应于计算机视觉，swin transformer 提出了一个分层的 Transformer，其表示是通过移动窗口来计算的。</p>
+<span id="more"></span>![file](https://blogwh.oss-cn-beijing.aliyuncs.com/img/image-1649229459059.png) 通过将自注意力计算限制为不重叠的局部窗口，同时允许跨窗口连接，移位的窗口方案带来了更高的效率。这种分层体系结构具有在各种尺度上建模的灵活性，并且相对于图像大小具有线性计算复杂性。 window attention就是按照一定的尺寸将图像划分为不同的window，每次transformer的attention只在window内部进行计算。那么如果只有window attention就会带来每一个像素点的感受野得不到提升的问题，所以它又设计了一个shift window attention的方法，就是换一下window划分的方式，让每一个像素点做attention计算的window块处于变化之中。那么就起到了提升感受野的作用。 ![file](https://blogwh.oss-cn-beijing.aliyuncs.com/img/image-1649229630104.png) 输入的图像先经过一层卷积进行patch映射，将图像先分割成4×4的小块，然后将每一个小块通过映射成一个像素点，进行了通道上的扩充。以swin-s为例，输入的224×224图像经过这一步操作就变成了56×56的特征图。 特征图一开始开始输入到stage1，stage1由两层transformer组成，这两层transformer的核心一个是普通的window attention, 另一个是shift window attention。可以将window attention 和shift window attention视为两个模块，在每一个stage内部就是直接堆积这两个模块。然后在stage与stage之间要有一个pooling操作来降低要处理的数据的尺寸，也就是为了从一开始的局部信息搜索到全局信息的提取。当然这个pooling操作与传统卷积里面的pooling也不太一样，它是将特征图先经过一个space to depth变为1/4，通道数变为原来的4倍，再又一个MLP缩减一半。也就是说每经过一个一个stage，总的数据量会变为原来的1/2。swin transformer和resnet一样设计的是一个层次结果很明显的网络，底部的结构处理的数据更多也更局部，顶部的网络处理的数据更少但是语义信息是更加丰富的。不同的是swin主要提取信息的方式是采用transformer，而resnet是卷积核。 ![file](https://blogwh.oss-cn-beijing.aliyuncs.com/img/image-1649229638119.png) swin transformer和resnet一样设计的是一个层次结果很明显的网络，底部的结构处理的数据更多也更局部，顶部的网络处理的数据更少但是语义信息是更加丰富的。不同的是swin主要提取信息的方式是采用transformer，而resnet是卷积核。 但是其受缚于shift操作，对不同尺寸的输入要设计不同的网络，而且需要重新开始训练。
+
+<h2 id="2-代码"><a href="#2-代码" class="headerlink" title="2 代码"></a>2 代码</h2><h3 id="2-1-Patch-Partition-x2F-Patch-Merging"><a href="#2-1-Patch-Partition-x2F-Patch-Merging" class="headerlink" title="2.1 Patch Partition&#x2F;Patch Merging"></a>2.1 Patch Partition&#x2F;Patch Merging</h3><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">class</span> <span class="title class_">PatchMerging</span>(nn.Module):</span><br><span class="line"><span class="keyword">def</span> <span class="title function_">__init__</span>(<span class="params">self, in_channels, out_channels, downscaling_factor</span>):</span><br><span class="line"><span class="built_in">super</span>().__init__()</span><br><span class="line">self.downscaling_factor = downscaling_factor</span><br><span class="line">self.patch_merge = nn.Unfold(kernel_size=downscaling_factor, stride=downscaling_factor, padding=<span class="number">0</span>)</span><br><span class="line">self.linear = nn.Linear(in_channels * downscaling_factor ** <span class="number">2</span>, out_channels)</span><br><span class="line"></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">forward</span>(<span class="params">self, x</span>):</span><br><span class="line">b, c, h, w = x.shape</span><br><span class="line">new_h, new_w = h // self.downscaling_factor, w // self.downscaling_factor</span><br><span class="line">x = self.patch_merge(x) <span class="comment"># (1, 48, 3136)</span></span><br><span class="line">x = x.view(b, -<span class="number">1</span>, new_h, new_w).permute(<span class="number">0</span>, <span class="number">2</span>, <span class="number">3</span>, <span class="number">1</span>) <span class="comment"># (1, 56, 56, 48)</span></span><br><span class="line">x = self.linear(x) <span class="comment"># (1, 56, 56, 96)</span></span><br><span class="line"><span class="keyword">return</span> x</span><br></pre></td></tr></table></figure>
+
+<p>Patch Merging 的作用是对图像进行降采样，类似于 CNN 中 Pooling 层。Patch Merging 是主要是通过<code>nn.Unfold</code>函数实现降采样的，<code>nn.Unfold</code>的功能是对图像进行滑窗，相当于卷积操作的第一步，因此它的参数包括窗口的大小和滑窗的步长。其采样比例是 4，所以经过<code>nn.fold</code>后会得到<img src="https://blogwh.oss-cn-beijing.aliyuncs.com/img/image-1649231816708.png" alt="file">个长度为 4×4×3&#x3D;48 的特征向量（每个 patch 是 4×4 大小，每张图片被分割成 3136 份）。3 是输入到这个 stage 的 Feature Map 的通道数，第一个 stage 的输入是 RGB 图像，因此通接着的<code>view</code>和<code>permute</code>是将得到的向量序列还原到 56×56 的二维矩阵，<code>linear</code>是将长度是 48 的特征向量映射到<code>out_channels</code>的长度，因此 stage-1 的 Patch Merging 的输出向量维度是（56，56，96），对比源码的注释，这里省略了第一个 batch 为 1 的维度。 可以看出 Patch Partition&#x2F;Patch Merging 起到的作用像是 CNN 中通过带有步长的滑窗来降低分辨率，再通过 1×1 卷积来调整通道数。不同的是在 CNN 中最常使用的降采样的最大池化或者平均池化往往会丢弃一些信息，例如最大池化会丢弃一个窗口内的地响应值，而 Patch Merging 的策略并不会丢弃其它响应，但它的缺点是带来运算量的增加。在一些需要提升模型容量的场景中，我们其实可以考虑使用 Patch Merging 来替代 CNN 中的池化。 作用就是更好的降采样，CNN 中最常使用的降采样的最大池化或者平均池化往往会丢弃一些信息，例如最大池化会丢弃一个窗口内的地响应值，而 Patch Merging 的策略并不会丢弃其它响应，但它的缺点是带来运算量的增加。</p>
+<h3 id="2-2-Swin-Transformer-的-Stage"><a href="#2-2-Swin-Transformer-的-Stage" class="headerlink" title="2.2 Swin Transformer 的 Stage"></a>2.2 Swin Transformer 的 Stage</h3><p>Swin Transformer 的一个 stage 便可以看做由 Patch Merging 和 Swin Transformer Block 组成。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">class</span> <span class="title class_">StageModule</span>(nn.Module):</span><br><span class="line"><span class="keyword">def</span> <span class="title function_">__init__</span>(<span class="params">self, in_channels, hidden_dimension, layers, downscaling_factor, num_heads, head_dim, window_size,</span></span><br><span class="line"><span class="params">relative_pos_embedding</span>):</span><br><span class="line"><span class="built_in">super</span>().__init__()</span><br><span class="line"><span class="keyword">assert</span> layers % <span class="number">2</span> == <span class="number">0</span>, <span class="string">&#x27;Stage layers need to be divisible by 2 for regular and shifted block.&#x27;</span></span><br><span class="line"></span><br><span class="line">self.patch_partition = PatchMerging(in_channels=in_channels, out_channels=hidden_dimension,</span><br><span class="line">downscaling_factor=downscaling_factor)</span><br><span class="line"></span><br><span class="line">self.layers = nn.ModuleList([])</span><br><span class="line"><span class="keyword">for</span> _ <span class="keyword">in</span> <span class="built_in">range</span>(layers // <span class="number">2</span>):</span><br><span class="line">self.layers.append(nn.ModuleList([</span><br><span class="line">SwinBlock(dim=hidden_dimension, heads=num_heads, head_dim=head_dim, mlp_dim=hidden_dimension * <span class="number">4</span>,</span><br><span class="line">shifted=<span class="literal">False</span>, window_size=window_size, relative_pos_embedding=relative_pos_embedding),</span><br><span class="line">SwinBlock(dim=hidden_dimension, heads=num_heads, head_dim=head_dim, mlp_dim=hidden_dimension * <span class="number">4</span>,</span><br><span class="line">shifted=<span class="literal">True</span>, window_size=window_size, relative_pos_embedding=relative_pos_embedding),</span><br><span class="line">            ]))</span><br><span class="line"></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">forward</span>(<span class="params">self, x</span>):</span><br><span class="line">x = self.patch_partition(x)</span><br><span class="line"><span class="keyword">for</span> regular_block, shifted_block <span class="keyword">in</span> self.layers:</span><br><span class="line">x = regular_block(x)</span><br><span class="line">x = shifted_block(x)</span><br><span class="line"><span class="keyword">return</span> x.permute(<span class="number">0</span>, <span class="number">3</span>, <span class="number">1</span>, <span class="number">2</span>)</span><br></pre></td></tr></table></figure>
+
+<p>Swin Transformer Block 由窗口多头自注意层（window multi-head self-attention, W-MSA）和移位窗口多头自注意层（shifted-window multi-head self-attention, SW-MSA）组成。由于这个原因，Swin Transformer 的层数要为 2 的整数倍，一层提供给 W-MSA，一层提供给 SW-MSA。 <img src="https://blogwh.oss-cn-beijing.aliyuncs.com/img/image-1649232524992.png" alt="file"> 输入到该 stage 的特征<img src="https://blogwh.oss-cn-beijing.aliyuncs.com/img/image-1649232637113.png" alt="file">先经过 LN 进行归一化，再经过 W-MSA 进行特征的学习，接着的是一个残差操作得到<img src="https://blogwh.oss-cn-beijing.aliyuncs.com/img/image-1649232649801.png" alt="file">。接着是一个 LN，一个 MLP 以及一个残差，得到这一层的输出特征<img src="https://blogwh.oss-cn-beijing.aliyuncs.com/img/image-1649232663730.png" alt="file">。SW-MSA 层的结构和 W-MSA 层类似，不同的是计算特征部分分别使用了 SW-MSA 和 W-MSA，可以从上面的源码中看出它们除了<code>shifted</code>的这个 bool 值不同之外，其它的值是保持完全一致的。这一部分可以表示为式（2）。 <img src="https://blogwh.oss-cn-beijing.aliyuncs.com/img/image-1649232691888.png" alt="file"> 一个 Swin Block 的源码如下所示，和论文中图不同的是，LN 层（<code>PerNorm</code>函数）从 Self-Attention 之前移到了 Self-Attention 之后。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">class</span> <span class="title class_">Residual</span>(nn.Module):</span><br><span class="line"><span class="keyword">def</span> <span class="title function_">__init__</span>(<span class="params">self, fn</span>):</span><br><span class="line"><span class="built_in">super</span>().__init__()</span><br><span class="line">self.fn = fn</span><br><span class="line"></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">forward</span>(<span class="params">self, x, **kwargs</span>):</span><br><span class="line"><span class="keyword">return</span> self.fn(x, **kwargs) + x</span><br><span class="line"></span><br><span class="line"><span class="keyword">class</span> <span class="title class_">PreNorm</span>(nn.Module):</span><br><span class="line"><span class="keyword">def</span> <span class="title function_">__init__</span>(<span class="params">self, dim, fn</span>):</span><br><span class="line"><span class="built_in">super</span>().__init__()</span><br><span class="line">self.norm = nn.LayerNorm(dim)</span><br><span class="line">self.fn = fn</span><br><span class="line"></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">forward</span>(<span class="params">self, x, **kwargs</span>):</span><br><span class="line"><span class="keyword">return</span> self.fn(self.norm(x), **kwargs)</span><br><span class="line"></span><br><span class="line"><span class="keyword">class</span> <span class="title class_">SwinBlock</span>(nn.Module):</span><br><span class="line"><span class="keyword">def</span> <span class="title function_">__init__</span>(<span class="params">self, dim, heads, head_dim, mlp_dim, shifted, window_size, relative_pos_embedding</span>):</span><br><span class="line"><span class="built_in">super</span>().__init__()</span><br><span class="line">self.attention_block = Residual(PreNorm(dim, WindowAttention(dim=dim, heads=heads, head_dim=head_dim, shifted=shifted, window_size=window_size, relative_pos_embedding=relative_pos_embedding)))</span><br><span class="line">self.mlp_block = Residual(PreNorm(dim, FeedForward(dim=dim, hidden_dim=mlp_dim)))</span><br><span class="line"></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">forward</span>(<span class="params">self, x</span>):</span><br><span class="line">x = self.attention_block(x)</span><br><span class="line">x = self.mlp_block(x)</span><br><span class="line"><span class="keyword">return</span> x</span><br></pre></td></tr></table></figure>
+
+<h3 id="2-3-窗口多头自注意力（Window-Multi-head-Self-Attention，W-MSA）"><a href="#2-3-窗口多头自注意力（Window-Multi-head-Self-Attention，W-MSA）" class="headerlink" title="2.3 窗口多头自注意力（Window Multi-head Self Attention，W-MSA）"></a>2.3 窗口多头自注意力（Window Multi-head Self Attention，W-MSA）</h3><p>顾名思义，就是个在窗口的尺寸上进行 Self-Attention 计算，与 SW-MSA 不同的是，它不会进行窗口移位，它们的源码如下。我们这里先忽略<code>shifted</code>为 True 的情况</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">class</span> <span class="title class_">WindowAttention</span>(nn.Module):</span><br><span class="line"><span class="keyword">def</span> <span class="title function_">__init__</span>(<span class="params">self, dim, heads, head_dim, shifted, window_size, relative_pos_embedding</span>):</span><br><span class="line"><span class="built_in">super</span>().__init__()</span><br><span class="line">inner_dim = head_dim * heads</span><br><span class="line">self.heads = heads</span><br><span class="line">self.scale = head_dim ** -<span class="number">0.5</span></span><br><span class="line">self.window_size = window_size</span><br><span class="line">self.relative_pos_embedding = relative_pos_embedding <span class="comment"># (13, 13)</span></span><br><span class="line">self.shifted = shifted</span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span> self.shifted:</span><br><span class="line">displacement = window_size // <span class="number">2</span></span><br><span class="line">self.cyclic_shift = CyclicShift(-displacement)</span><br><span class="line">self.cyclic_back_shift = CyclicShift(displacement)</span><br><span class="line">self.upper_lower_mask = nn.Parameter(create_mask(window_size=window_size, displacement=displacement, upper_lower=<span class="literal">True</span>, left_right=<span class="literal">False</span>), requires_grad=<span class="literal">False</span>) <span class="comment"># (49, 49)</span></span><br><span class="line">self.left_right_mask = nn.Parameter(create_mask(window_size=window_size, displacement=displacement,pper_lower=<span class="literal">False</span>, left_right=<span class="literal">True</span>), requires_grad=<span class="literal">False</span>) <span class="comment"># (49, 49)</span></span><br><span class="line"></span><br><span class="line">self.to_qkv = nn.Linear(dim, inner_dim * <span class="number">3</span>, bias=<span class="literal">False</span>)</span><br><span class="line"><span class="keyword">if</span> self.relative_pos_embedding:</span><br><span class="line">self.relative_indices = get_relative_distances(window_size) + window_size - <span class="number">1</span></span><br><span class="line">self.pos_embedding = nn.Parameter(torch.randn(<span class="number">2</span> * window_size - <span class="number">1</span>, <span class="number">2</span> * window_size - <span class="number">1</span>))</span><br><span class="line"><span class="keyword">else</span>:</span><br><span class="line">self.pos_embedding = nn.Parameter(torch.randn(window_size ** <span class="number">2</span>, window_size ** <span class="number">2</span>))</span><br><span class="line"></span><br><span class="line">self.to_out = nn.Linear(inner_dim, dim</span><br></pre></td></tr></table></figure>
+
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/2022/03/24/st-tr%E9%98%85%E8%AF%BB/" rel="prev" title="ST-TR阅读">
+                  <i class="fa fa-chevron-left"></i> ST-TR阅读
+                </a>
+            </div>
+            <div class="post-nav-item">
+                <a href="/2022/04/08/gan%E5%9F%BA%E7%A1%80/" rel="next" title="GAN基础">
+                  GAN基础 <i class="fa fa-chevron-right"></i>
+                </a>
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+
+<div class="copyright">
+  &copy; 
+  <span itemprop="copyrightYear">2023</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Wh&CC</span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io/" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.js.org/pisces/" rel="noopener" target="_blank">NexT.Pisces</a> 强力驱动
+  </div>
+
+    </div>
+  </footer>
+
+  
+  <div class="back-to-top" role="button" aria-label="返回顶部">
+    <i class="fa fa-arrow-up fa-lg"></i>
+    <span>0%</span>
+  </div>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+  
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.1/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous"></script>
+<script src="/js/comments.js"></script><script src="/js/utils.js"></script><script src="/js/motion.js"></script><script src="/js/next-boot.js"></script>
+
+  
+
+
+
+
+  
+
+
+
+
+
+</body>
+</html>

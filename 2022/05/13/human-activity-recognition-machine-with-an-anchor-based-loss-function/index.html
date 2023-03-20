@@ -1,0 +1,323 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+<meta name="theme-color" content="#222"><meta name="generator" content="Hexo 6.3.0">
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.1/css/all.min.css" integrity="sha256-Z1K5uhUaJXA7Ll0XrZ/0JhX4lAtZFpT6jkKrEDT0drU=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.1.1/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
+
+<script class="next-config" data-name="main" type="application/json">{"hostname":"example.com","root":"/","images":"/images","scheme":"Pisces","darkmode":false,"version":"8.14.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12},"copycode":{"enable":false,"style":null},"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"stickytabs":false,"motion":{"enable":true,"async":false,"transition":{"menu_item":"fadeInDown","post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"}}</script><script src="/js/config.js"></script>
+
+    <meta name="description" content="基于锚节点的损失函数用来进行人体动作识别 Abstract基于传感器的人体动作识别（HAR） 人类活动数据受个体间差异的影响很大，个体间差异带来了类内相似性和类内多样性。 它们不仅增加了闭集分类的难度，而且影响了开集问题的性能。 我们设计了一个使用欧氏距离损失函数和高维嵌入层的框架，以增强深度学习网络挖掘鉴别特征的能力。 我们在HAR中定义了两类开集问题：伪开集问题和完全开集问题。针对伪开集问题，">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Human Activity Recognition Machine With an Anchor-Based Loss Function">
+<meta property="og:url" content="http://example.com/2022/05/13/human-activity-recognition-machine-with-an-anchor-based-loss-function/index.html">
+<meta property="og:site_name" content="小吴的Blog">
+<meta property="og:description" content="基于锚节点的损失函数用来进行人体动作识别 Abstract基于传感器的人体动作识别（HAR） 人类活动数据受个体间差异的影响很大，个体间差异带来了类内相似性和类内多样性。 它们不仅增加了闭集分类的难度，而且影响了开集问题的性能。 我们设计了一个使用欧氏距离损失函数和高维嵌入层的框架，以增强深度学习网络挖掘鉴别特征的能力。 我们在HAR中定义了两类开集问题：伪开集问题和完全开集问题。针对伪开集问题，">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2022-05-13T09:39:38.000Z">
+<meta property="article:modified_time" content="2023-03-20T08:32:34.752Z">
+<meta property="article:author" content="Wh&amp;CC">
+<meta name="twitter:card" content="summary">
+
+
+<link rel="canonical" href="http://example.com/2022/05/13/human-activity-recognition-machine-with-an-anchor-based-loss-function/">
+
+
+
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"zh-CN","comments":true,"permalink":"http://example.com/2022/05/13/human-activity-recognition-machine-with-an-anchor-based-loss-function/","path":"2022/05/13/human-activity-recognition-machine-with-an-anchor-based-loss-function/","title":"Human Activity Recognition Machine With an Anchor-Based Loss Function"}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">""</script>
+<title>Human Activity Recognition Machine With an Anchor-Based Loss Function | 小吴的Blog</title>
+  
+
+
+
+
+
+
+  <script async defer data-website-id="" src=""></script>
+
+  <script defer data-domain="" src=""></script>
+
+  <noscript>
+    <link rel="stylesheet" href="/css/noscript.css">
+  </noscript>
+<link rel="alternate" href="/atom.xml" title="小吴的Blog" type="application/atom+xml">
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <div class="headband"></div>
+
+  <main class="main">
+    <div class="column">
+      <header class="header" itemscope itemtype="http://schema.org/WPHeader"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏" role="button">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <p class="site-title">小吴的Blog</p>
+      <i class="logo-line"></i>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger" aria-label="搜索" role="button">
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu"><li class="menu-item menu-item-home"><a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a></li><li class="menu-item menu-item-about"><a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>关于</a></li><li class="menu-item menu-item-tags"><a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签</a></li><li class="menu-item menu-item-categories"><a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类</a></li><li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档</a></li>
+  </ul>
+</nav>
+
+
+
+
+</header>
+        
+  
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#Abstract"><span class="nav-number">1.</span> <span class="nav-text">Abstract</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Introduction"><span class="nav-number">2.</span> <span class="nav-text">Introduction</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Method"><span class="nav-number">3.</span> <span class="nav-text">Method</span></a></li></ol></div>
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-author animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="Wh&CC"
+      src="/images/avatar.gif">
+  <p class="site-author-name" itemprop="name">Wh&CC</p>
+  <div class="site-description" itemprop="description">Per aspera ad astra</div>
+</div>
+<div class="site-state-wrap animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+        <a href="/archives/">
+          <span class="site-state-item-count">45</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+          <a href="/categories/">
+        <span class="site-state-item-count">3</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author animated">
+      <span class="links-of-author-item">
+        <a href="https://github.com/sacrifice-w" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;sacrifice-w" rel="noopener me" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="mailto:761612239@qq.com" title="E-Mail → mailto:761612239@qq.com" rel="noopener me" target="_blank"><i class="fa fa-envelope fa-fw"></i>E-Mail</a>
+      </span>
+  </div>
+
+        </div>
+      </div>
+    </div>
+
+    
+  </aside>
+
+
+    </div>
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2022/05/13/human-activity-recognition-machine-with-an-anchor-based-loss-function/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="Wh&CC">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="小吴的Blog">
+      <meta itemprop="description" content="Per aspera ad astra">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="Human Activity Recognition Machine With an Anchor-Based Loss Function | 小吴的Blog">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          Human Activity Recognition Machine With an Anchor-Based Loss Function
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+
+      <time title="创建时间：2022-05-13 17:39:38" itemprop="dateCreated datePublished" datetime="2022-05-13T17:39:38+08:00">2022-05-13</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar-check"></i>
+      </span>
+      <span class="post-meta-item-text">更新于</span>
+      <time title="修改时间：2023-03-20 16:32:34" itemprop="dateModified" datetime="2023-03-20T16:32:34+08:00">2023-03-20</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">分类于</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/%E8%AE%A1%E7%AE%97%E6%9C%BA%E8%A7%86%E8%A7%89/" itemprop="url" rel="index"><span itemprop="name">计算机视觉</span></a>
+        </span>
+    </span>
+
+  
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+        <p>基于锚节点的损失函数用来进行人体动作识别</p>
+<h2 id="Abstract"><a href="#Abstract" class="headerlink" title="Abstract"></a>Abstract</h2><p>基于<strong>传感器</strong>的<strong>人体动作识别</strong>（HAR） 人类活动数据受个体间差异的影响很大，个体间差异带来了类内相似性和类内多样性。 它们不仅增加了闭集分类的难度，而且影响了开集问题的性能。 我们设计了一个使用<strong>欧氏距离损失函数</strong>和<strong>高维嵌入层</strong>的框架，以增强深度学习网络挖掘鉴别特征的能力。 我们在HAR中定义了两类开集问题：伪开集问题和完全开集问题。针对伪开集问题，提出了一种基于欧氏距离的聚类方法，降低了计算量，提高了聚类精度。对于被其他研究忽略的完全开集问题，我们引入拒绝分数来评估样本与所有已知类之间的距离分数，实现了完全开集分类。我们在三个公共数据集上使用四个常见的深度学习网络进行实验：OPPORTUNITY、PAMAP2和UniMiB-SHAR。结果表明，改进后的模型性能明显优于原模型。</p>
+<span id="more"></span>
+
+<h2 id="Introduction"><a href="#Introduction" class="headerlink" title="Introduction"></a>Introduction</h2><p>传统的基于传感器的HAR问题通常是基于机器学习完成的，这需要手动特征提取。识别结果的准确性与人工提取特征的质量密切相关。 如果人工提取的特征效果不好，模型的分类结果也会恶化。 之后在深度学习领域，通过引入CNN、Two-Stage End-to-end CNN (TSE-CNN)、ResNet等来解决这个问题。</p>
+<p><strong>HAR具有组内多样性和组间相似性</strong></p>
+<p>当同一类型的活动由不同的人或同一个人在不同的条件下进行时，组内多样性就会反映出来。每个人的站立姿势都不一样。当不同的人进行不同的活动并取得相似的成绩时，往往会出现类间相似性。例如，当由不同的人表演时，“步行”和“北欧步行”是相似的。</p>
+<p>此外，我们还需要解决HAR问题中出现的复杂情况。在HAR中，分类器通常需要对尚未学习的新人类活动进行分类。因为人类活动是连续的和可变的，所以发现分类器没有学习到的人类活动是很常见的。因此，实现已知活动与未知活动的分类是一个重要的课题。</p>
+<p><strong>伪开集</strong>：由于分类器可以在未知类数据的帮助下进行分类，我们将这种情况定义为伪开集问题，即训练集中未知类的数据不在训练过程中使用，而是在测试过程中使用，以帮助模型进行分类，而无需重新训练模型。</p>
+<p>当分类器必须能够区分已知活动和未知活动时，我们将该场景视为一个完全开放集问题，即模型在训练或测试期间不使用训练集中的未知类数据作为辅助；相反，它直接对已知类和未知类进行分类。通过使用拒绝分数，我们量化了样本到所有锚的距离，以解决HAR的完全开放集问题。</p>
+<h2 id="Method"><a href="#Method" class="headerlink" title="Method"></a>Method</h2><p>该方法的主要思想是训练一个良好的广义嵌入层，以获得更好的嵌入空间。通过应用基于欧氏距离度量的损失函数，将属于同一类的嵌入向量聚合，并将属于不同类的向量彼此分离。 首先，对人类活动的传感器数据进行清理，并沿时间维度进行分割。切片T的时间间隔因数据集而异。处理后的数据被发送到嵌入层进行训练和测试。 嵌入层采用了以下四种DL网络：多层感知器（MLP）、卷积神经网络（CNN）、长短时记忆（LSTM）和卷积与递归混合网络。</p>
+<p>无论选择何种DL网络，数据最终都会映射到嵌入空间。当我们训练DL网络时，我们为每个人类活动设置了锚。使用l2范式，我们可以计算嵌入向量和每个锚之间的距离，并获得距离向量di。通过比较每个向量和不同锚之间的距离，我们可以找到距离向量最近的锚。锚所代表的人类活动就是向量所属的活动。如果向量远离所有锚，则向量不属于任何锚所代表的人类活动。因此，该向量被判断为未知活动类。</p>
+
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/2022/05/12/moco%E7%B2%BE%E8%AF%BB/" rel="prev" title="MOCO精读">
+                  <i class="fa fa-chevron-left"></i> MOCO精读
+                </a>
+            </div>
+            <div class="post-nav-item">
+                <a href="/2022/05/26/simclr/" rel="next" title="SimCLR">
+                  SimCLR <i class="fa fa-chevron-right"></i>
+                </a>
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+
+<div class="copyright">
+  &copy; 
+  <span itemprop="copyrightYear">2023</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Wh&CC</span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io/" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.js.org/pisces/" rel="noopener" target="_blank">NexT.Pisces</a> 强力驱动
+  </div>
+
+    </div>
+  </footer>
+
+  
+  <div class="back-to-top" role="button" aria-label="返回顶部">
+    <i class="fa fa-arrow-up fa-lg"></i>
+    <span>0%</span>
+  </div>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+  
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.1/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous"></script>
+<script src="/js/comments.js"></script><script src="/js/utils.js"></script><script src="/js/motion.js"></script><script src="/js/next-boot.js"></script>
+
+  
+
+
+
+
+  
+
+
+
+
+
+</body>
+</html>

@@ -1,0 +1,370 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+<meta name="theme-color" content="#222"><meta name="generator" content="Hexo 6.3.0">
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.1/css/all.min.css" integrity="sha256-Z1K5uhUaJXA7Ll0XrZ/0JhX4lAtZFpT6jkKrEDT0drU=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.1.1/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
+
+<script class="next-config" data-name="main" type="application/json">{"hostname":"example.com","root":"/","images":"/images","scheme":"Pisces","darkmode":false,"version":"8.14.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12},"copycode":{"enable":false,"style":null},"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"stickytabs":false,"motion":{"enable":true,"async":false,"transition":{"menu_item":"fadeInDown","post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"}}</script><script src="/js/config.js"></script>
+
+    <meta name="description" content="Momentum Contrast for Unsupervised Visual Representation Learning 无监督视觉表征学习中的动量对比 前置任务（pretext task）个体判别（instance discrimination）： 将某一张照片通过旋转裁剪等方法做数据增强，这样做出来的图片被当作正样本，而其他的图片都被当作负样本  如图所示，某张图片 Xi 经过 tr">
+<meta property="og:type" content="article">
+<meta property="og:title" content="MOCO精读">
+<meta property="og:url" content="http://example.com/2022/05/12/moco%E7%B2%BE%E8%AF%BB/index.html">
+<meta property="og:site_name" content="小吴的Blog">
+<meta property="og:description" content="Momentum Contrast for Unsupervised Visual Representation Learning 无监督视觉表征学习中的动量对比 前置任务（pretext task）个体判别（instance discrimination）： 将某一张照片通过旋转裁剪等方法做数据增强，这样做出来的图片被当作正样本，而其他的图片都被当作负样本  如图所示，某张图片 Xi 经过 tr">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://blogwh.oss-cn-beijing.aliyuncs.com/img/image-1652333112242.png">
+<meta property="og:image" content="https://blogwh.oss-cn-beijing.aliyuncs.com/img/image-1652334867560.png">
+<meta property="og:image" content="https://blogwh.oss-cn-beijing.aliyuncs.com/img/image-1652335786638.png">
+<meta property="og:image" content="https://blogwh.oss-cn-beijing.aliyuncs.com/img/image-1652339823629.png">
+<meta property="og:image" content="https://blogwh.oss-cn-beijing.aliyuncs.com/img/image-1652340801859.png">
+<meta property="og:image" content="https://blogwh.oss-cn-beijing.aliyuncs.com/img/image-1652341979069.png">
+<meta property="og:image" content="https://blogwh.oss-cn-beijing.aliyuncs.com/img/image-1652342939700.png">
+<meta property="og:image" content="https://blogwh.oss-cn-beijing.aliyuncs.com/img/image-1652342961468.png">
+<meta property="og:image" content="https://blogwh.oss-cn-beijing.aliyuncs.com/img/image-1652343065839.png">
+<meta property="og:image" content="https://blogwh.oss-cn-beijing.aliyuncs.com/img/image-1652343913133.png">
+<meta property="article:published_time" content="2022-05-12T08:26:44.000Z">
+<meta property="article:modified_time" content="2023-03-20T08:32:35.949Z">
+<meta property="article:author" content="Wh&amp;CC">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://blogwh.oss-cn-beijing.aliyuncs.com/img/image-1652333112242.png">
+
+
+<link rel="canonical" href="http://example.com/2022/05/12/moco%E7%B2%BE%E8%AF%BB/">
+
+
+
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"zh-CN","comments":true,"permalink":"http://example.com/2022/05/12/moco%E7%B2%BE%E8%AF%BB/","path":"2022/05/12/moco精读/","title":"MOCO精读"}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">""</script>
+<title>MOCO精读 | 小吴的Blog</title>
+  
+
+
+
+
+
+
+  <script async defer data-website-id="" src=""></script>
+
+  <script defer data-domain="" src=""></script>
+
+  <noscript>
+    <link rel="stylesheet" href="/css/noscript.css">
+  </noscript>
+<link rel="alternate" href="/atom.xml" title="小吴的Blog" type="application/atom+xml">
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <div class="headband"></div>
+
+  <main class="main">
+    <div class="column">
+      <header class="header" itemscope itemtype="http://schema.org/WPHeader"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏" role="button">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <p class="site-title">小吴的Blog</p>
+      <i class="logo-line"></i>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger" aria-label="搜索" role="button">
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu"><li class="menu-item menu-item-home"><a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a></li><li class="menu-item menu-item-about"><a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>关于</a></li><li class="menu-item menu-item-tags"><a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签</a></li><li class="menu-item menu-item-categories"><a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类</a></li><li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档</a></li>
+  </ul>
+</nav>
+
+
+
+
+</header>
+        
+  
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%89%8D%E7%BD%AE%E4%BB%BB%E5%8A%A1%EF%BC%88pretext-task%EF%BC%89"><span class="nav-number">1.</span> <span class="nav-text">前置任务（pretext task）</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Abstract"><span class="nav-number">2.</span> <span class="nav-text">Abstract</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Introduction"><span class="nav-number">3.</span> <span class="nav-text">Introduction</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%9B%B8%E5%85%B3%E5%B7%A5%E4%BD%9C"><span class="nav-number">4.</span> <span class="nav-text">相关工作</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#method"><span class="nav-number">5.</span> <span class="nav-text">method</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%AE%9E%E9%AA%8C"><span class="nav-number">6.</span> <span class="nav-text">实验</span></a></li></ol></div>
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-author animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="Wh&CC"
+      src="/images/avatar.gif">
+  <p class="site-author-name" itemprop="name">Wh&CC</p>
+  <div class="site-description" itemprop="description">Per aspera ad astra</div>
+</div>
+<div class="site-state-wrap animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+        <a href="/archives/">
+          <span class="site-state-item-count">45</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+          <a href="/categories/">
+        <span class="site-state-item-count">3</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author animated">
+      <span class="links-of-author-item">
+        <a href="https://github.com/sacrifice-w" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;sacrifice-w" rel="noopener me" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="mailto:761612239@qq.com" title="E-Mail → mailto:761612239@qq.com" rel="noopener me" target="_blank"><i class="fa fa-envelope fa-fw"></i>E-Mail</a>
+      </span>
+  </div>
+
+        </div>
+      </div>
+    </div>
+
+    
+  </aside>
+
+
+    </div>
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2022/05/12/moco%E7%B2%BE%E8%AF%BB/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="Wh&CC">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="小吴的Blog">
+      <meta itemprop="description" content="Per aspera ad astra">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="MOCO精读 | 小吴的Blog">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          MOCO精读
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+
+      <time title="创建时间：2022-05-12 16:26:44" itemprop="dateCreated datePublished" datetime="2022-05-12T16:26:44+08:00">2022-05-12</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar-check"></i>
+      </span>
+      <span class="post-meta-item-text">更新于</span>
+      <time title="修改时间：2023-03-20 16:32:35" itemprop="dateModified" datetime="2023-03-20T16:32:35+08:00">2023-03-20</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">分类于</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/%E8%AE%A1%E7%AE%97%E6%9C%BA%E8%A7%86%E8%A7%89/" itemprop="url" rel="index"><span itemprop="name">计算机视觉</span></a>
+        </span>
+    </span>
+
+  
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+        <p>Momentum Contrast for Unsupervised Visual Representation Learning 无监督视觉表征学习中的动量对比</p>
+<h2 id="前置任务（pretext-task）"><a href="#前置任务（pretext-task）" class="headerlink" title="前置任务（pretext task）"></a>前置任务（pretext task）</h2><p><strong>个体判别</strong>（instance discrimination）： 将某一张照片通过旋转裁剪等方法做数据增强，这样做出来的图片被当作<strong>正样本</strong>，而其他的图片都被当作<strong>负样本</strong> <img src="https://blogwh.oss-cn-beijing.aliyuncs.com/img/image-1652333112242.png" alt="file"> 如图所示，某张图片 Xi 经过 transformation 后，其自身生成的图片就是正样本，而数据集中的其余图片都会被当作负样本。 所以每个 instance 都是独一无二的，比如在视频领域，可以将视频的任意连续两帧作为正样本，其他都作为负样本。 <strong>突出一个灵活多变</strong></p>
+<span id="more"></span>
+
+<h2 id="Abstract"><a href="#Abstract" class="headerlink" title="Abstract"></a>Abstract</h2><p>把对比学习当成了一个字典查询的任务。 通过做一个动态字典（由一个队列和一个移动平均编码器组成） 队列用来存放负样本，从而使字典变得很大 移动平均编码器使字典里的特征尽量保持一致 这样会使无监督学习效果更好</p>
+<p>在 ImageNet 数据集上做测试，用普遍的 linear protocol 去做测试的话，效果更好。 linear protocol 也就是将预训练好的骨干网络，用到不同数据集上，将骨干网络冻住，只学习分类头，也就是全连接层。其等于就是将提前预训练好的模型作为特征提取器，从而验证特征学的好不好。</p>
+<h2 id="Introduction"><a href="#Introduction" class="headerlink" title="Introduction"></a>Introduction</h2><p>对于自然语言处理来说，他们是离散的信号空间，从而能够很容易的将词对应成特征。 在视觉领域中，字典的建立比较困难。</p>
+<p>所以说，就提出了<strong>动态字典</strong>。 比如将一个图片 X1 经过变化生成两张图片，一个图片 X11 被当作 anchor（基准点），另一张图片 X12 就是 X11 的正样本，其余 X2-Xn 的图片都为负样本。 <img src="https://blogwh.oss-cn-beijing.aliyuncs.com/img/image-1652334867560.png" alt="file"> 之后在将其通过编码器得到特征，X11 通过编码器 E11 得到特征 f11。 X12 通过编码器 E12 得到特征 f12。 其他的负样本通过的编码器也是 E12。 从而使正样本在特征空间内尽可能相近，其他负样本在特征空间内尽可能远离。 而这两个编码器，可以相同也可以不同，在 moco 里是不同的。</p>
+<p>而作为动态字典，也就是将 f11 当作 query，其他特征 f12-fn 当作 key，这就将其转换成了一个字典查询的问题。</p>
+<p>所以说其通过训练编码器来使这个 f11 尽可能的匹配他的 key，而远离其他的 key，所以就转换为了对比学习。<strong>只要最小化对比学习的目标函数就可以了</strong></p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">x11 --&gt; xq</span><br><span class="line">x12 --&gt; xk</span><br><span class="line">f11 --&gt; q</span><br><span class="line">f12、f2...fn --&gt; k0、k1...kn</span><br></pre></td></tr></table></figure>
+
+<p>为了效果好，应该保证字典有两个要素：</p>
+<ol>
+<li>大<ul>
+<li>字典越大，就能够越好的从高维的连续的空间中学到东西。</li>
+<li>因为如果特征越多，越有可能学到进行本质性区分的特征，而如果字典小，模型小，则很有可能会局部最佳。</li>
+</ul>
+</li>
+<li>训练时要保证尽可能的一致性<ul>
+<li>应该用相同或相似的编码器进行对比，因为相同或相似的编码器，才能够是真正因为它具有相同或相似特征。</li>
+<li>而如果不一致的话，他学习到的有可能是因为用了相似的编码器所以一致。</li>
+</ul>
+</li>
+</ol>
+<p><img src="https://blogwh.oss-cn-beijing.aliyuncs.com/img/image-1652335786638.png" alt="file"> 其特点就是用队列来表示一个字典，也就是队列可以很大，但是每次更新队列的时候，batch-size 可以是很小的，所以这就<strong>能节省显卡的内存</strong>。 也就是将最新的 batch 抽到的特征送进队列，再将最老的 batch 送出队列，这就将训练的 batch-size，和队列的大小分开了。 然后就是动量编码器，如果将 encoder 设为 θq，那么 momentum encoder 的<code>θ_k = mθ_&#123;k-1&#125;+(1-m)θ_q</code> 所以说如果动量很大的话，其受 θq 的影响就会很小，虽然其是 θq 启动的，但是它会移动的很缓慢，所以可以当作基本一致。</p>
+<p>代理任务也就是前置任务选择的是 instance discrimination，也就是如果能在这个字典里找到一张图片经过裁剪旋转等变换的另一张图片，则将其配对。和上面说的一致。</p>
+<p>moco 在 7 个下游任务上，无论是检测还是分割都能有很好的结果。</p>
+<h2 id="相关工作"><a href="#相关工作" class="headerlink" title="相关工作"></a>相关工作</h2><p>无监督学习的方法一般包括代理任务（pretext task）和目标函数(loss functions)两部分。 对比学习的目标函数主要是在一个特征空间中，衡量各个目标之间的相似性，就是相似的尽量近，不相似的尽量远。 对抗性的目标函数主要是做目标生成的。 代理任务的核心就是生成一个类似于标签的东西，可以理解成伪标签，因为需要这个东西来做判别，有了这个类似于标签的东西，再通过目标函数来判断其相似性从而得到最终的结果。</p>
+<h2 id="method"><a href="#method" class="headerlink" title="method"></a>method</h2><p>训练一个编码器去做字典查找 假如已经有一个编码 query –&gt; q 和一堆 key{k0，k1…kn}，假设在这个字典中只有一个 key 能和这个 query 配对，也就是正样本图片。这个 key 被叫做 k+。 如果训练好了之后，这个模型的 value 应该 q 和 k+很相似，而且 loss 最小。</p>
+<p>这里的 loss 使用的是 infoNCE，也就是交叉熵损失函数。 noise contrastive cestimation –&gt; 噪声对比估计(NCE),也就是将数据看做二分类，要不是 data，要不是 noise。 然后 infoNCE 其实是一个多分类问题。因为噪声有可能不是一个种类的，所以还是需要多分类的。 <img src="https://blogwh.oss-cn-beijing.aliyuncs.com/img/image-1652339823629.png" alt="file"> 本质上是一个加了-log 的 softmax 函数，τ 是一个关于温度的超参数，越大分布越平滑，越小越集中。如果温度设置的过大，对比损失对所有负样本一视同仁，模型训练没有轻重。如果设置的过小，则只会特别关注一些负样本，导致模型不好收敛。 这里的 k 在一般的 softmax 里是类别，而在这里是负样本的个数。 其实就是一个 k+1 的分类任务，想把 q 分到 k+类去。</p>
+<p>输入可以是不同的东西，图片或者图片块都可以。</p>
+<p><strong>动态字典</strong>：</p>
+<ul>
+<li>key 是随机取样的，编码器也是不断改变的，所以是动态的。</li>
+<li>字典是所有数据的子集，维护字典的计算开销很小，所以字典长度基本不会影响训练时间。</li>
+<li>因为字典是一个队列，所以每次新的 key 被送进来之后，最老的 key 会被送出去，因为最老的 key 和最新的 key 差别是最大的，所以影响是很小的。</li>
+<li>因为编码器是不断更新的，所以每次训练的 key 都会产生差别。</li>
+</ul>
+<p><strong>动量更新</strong>： <img src="https://blogwh.oss-cn-beijing.aliyuncs.com/img/image-1652340801859.png" alt="file"> m 属于[0,1)，所以说虽然编码器是由 θq 启动的，但是 m 很大的话，θq 的影响就会很小，从而保证了字典的一致性。（m&#x3D;0.999） 如果想要利用队列，那么比较大的 m 是非常必要的。</p>
+<ul>
+<li>端到端的学习方式，受限于字典大小，因为字典大小和 batch-size 一致，所以计算资源很重要。钞能力 这个就是字典不大，但是一致性强。</li>
+<li>memory bank， 将数据集的所有特征存到 memory bank 里，每次训练往出抽一些 key 做字典，每次模型更新，就会将 memory bank 里的 key 更新。因为每次更新都会改变一部分 key，而还有一部分 key 没有被提出来，所以会导致<strong>一致性</strong>无法保证。因为想更新 memory bank 就需要 1 epoch，而每次抽样，都是不知道哪个时间点的更新值。 所以说 memory bank 就是牺牲了<strong>一致性</strong>来构造一个<strong>很大的字典</strong>。</li>
+</ul>
+<p>moco 既简单又高效，可以在上亿级别的数据集做训练。</p>
+<p><img src="https://blogwh.oss-cn-beijing.aliyuncs.com/img/image-1652341979069.png" alt="file"></p>
+<h2 id="实验"><a href="#实验" class="headerlink" title="实验"></a>实验</h2><p>学习率居然是 30，我傻了 无监督学习和有监督学习可能真的差别很大 字典大小为 65536，性能基本饱和了 <img src="https://blogwh.oss-cn-beijing.aliyuncs.com/img/image-1652342939700.png" alt="file"> 针对动量做消融实验 <img src="https://blogwh.oss-cn-beijing.aliyuncs.com/img/image-1652342961468.png" alt="file"> 把网络当作特征提取器 <img src="https://blogwh.oss-cn-beijing.aliyuncs.com/img/image-1652343065839.png" alt="file"> 也需要关注模型大小和模型训练度 小模型大模型都不错</p>
+<p><img src="https://blogwh.oss-cn-beijing.aliyuncs.com/img/image-1652343913133.png" alt="file"> 在很多下游检测任务上，性能真的很不错！！！</p>
+
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/2022/05/12/%E5%AF%B9%E6%AF%94%E5%AD%A6%E4%B9%A0%E6%A6%82%E5%BF%B5/" rel="prev" title="对比学习概念">
+                  <i class="fa fa-chevron-left"></i> 对比学习概念
+                </a>
+            </div>
+            <div class="post-nav-item">
+                <a href="/2022/05/13/human-activity-recognition-machine-with-an-anchor-based-loss-function/" rel="next" title="Human Activity Recognition Machine With an Anchor-Based Loss Function">
+                  Human Activity Recognition Machine With an Anchor-Based Loss Function <i class="fa fa-chevron-right"></i>
+                </a>
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+
+<div class="copyright">
+  &copy; 
+  <span itemprop="copyrightYear">2023</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Wh&CC</span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io/" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.js.org/pisces/" rel="noopener" target="_blank">NexT.Pisces</a> 强力驱动
+  </div>
+
+    </div>
+  </footer>
+
+  
+  <div class="back-to-top" role="button" aria-label="返回顶部">
+    <i class="fa fa-arrow-up fa-lg"></i>
+    <span>0%</span>
+  </div>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+  
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.1/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous"></script>
+<script src="/js/comments.js"></script><script src="/js/utils.js"></script><script src="/js/motion.js"></script><script src="/js/next-boot.js"></script>
+
+  
+
+
+
+
+  
+
+
+
+
+
+</body>
+</html>

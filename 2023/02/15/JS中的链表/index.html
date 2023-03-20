@@ -1,0 +1,367 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+<meta name="theme-color" content="#222"><meta name="generator" content="Hexo 6.3.0">
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.1/css/all.min.css" integrity="sha256-Z1K5uhUaJXA7Ll0XrZ/0JhX4lAtZFpT6jkKrEDT0drU=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.1.1/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
+
+<script class="next-config" data-name="main" type="application/json">{"hostname":"example.com","root":"/","images":"/images","scheme":"Pisces","darkmode":false,"version":"8.14.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12},"copycode":{"enable":false,"style":null},"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"stickytabs":false,"motion":{"enable":true,"async":false,"transition":{"menu_item":"fadeInDown","post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"}}</script><script src="/js/config.js"></script>
+
+    <meta name="description" content="​		链表格是一种线性数据结构，类似于数组，但不像数组的元素存储在特定的存储器位置或索引中，链表格的每个元素都是一个独立的对象，其中包含一个指针或链接指向列表中的下一个对象。 ​		每一个元素（通常 称为节点）包含两个项目：存储的数据和到下一个节点的链接，这些数据可以是任何有效数据类型 。下面的图表显示：">
+<meta property="og:type" content="article">
+<meta property="og:title" content="JS中的链表">
+<meta property="og:url" content="http://example.com/2023/02/15/JS%E4%B8%AD%E7%9A%84%E9%93%BE%E8%A1%A8/index.html">
+<meta property="og:site_name" content="小吴的Blog">
+<meta property="og:description" content="​		链表格是一种线性数据结构，类似于数组，但不像数组的元素存储在特定的存储器位置或索引中，链表格的每个元素都是一个独立的对象，其中包含一个指针或链接指向列表中的下一个对象。 ​		每一个元素（通常 称为节点）包含两个项目：存储的数据和到下一个节点的链接，这些数据可以是任何有效数据类型 。下面的图表显示：">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://blogwh.oss-cn-beijing.aliyuncs.com/img/1.jpg">
+<meta property="article:published_time" content="2023-02-15T03:21:42.000Z">
+<meta property="article:modified_time" content="2023-03-20T08:32:35.030Z">
+<meta property="article:author" content="Wh&amp;CC">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://blogwh.oss-cn-beijing.aliyuncs.com/img/1.jpg">
+
+
+<link rel="canonical" href="http://example.com/2023/02/15/JS%E4%B8%AD%E7%9A%84%E9%93%BE%E8%A1%A8/">
+
+
+
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"zh-CN","comments":true,"permalink":"http://example.com/2023/02/15/JS%E4%B8%AD%E7%9A%84%E9%93%BE%E8%A1%A8/","path":"2023/02/15/JS中的链表/","title":"JS中的链表"}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">""</script>
+<title>JS中的链表 | 小吴的Blog</title>
+  
+
+
+
+
+
+
+  <script async defer data-website-id="" src=""></script>
+
+  <script defer data-domain="" src=""></script>
+
+  <noscript>
+    <link rel="stylesheet" href="/css/noscript.css">
+  </noscript>
+<link rel="alternate" href="/atom.xml" title="小吴的Blog" type="application/atom+xml">
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <div class="headband"></div>
+
+  <main class="main">
+    <div class="column">
+      <header class="header" itemscope itemtype="http://schema.org/WPHeader"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏" role="button">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <p class="site-title">小吴的Blog</p>
+      <i class="logo-line"></i>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger" aria-label="搜索" role="button">
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu"><li class="menu-item menu-item-home"><a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a></li><li class="menu-item menu-item-about"><a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>关于</a></li><li class="menu-item menu-item-tags"><a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签</a></li><li class="menu-item menu-item-categories"><a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类</a></li><li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档</a></li>
+  </ul>
+</nav>
+
+
+
+
+</header>
+        
+  
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E9%93%BE%E8%A1%A8%E7%9A%84%E4%BC%98%E7%82%B9"><span class="nav-number">1.</span> <span class="nav-text">链表的优点</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E9%93%BE%E8%A1%A8%E7%9A%84%E7%BC%BA%E7%82%B9"><span class="nav-number">2.</span> <span class="nav-text">链表的缺点</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E9%93%BE%E8%A1%A8%E7%9A%84%E7%B1%BB%E5%9E%8B"><span class="nav-number">3.</span> <span class="nav-text">链表的类型</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%94%A8-JavaScript-%E5%AE%9E%E7%8E%B0%E4%B8%80%E4%B8%AA%E8%A1%A8%E8%8A%82%E7%82%B9"><span class="nav-number">4.</span> <span class="nav-text">用 JavaScript 实现一个表节点</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%94%A8-JavaScript-%E5%AE%9E%E7%8E%B0%E4%B8%80%E4%B8%AA%E9%93%BE%E8%A1%A8"><span class="nav-number">5.</span> <span class="nav-text">用 JavaScript 实现一个链表</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%B0%86%E5%AE%83%E4%BB%AC%E5%90%88%E5%9C%A8%E4%B8%80%E8%B5%B7"><span class="nav-number">6.</span> <span class="nav-text">将它们合在一起</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%B8%80%E4%BA%9B%E9%93%BE%E8%A1%A8%E6%96%B9%E6%B3%95%EF%BC%9A"><span class="nav-number">7.</span> <span class="nav-text">一些链表方法：</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#1-size"><span class="nav-number">7.1.</span> <span class="nav-text">1. size()</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-clear"><span class="nav-number">7.2.</span> <span class="nav-text">2. clear()</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3-getList"><span class="nav-number">7.3.</span> <span class="nav-text">3. getList()</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#4-getFirst"><span class="nav-number">7.4.</span> <span class="nav-text">4. getFirst()</span></a></li></ol></li></ol></div>
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-author animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="Wh&CC"
+      src="/images/avatar.gif">
+  <p class="site-author-name" itemprop="name">Wh&CC</p>
+  <div class="site-description" itemprop="description">Per aspera ad astra</div>
+</div>
+<div class="site-state-wrap animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+        <a href="/archives/">
+          <span class="site-state-item-count">45</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+          <a href="/categories/">
+        <span class="site-state-item-count">3</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author animated">
+      <span class="links-of-author-item">
+        <a href="https://github.com/sacrifice-w" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;sacrifice-w" rel="noopener me" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="mailto:761612239@qq.com" title="E-Mail → mailto:761612239@qq.com" rel="noopener me" target="_blank"><i class="fa fa-envelope fa-fw"></i>E-Mail</a>
+      </span>
+  </div>
+
+        </div>
+      </div>
+    </div>
+
+    
+  </aside>
+
+
+    </div>
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2023/02/15/JS%E4%B8%AD%E7%9A%84%E9%93%BE%E8%A1%A8/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="Wh&CC">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="小吴的Blog">
+      <meta itemprop="description" content="Per aspera ad astra">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="JS中的链表 | 小吴的Blog">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          JS中的链表
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+
+      <time title="创建时间：2023-02-15 11:21:42" itemprop="dateCreated datePublished" datetime="2023-02-15T11:21:42+08:00">2023-02-15</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar-check"></i>
+      </span>
+      <span class="post-meta-item-text">更新于</span>
+      <time title="修改时间：2023-03-20 16:32:35" itemprop="dateModified" datetime="2023-03-20T16:32:35+08:00">2023-03-20</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">分类于</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/%E5%89%8D%E7%AB%AF%E7%9F%A5%E8%AF%86/" itemprop="url" rel="index"><span itemprop="name">前端知识</span></a>
+        </span>
+    </span>
+
+  
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+        <p>​		链表格是一种线性数据结构，类似于数组，但不像数组的元素存储在特定的存储器位置或索引中，链表格的每个元素都是一个独立的对象，其中包含一个指针或链接指向列表中的下一个对象。</p>
+<p>​		每一个元素（通常 称为节点）包含两个项目：存储的数据和到下一个节点的链接，这些数据可以是任何有效数据类型 。下面的图表显示：</p>
+<p><img src="https://blogwh.oss-cn-beijing.aliyuncs.com/img/1.jpg" alt="1"></p>
+<span id="more"></span>
+
+<p>​		我们通常使用 “head” 作为链表入口，这个 “head” 是对链表中第一个节点的引用，而链表的最后一个节点指向 null。如果是空链表，则 head 的引用就是 null。</p>
+<p>在 JavaScript 中，链表长这样：</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> list = &#123;</span><br><span class="line">    <span class="attr">head</span>: &#123;</span><br><span class="line">        <span class="attr">value</span>: <span class="number">6</span></span><br><span class="line">        <span class="attr">next</span>: &#123;</span><br><span class="line">            <span class="attr">value</span>: <span class="number">10</span>                                             </span><br><span class="line">            <span class="attr">next</span>: &#123;</span><br><span class="line">                <span class="attr">value</span>: <span class="number">12</span></span><br><span class="line">                <span class="attr">next</span>: &#123;</span><br><span class="line">                    <span class="attr">value</span>: <span class="number">3</span></span><br><span class="line">                    <span class="attr">next</span>: <span class="literal">null</span>    </span><br><span class="line">                    &#125;</span><br><span class="line">                &#125;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+
+<h2 id="链表的优点"><a href="#链表的优点" class="headerlink" title="链表的优点"></a>链表的优点</h2><p>可以很容易地从链表中删除或添加节点，而无需重组整个数据结构。这是它相对于数组的一个优势。</p>
+<h2 id="链表的缺点"><a href="#链表的缺点" class="headerlink" title="链表的缺点"></a>链表的缺点</h2><ul>
+<li>链表的搜索操作很慢，与数组不同，不允许随机访问数据元素，必须从第一个节点开始按顺序访问节点。</li>
+<li>由于需要储存指针，相较于数组需要更多内存。</li>
+</ul>
+<h2 id="链表的类型"><a href="#链表的类型" class="headerlink" title="链表的类型"></a>链表的类型</h2><p>链表有以下三种类型：</p>
+<ul>
+<li>****单向链表****：每个节点只包含一个指向下一个节点的指针。也就是我们到上面一直在讨论的。</li>
+<li>****双向链表****：每个节点包含两个指针，一个指向下一个节点，另一个指向前一个节点。</li>
+<li>****循形链表****：循环链表是链表的一种变体，它的最后一个节点指向第一个节点或它之前的任何其他节点，从而形成一个循环。</li>
+</ul>
+<h2 id="用-JavaScript-实现一个表节点"><a href="#用-JavaScript-实现一个表节点" class="headerlink" title="用 JavaScript 实现一个表节点"></a>用 JavaScript 实现一个表节点</h2><p>前面我们讲到，列表节点包含两项：数据和指向下一个节点的指针。我们可以用 JavaScript 实现如下所示的列表节点：</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">class</span> <span class="title class_">ListNode</span> &#123;</span><br><span class="line">    <span class="title function_">constructor</span>(<span class="params">data</span>) &#123;</span><br><span class="line">        <span class="variable language_">this</span>.<span class="property">data</span> = data</span><br><span class="line">        <span class="variable language_">this</span>.<span class="property">next</span> = <span class="literal">null</span>                </span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h2 id="用-JavaScript-实现一个链表"><a href="#用-JavaScript-实现一个链表" class="headerlink" title="用 JavaScript 实现一个链表"></a>用 JavaScript 实现一个链表</h2><p>下面的代码展示了使用构造函数实现链表类的方法。注意，如果未传递 “head” 节点，则它将初始化为 null：</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">class</span> <span class="title class_">LinkedList</span> &#123;</span><br><span class="line">    <span class="title function_">constructor</span>(<span class="params">head = <span class="literal">null</span></span>) &#123;</span><br><span class="line">        <span class="variable language_">this</span>.<span class="property">head</span> = head</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h2 id="将它们合在一起"><a href="#将它们合在一起" class="headerlink" title="将它们合在一起"></a>将它们合在一起</h2><p>让我们用刚刚创建的类创建一个链表。 首先，我们创建两个表节点，<em>node1</em> 和 <em>node2</em>，以及他们之间的指针：</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">let</span> node1 = <span class="keyword">new</span> <span class="title class_">ListNode</span>(<span class="number">2</span>)</span><br><span class="line"><span class="keyword">let</span> node2 = <span class="keyword">new</span> <span class="title class_">ListNode</span>(<span class="number">5</span>)</span><br><span class="line">node1.<span class="property">next</span> = node2</span><br></pre></td></tr></table></figure>
+
+<p>接着，我们使用 <em>node1</em> 创建一个链表：</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">let</span> list = <span class="keyword">new</span> <span class="title class_">LinkedList</span>(node1)        </span><br></pre></td></tr></table></figure>
+
+<p>让我们尝试访问刚刚创建的列表中的节点：</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="variable language_">console</span>.<span class="title function_">log</span>(list.<span class="property">head</span>.<span class="property">next</span>.<span class="property">data</span>) <span class="comment">//returns 5    </span></span><br></pre></td></tr></table></figure>
+
+<h2 id="一些链表方法："><a href="#一些链表方法：" class="headerlink" title="一些链表方法："></a>一些链表方法：</h2><p>接下来，我们将为链表实现四个 helper 方法：</p>
+<ol>
+<li>size()</li>
+<li>clear()</li>
+<li>getList()</li>
+<li>getFirst()</li>
+</ol>
+<h3 id="1-size"><a href="#1-size" class="headerlink" title="1. size()"></a>1. size()</h3><p>该方法返回链表中存在的节点数：</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="title function_">size</span>(<span class="params"></span>) &#123;</span><br><span class="line">    <span class="keyword">let</span> count = <span class="number">0</span>; </span><br><span class="line">    <span class="keyword">let</span> node = <span class="variable language_">this</span>.<span class="property">head</span>;</span><br><span class="line">    <span class="keyword">while</span> (node) &#123;</span><br><span class="line">        count++;</span><br><span class="line">        node = node.<span class="property">next</span></span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> count;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h3 id="2-clear"><a href="#2-clear" class="headerlink" title="2. clear()"></a>2. clear()</h3><p>该方法清空链表：</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="title function_">clear</span>(<span class="params"></span>) &#123;</span><br><span class="line">    <span class="variable language_">this</span>.<span class="property">head</span> = <span class="literal">null</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h3 id="3-getList"><a href="#3-getList" class="headerlink" title="3. getList()"></a>3. getList()</h3><p>该方法返回链表的最后一个节点：</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="title function_">getLast</span>(<span class="params"></span>) &#123;</span><br><span class="line">    <span class="keyword">let</span> lastNode = <span class="variable language_">this</span>.<span class="property">head</span>;</span><br><span class="line">    <span class="keyword">if</span> (lastNode) &#123;</span><br><span class="line">        <span class="keyword">while</span> (lastNode.<span class="property">next</span>) &#123;</span><br><span class="line">            lastNode = lastNode.<span class="property">next</span></span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> lastNode</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h3 id="4-getFirst"><a href="#4-getFirst" class="headerlink" title="4. getFirst()"></a>4. getFirst()</h3><p>该方法返回链表第一个节点：</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="title function_">getFirst</span>(<span class="params"></span>) &#123;</span><br><span class="line">    <span class="keyword">return</span> <span class="variable language_">this</span>.<span class="property">head</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/2023/02/15/%E5%8D%9A%E5%AE%A2%E6%9B%B4%E6%96%B0%E6%B5%81%E7%A8%8B/" rel="prev" title="博客更新流程">
+                  <i class="fa fa-chevron-left"></i> 博客更新流程
+                </a>
+            </div>
+            <div class="post-nav-item">
+                <a href="/2023/03/14/Next-js/" rel="next" title="Next.js">
+                  Next.js <i class="fa fa-chevron-right"></i>
+                </a>
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+
+<div class="copyright">
+  &copy; 
+  <span itemprop="copyrightYear">2023</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Wh&CC</span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io/" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.js.org/pisces/" rel="noopener" target="_blank">NexT.Pisces</a> 强力驱动
+  </div>
+
+    </div>
+  </footer>
+
+  
+  <div class="back-to-top" role="button" aria-label="返回顶部">
+    <i class="fa fa-arrow-up fa-lg"></i>
+    <span>0%</span>
+  </div>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+  
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.1/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous"></script>
+<script src="/js/comments.js"></script><script src="/js/utils.js"></script><script src="/js/motion.js"></script><script src="/js/next-boot.js"></script>
+
+  
+
+
+
+
+  
+
+
+
+
+
+</body>
+</html>

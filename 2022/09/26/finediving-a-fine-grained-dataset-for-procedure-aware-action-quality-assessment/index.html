@@ -1,0 +1,426 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+<meta name="theme-color" content="#222"><meta name="generator" content="Hexo 6.3.0">
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.1/css/all.min.css" integrity="sha256-Z1K5uhUaJXA7Ll0XrZ/0JhX4lAtZFpT6jkKrEDT0drU=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.1.1/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
+
+<script class="next-config" data-name="main" type="application/json">{"hostname":"example.com","root":"/","images":"/images","scheme":"Pisces","darkmode":false,"version":"8.14.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12},"copycode":{"enable":false,"style":null},"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"stickytabs":false,"motion":{"enable":true,"async":false,"transition":{"menu_item":"fadeInDown","post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"}}</script><script src="/js/config.js"></script>
+
+    <meta name="description" content="FineDiving: A Fine-grained Dataset for Procedure-aware Action Quality Assessment用于过程感知动作质量评估的细粒度数据集 其通过将动作分段，比如这个跳水动作，将其分为四部分，首先是跳水前的准备动作，然后是旋转动作，转体动作，最后是入水动作。这就将一个完整的跳水过程划分成不同的片段来进行处理和评估。 摘要现在的动作质量评估">
+<meta property="og:type" content="article">
+<meta property="og:title" content="FineDiving: A Fine-grained Dataset for Procedure-aware Action Quality Assessment">
+<meta property="og:url" content="http://example.com/2022/09/26/finediving-a-fine-grained-dataset-for-procedure-aware-action-quality-assessment/index.html">
+<meta property="og:site_name" content="小吴的Blog">
+<meta property="og:description" content="FineDiving: A Fine-grained Dataset for Procedure-aware Action Quality Assessment用于过程感知动作质量评估的细粒度数据集 其通过将动作分段，比如这个跳水动作，将其分为四部分，首先是跳水前的准备动作，然后是旋转动作，转体动作，最后是入水动作。这就将一个完整的跳水过程划分成不同的片段来进行处理和评估。 摘要现在的动作质量评估">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://blogwh.oss-cn-beijing.aliyuncs.com/img/FineDiving.jpg">
+<meta property="og:image" content="https://blogwh.oss-cn-beijing.aliyuncs.com/img/dataset.png">
+<meta property="og:image" content="https://blogwh.oss-cn-beijing.aliyuncs.com/img/Dataset-gross.jpg">
+<meta property="og:image" content="https://blogwh.oss-cn-beijing.aliyuncs.com/img/hard.png">
+<meta property="og:image" content="https://blogwh.oss-cn-beijing.aliyuncs.com/img/table.png">
+<meta property="og:image" content="https://blogwh.oss-cn-beijing.aliyuncs.com/img/model.png">
+<meta property="og:image" content="https://blogwh.oss-cn-beijing.aliyuncs.com/img/mubiaohanshu.png">
+<meta property="og:image" content="https://blogwh.oss-cn-beijing.aliyuncs.com/img/yx.png">
+<meta property="og:image" content="https://blogwh.oss-cn-beijing.aliyuncs.com/img/pinggu.png">
+<meta property="article:published_time" content="2022-09-26T07:38:48.000Z">
+<meta property="article:modified_time" content="2023-03-20T08:32:34.239Z">
+<meta property="article:author" content="Wh&amp;CC">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://blogwh.oss-cn-beijing.aliyuncs.com/img/FineDiving.jpg">
+
+
+<link rel="canonical" href="http://example.com/2022/09/26/finediving-a-fine-grained-dataset-for-procedure-aware-action-quality-assessment/">
+
+
+
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"zh-CN","comments":true,"permalink":"http://example.com/2022/09/26/finediving-a-fine-grained-dataset-for-procedure-aware-action-quality-assessment/","path":"2022/09/26/finediving-a-fine-grained-dataset-for-procedure-aware-action-quality-assessment/","title":"FineDiving: A Fine-grained Dataset for Procedure-aware Action Quality Assessment"}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">""</script>
+<title>FineDiving: A Fine-grained Dataset for Procedure-aware Action Quality Assessment | 小吴的Blog</title>
+  
+
+
+
+
+
+
+  <script async defer data-website-id="" src=""></script>
+
+  <script defer data-domain="" src=""></script>
+
+  <noscript>
+    <link rel="stylesheet" href="/css/noscript.css">
+  </noscript>
+<link rel="alternate" href="/atom.xml" title="小吴的Blog" type="application/atom+xml">
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <div class="headband"></div>
+
+  <main class="main">
+    <div class="column">
+      <header class="header" itemscope itemtype="http://schema.org/WPHeader"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏" role="button">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <p class="site-title">小吴的Blog</p>
+      <i class="logo-line"></i>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger" aria-label="搜索" role="button">
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu"><li class="menu-item menu-item-home"><a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a></li><li class="menu-item menu-item-about"><a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>关于</a></li><li class="menu-item menu-item-tags"><a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签</a></li><li class="menu-item menu-item-categories"><a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类</a></li><li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档</a></li>
+  </ul>
+</nav>
+
+
+
+
+</header>
+        
+  
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#FineDiving-A-Fine-grained-Dataset-for-Procedure-aware-Action-Quality-Assessment"><span class="nav-number">1.</span> <span class="nav-text">FineDiving: A Fine-grained Dataset for Procedure-aware Action Quality Assessment</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%91%98%E8%A6%81"><span class="nav-number">1.1.</span> <span class="nav-text">摘要</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%BB%8B%E7%BB%8D"><span class="nav-number">1.2.</span> <span class="nav-text">介绍</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%95%B0%E6%8D%AE%E9%9B%86%E6%9E%84%E6%88%90"><span class="nav-number">1.2.1.</span> <span class="nav-text">数据集构成</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%97%B6%E9%97%B4%E5%88%86%E5%89%B2%E6%B3%A8%E6%84%8F%E5%8A%9B%E6%A8%A1%E5%9D%97-TSA"><span class="nav-number">1.2.2.</span> <span class="nav-text">时间分割注意力模块(TSA)</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%9B%B8%E5%85%B3%E5%B7%A5%E4%BD%9C"><span class="nav-number">1.3.</span> <span class="nav-text">相关工作</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%95%B0%E6%8D%AE%E9%9B%86%E8%AF%A6%E6%83%85"><span class="nav-number">1.4.</span> <span class="nav-text">数据集详情</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%8A%A8%E4%BD%9C%E8%AF%84%E4%BC%B0%E6%A8%A1%E5%9D%97"><span class="nav-number">1.5.</span> <span class="nav-text">动作评估模块</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#TSA"><span class="nav-number">1.5.1.</span> <span class="nav-text">TSA</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#exemplar%E9%80%89%E5%8F%96%E7%AD%96%E7%95%A5"><span class="nav-number">1.5.1.1.</span> <span class="nav-text">exemplar选取策略</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%AE%9E%E9%AA%8C%E8%AE%BE%E7%BD%AE"><span class="nav-number">1.6.</span> <span class="nav-text">实验设置</span></a></li></ol></li></ol></div>
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-author animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="Wh&CC"
+      src="/images/avatar.gif">
+  <p class="site-author-name" itemprop="name">Wh&CC</p>
+  <div class="site-description" itemprop="description">Per aspera ad astra</div>
+</div>
+<div class="site-state-wrap animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+        <a href="/archives/">
+          <span class="site-state-item-count">45</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+          <a href="/categories/">
+        <span class="site-state-item-count">3</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author animated">
+      <span class="links-of-author-item">
+        <a href="https://github.com/sacrifice-w" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;sacrifice-w" rel="noopener me" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="mailto:761612239@qq.com" title="E-Mail → mailto:761612239@qq.com" rel="noopener me" target="_blank"><i class="fa fa-envelope fa-fw"></i>E-Mail</a>
+      </span>
+  </div>
+
+        </div>
+      </div>
+    </div>
+
+    
+  </aside>
+
+
+    </div>
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2022/09/26/finediving-a-fine-grained-dataset-for-procedure-aware-action-quality-assessment/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="Wh&CC">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="小吴的Blog">
+      <meta itemprop="description" content="Per aspera ad astra">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="FineDiving: A Fine-grained Dataset for Procedure-aware Action Quality Assessment | 小吴的Blog">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          FineDiving: A Fine-grained Dataset for Procedure-aware Action Quality Assessment
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+
+      <time title="创建时间：2022-09-26 15:38:48" itemprop="dateCreated datePublished" datetime="2022-09-26T15:38:48+08:00">2022-09-26</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar-check"></i>
+      </span>
+      <span class="post-meta-item-text">更新于</span>
+      <time title="修改时间：2023-03-20 16:32:34" itemprop="dateModified" datetime="2023-03-20T16:32:34+08:00">2023-03-20</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">分类于</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/%E8%AE%A1%E7%AE%97%E6%9C%BA%E8%A7%86%E8%A7%89/" itemprop="url" rel="index"><span itemprop="name">计算机视觉</span></a>
+        </span>
+    </span>
+
+  
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+        <h1 id="FineDiving-A-Fine-grained-Dataset-for-Procedure-aware-Action-Quality-Assessment"><a href="#FineDiving-A-Fine-grained-Dataset-for-Procedure-aware-Action-Quality-Assessment" class="headerlink" title="FineDiving: A Fine-grained Dataset for Procedure-aware Action Quality Assessment"></a>FineDiving: A Fine-grained Dataset for Procedure-aware Action Quality Assessment</h1><p>用于过程感知动作质量评估的细粒度数据集</p>
+<p>其通过将动作分段，比如这个跳水动作，将其分为四部分，首先是跳水前的准备动作，然后是旋转动作，转体动作，最后是入水动作。这就将一个完整的跳水过程划分成不同的片段来进行处理和评估。</p>
+<h2 id="摘要"><a href="#摘要" class="headerlink" title="摘要"></a>摘要</h2><p>现在的动作质量评估大多依赖于整个视频的深度特征来进行预测评分，这样可靠性较差</p>
+<p>通过动作的高级语义和内部时间结构进行精准预测</p>
+<p>所以提出了一个跳水数据集和一个用于动作质量评估的过程感知方法—&gt;基于一个时间分割注意力模块</p>
+<p>这个也就是将一个完整的复杂动作进行分割，分割成具有不同语义和时间对应关系的连续步骤</p>
+<p><strong>代码地址：</strong> <a target="_blank" rel="noopener" href="https://github.com/xujinglin/FineDiving">https://github.com/xujinglin/FineDiving</a></p>
+<span id="more"></span>
+
+<h2 id="介绍"><a href="#介绍" class="headerlink" title="介绍"></a>介绍</h2><p>Action Quality Assessment (AQA) –&gt; 动作质量评估</p>
+<p>现有的方法大多都是基于视频整体的深度特征，这对于在相似背景下发生微小差异的行动来说是很困难的。</p>
+<p>跳水这个项目，所有的视频套路都一样，分为三个阶段，起飞，飞行，进入，细微的差别主要体现在翻跟头和转体的数量、飞行姿势和执行质量上。</p>
+<p>但是这个咋能用在花滑里呢，跳水摄像机位置是固定的，从侧面好看，但是花滑摄像机位置都不固定，感觉比较困难。</p>
+<p>他们通过了动作过程的细粒度注释，建立了这个细粒度数据集。来进行评分。</p>
+<h3 id="数据集构成"><a href="#数据集构成" class="headerlink" title="数据集构成"></a>数据集构成</h3><p>[<img src="https://blogwh.oss-cn-beijing.aliyuncs.com/img/FineDiving.jpg">]</p>
+<ol>
+<li><p>两级语义结构</p>
+<ol>
+<li>所有视频被标注了两个层次的语义标签，即动作类型和子动作类型，子动作类型再通过组合产生了一个动作类型</li>
+</ol>
+</li>
+<li><p>两级时间结构</p>
+<ol>
+<li>每个视频中动作的时间边界被注释，通过经过定义的动作词汇被分解为连续的步骤</li>
+</ol>
+</li>
+<li><p>官方动作评分</p>
+</li>
+</ol>
+<h3 id="时间分割注意力模块-TSA"><a href="#时间分割注意力模块-TSA" class="headerlink" title="时间分割注意力模块(TSA)"></a>时间分割注意力模块(TSA)</h3><p>TSA首先将动作解析为具有语义和时间对应关系的连续步骤，用于过程感知交叉注意学习。查询操作的连续步骤作为查询，示例操作的步骤作为键和值。</p>
+<p>然后TSA将成对查询步骤和范例步骤输入转换器，通过交叉注意学习获得过程感知嵌入。最后，TSA对过程感知嵌入进行细粒度对比回归，量化查询与范例之间的分步质量差异，并预测动作评分。</p>
+<h2 id="相关工作"><a href="#相关工作" class="headerlink" title="相关工作"></a>相关工作</h2><p>[<img src="https://blogwh.oss-cn-beijing.aliyuncs.com/img/dataset.png">]</p>
+<p>数据集包括两级语义结构，第一级是动作的名字，第二级是子动作，是一个具体的小组件。子操作类型的每个组合都可以产生一个操作类型，不同的操作类型可以共享相同的子操作类型。绿色的分支表示不同种类的起飞。紫色、黄色和红色的分支分别代表飞行中三个位置的翻跟头(即直翻、屈翻和卷翻)，每个分支包含不同的翻跟头。橙色的分支表示在翻跟头的过程中穿插着不同的扭转。浅蓝色表示下水。(彩色效果最佳。)</p>
+<p>[<img src="https://blogwh.oss-cn-beijing.aliyuncs.com/img/Dataset-gross.jpg">] 感觉他这个数据集就是把一个完整的动作分开，分成小动作，然后再用关键帧去找这几个小动作，再把这些小动作分开打分</p>
+<p>与以往的方法不同，我们的方法理解了行动程序，并排除了查询和范例之间的程序感知注意，从而实现更透明的行动评估。</p>
+<h2 id="数据集详情"><a href="#数据集详情" class="headerlink" title="数据集详情"></a>数据集详情</h2><p>数据集标签定位了完整动作实例的时间边界，在注释过程中，丢弃了所有不完整的操作实例，过滤缓慢的回放。步骤级标签是动作过程中连续步骤的起始帧。</p>
+<p>注释分成了两个阶段。</p>
+<ol>
+<li>粗粒度阶段：为每个动作实例标注动作类型及时间边界，附上正式的分数。</li>
+<li>细粒度阶段：为动作过程中的每个步骤标记子动作类型，记录每个步骤的起始帧</li>
+</ol>
+<p>将一个完整的视频，先分开，分成一个一个的整体动作。再将每一个整体动作，分成一个一个的小步骤，因为这些步骤是连续的，所以只需要知道起始帧就行了。</p>
+<p>总共包含3000个视频样本，涵盖52种动作类型，29个子动作类型，23种难度等级类型 [<img src="https://blogwh.oss-cn-beijing.aliyuncs.com/img/hard.png">] [<img src="https://blogwh.oss-cn-beijing.aliyuncs.com/img/table.png">]</p>
+<h2 id="动作评估模块"><a href="#动作评估模块" class="headerlink" title="动作评估模块"></a>动作评估模块</h2><p>给出一个两两查询和示例实例，我们使用<strong>I3D提取时空视觉特征</strong>，并提出了一个<strong>时间分割注意力模块</strong>，通过连续完成的过程分割、过程感知交叉注意学习和细粒度对比回归来评估动作质量。</p>
+<p>时间分割注意模块由步骤转换标签和动作评分标签监督，引导模型关注与查询步骤一致的样本区域，并量化其差异以预测可靠的动作评分。</p>
+<p><img src="https://blogwh.oss-cn-beijing.aliyuncs.com/img/model.png"></p>
+<p>感觉这个就是将一个输入和用例所对应，提取出视觉特征，然后通过这个TSA模块，来预测动作质量分数。</p>
+<h3 id="TSA"><a href="#TSA" class="headerlink" title="TSA"></a>TSA</h3><p>TSA有三个组成部分，即过程分割、过程感知交叉注意学习和细粒度对比回归。</p>
+<ol>
+<li><p><strong>动作过程分割</strong>将成对的查询动作实例和参考动作实例解析为语义和时间对齐的连续步骤。</p>
+<ol>
+<li><p>分割模块S包括“down-up”和“linear”两部分。</p>
+<ol>
+<li><p>其中“down-up”模块由四个“down-m-up-n”子块组成，m和n分别表示空间轴和时间轴上指定的输出维度。</p>
+</li>
+<li><p>每个子块包括两个连续的卷积层和一个池化层。</p>
+</li>
+<li><p>通过时间轴上的卷积层增加了特征的长度</p>
+</li>
+<li><p>通过空间轴上的最大池化层降低了维数。</p>
+</li>
+<li><p>所以说将视觉特征变得更长且低维，更加方便进行分割。</p>
+</li>
+</ol>
+</li>
+<li><p>“linear”负责生成L个概率分布。</p>
+<ol>
+<li>最后其实就是将分割问题转换成分类问题。</li>
+<li>通过预测每一帧是否是第k步过渡的概率</li>
+<li>再通过计算<strong>二元交叉熵损失</strong>来优化S，找到概率最大的过渡帧。</li>
+</ol>
+</li>
+</ol>
+</li>
+</ol>
+<p><img src="https://blogwh.oss-cn-beijing.aliyuncs.com/img/mubiaohanshu.png"></p>
+<p>使左侧值最小来使分布更接近。越接近则表示越对齐。</p>
+<ol start="2">
+<li><p><strong>过程感知交叉注意</strong>通过学习发现成对 query step 和 exemplar step 之间的时空对应关系，并在这两个步骤中生成新特征。成对的步骤相互补充，以引导模型关注 exemplar step 和 query step 中的一致区域，其中，exemplar step 保留了特征图的空间信息。</p>
+<ol>
+<li>过程分割之后，会有L个过渡预测，从而得到L+1个连续的步骤。</li>
+<li>每个动作过程具有语义对应和时间对应。</li>
+<li>这部分通过transformer来完成，MCA和MLP组成，MLP包含两层非线性GELU。</li>
+</ol>
+</li>
+<li><p><strong>细粒度对比回归</strong>通过学习成对步骤的相对分数来量化查询动作实例和示例动作实例之间的一些列步骤偏差，以指导模型来评估动作质量。</p>
+<ol>
+<li>通过计算基础真值和预测值之间的均方误差来优化细粒度对比回归组件。</li>
+</ol>
+</li>
+</ol>
+<p>[<img src="https://blogwh.oss-cn-beijing.aliyuncs.com/img/yx.png">]</p>
+<h4 id="exemplar选取策略"><a href="#exemplar选取策略" class="headerlink" title="exemplar选取策略"></a>exemplar选取策略</h4><p>关于 TSA 中exemplar的选择策略。根据 action type 从训练集中选择exemplar。在训练阶段，对于每个训练样本（query），从具有相同 action type 的其他训练样本中随机选择一个作为 exemplar。在推理阶段，采用多样本投票策略：从具有相同 action type 的训练样本中随机选择 M 个样本作为 M 个 exemplars。</p>
+<h2 id="实验设置"><a href="#实验设置" class="headerlink" title="实验设置"></a>实验设置</h2><p>[<img src="https://blogwh.oss-cn-beijing.aliyuncs.com/img/pinggu.png">]</p>
+<ol>
+<li>13D模型通过Kinetics数据集预训练，作为F，初始学习率为10^-4^,T的初始学习率为10^-3^。</li>
+<li>Adam优化器，权重衰减为0</li>
+<li>每个视频提取96帧，分为9个片段，然后输入13D。每个片段包含16个连续帧。stride为10帧。</li>
+<li>75%训练，25%测试。</li>
+<li>b1块中的（m,n）分别等于(1024,12),(512,24),(256,48),(128,96)</li>
+<li>b2块是一个三层MLP</li>
+<li>M为10，L为2</li>
+<li>每一步的帧数固定为5帧，输入MCA。3layers &amp; 8heads</li>
+<li>每一步包含的帧数过多可能会引入一些噪声信息。</li>
+</ol>
+
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/2022/08/17/typescript%E5%9F%BA%E7%A1%80/" rel="prev" title="typescript基础">
+                  <i class="fa fa-chevron-left"></i> typescript基础
+                </a>
+            </div>
+            <div class="post-nav-item">
+                <a href="/2022/12/26/Learning%20to%20Score%20Figure%20Skating%20Sport%20Videos/" rel="next" title="Learning to Score Figure Skating Sport Videos">
+                  Learning to Score Figure Skating Sport Videos <i class="fa fa-chevron-right"></i>
+                </a>
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+
+<div class="copyright">
+  &copy; 
+  <span itemprop="copyrightYear">2023</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Wh&CC</span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io/" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.js.org/pisces/" rel="noopener" target="_blank">NexT.Pisces</a> 强力驱动
+  </div>
+
+    </div>
+  </footer>
+
+  
+  <div class="back-to-top" role="button" aria-label="返回顶部">
+    <i class="fa fa-arrow-up fa-lg"></i>
+    <span>0%</span>
+  </div>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+  
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.1/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous"></script>
+<script src="/js/comments.js"></script><script src="/js/utils.js"></script><script src="/js/motion.js"></script><script src="/js/next-boot.js"></script>
+
+  
+
+
+
+
+  
+
+
+
+
+
+</body>
+</html>

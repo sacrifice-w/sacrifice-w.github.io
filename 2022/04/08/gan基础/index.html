@@ -1,0 +1,334 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+<meta name="theme-color" content="#222"><meta name="generator" content="Hexo 6.3.0">
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.1/css/all.min.css" integrity="sha256-Z1K5uhUaJXA7Ll0XrZ/0JhX4lAtZFpT6jkKrEDT0drU=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.1.1/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
+
+<script class="next-config" data-name="main" type="application/json">{"hostname":"example.com","root":"/","images":"/images","scheme":"Pisces","darkmode":false,"version":"8.14.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12},"copycode":{"enable":false,"style":null},"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"stickytabs":false,"motion":{"enable":true,"async":false,"transition":{"menu_item":"fadeInDown","post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"}}</script><script src="/js/config.js"></script>
+
+    <meta name="description" content="GAN是一种生成任务算法，通过两个神经网络进行对抗来生成以假乱真的图像。 GAN的核心就是判别器（D）和生成器（G）。判别算法是指给定实例的一些特征，我么根据这些特征来判断它所属的类别，它建模的是特征和标签之间的关系。例如在MNIST数据集中，我们需要判断一个图片是哪个数字。我们可以用后验概率来建模判别算法，假设一个数据的特征是x，它的标签是 y。判别算法指的是在给定x的前提下，标签是y的概率，表">
+<meta property="og:type" content="article">
+<meta property="og:title" content="GAN基础">
+<meta property="og:url" content="http://example.com/2022/04/08/gan%E5%9F%BA%E7%A1%80/index.html">
+<meta property="og:site_name" content="小吴的Blog">
+<meta property="og:description" content="GAN是一种生成任务算法，通过两个神经网络进行对抗来生成以假乱真的图像。 GAN的核心就是判别器（D）和生成器（G）。判别算法是指给定实例的一些特征，我么根据这些特征来判断它所属的类别，它建模的是特征和标签之间的关系。例如在MNIST数据集中，我们需要判断一个图片是哪个数字。我们可以用后验概率来建模判别算法，假设一个数据的特征是x，它的标签是 y。判别算法指的是在给定x的前提下，标签是y的概率，表">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://blogwh.oss-cn-beijing.aliyuncs.com/img/image-1649413967847.png">
+<meta property="og:image" content="https://blogwh.oss-cn-beijing.aliyuncs.com/img/image-1649414446511.png">
+<meta property="og:image" content="https://blogwh.oss-cn-beijing.aliyuncs.com/img/image-1649414480730.png">
+<meta property="og:image" content="https://blogwh.oss-cn-beijing.aliyuncs.com/img/image-1649414719605.png">
+<meta property="article:published_time" content="2022-04-08T10:47:10.000Z">
+<meta property="article:modified_time" content="2023-03-20T08:32:34.341Z">
+<meta property="article:author" content="Wh&amp;CC">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://blogwh.oss-cn-beijing.aliyuncs.com/img/image-1649413967847.png">
+
+
+<link rel="canonical" href="http://example.com/2022/04/08/gan%E5%9F%BA%E7%A1%80/">
+
+
+
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"zh-CN","comments":true,"permalink":"http://example.com/2022/04/08/gan%E5%9F%BA%E7%A1%80/","path":"2022/04/08/gan基础/","title":"GAN基础"}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">""</script>
+<title>GAN基础 | 小吴的Blog</title>
+  
+
+
+
+
+
+
+  <script async defer data-website-id="" src=""></script>
+
+  <script defer data-domain="" src=""></script>
+
+  <noscript>
+    <link rel="stylesheet" href="/css/noscript.css">
+  </noscript>
+<link rel="alternate" href="/atom.xml" title="小吴的Blog" type="application/atom+xml">
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <div class="headband"></div>
+
+  <main class="main">
+    <div class="column">
+      <header class="header" itemscope itemtype="http://schema.org/WPHeader"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏" role="button">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <p class="site-title">小吴的Blog</p>
+      <i class="logo-line"></i>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger" aria-label="搜索" role="button">
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu"><li class="menu-item menu-item-home"><a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a></li><li class="menu-item menu-item-about"><a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>关于</a></li><li class="menu-item menu-item-tags"><a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签</a></li><li class="menu-item menu-item-categories"><a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类</a></li><li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档</a></li>
+  </ul>
+</nav>
+
+
+
+
+</header>
+        
+  
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#1-%E5%88%A4%E5%88%AB%E5%99%A8%EF%BC%88D%EF%BC%89%E5%92%8C%E7%94%9F%E6%88%90%E5%99%A8%EF%BC%88G%EF%BC%89"><span class="nav-number">1.</span> <span class="nav-text">1 判别器（D）和生成器（G）</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#2-%E8%AE%AD%E7%BB%83"><span class="nav-number">2.</span> <span class="nav-text">2 训练</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#3-%E6%8D%9F%E5%A4%B1%E5%87%BD%E6%95%B0"><span class="nav-number">3.</span> <span class="nav-text">3 损失函数</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#4-%E6%80%BB%E7%BB%93"><span class="nav-number">4.</span> <span class="nav-text">4 总结</span></a></li></ol></div>
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-author animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="Wh&CC"
+      src="/images/avatar.gif">
+  <p class="site-author-name" itemprop="name">Wh&CC</p>
+  <div class="site-description" itemprop="description">Per aspera ad astra</div>
+</div>
+<div class="site-state-wrap animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+        <a href="/archives/">
+          <span class="site-state-item-count">45</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+          <a href="/categories/">
+        <span class="site-state-item-count">3</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author animated">
+      <span class="links-of-author-item">
+        <a href="https://github.com/sacrifice-w" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;sacrifice-w" rel="noopener me" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="mailto:761612239@qq.com" title="E-Mail → mailto:761612239@qq.com" rel="noopener me" target="_blank"><i class="fa fa-envelope fa-fw"></i>E-Mail</a>
+      </span>
+  </div>
+
+        </div>
+      </div>
+    </div>
+
+    
+  </aside>
+
+
+    </div>
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2022/04/08/gan%E5%9F%BA%E7%A1%80/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="Wh&CC">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="小吴的Blog">
+      <meta itemprop="description" content="Per aspera ad astra">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="GAN基础 | 小吴的Blog">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          GAN基础
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+
+      <time title="创建时间：2022-04-08 18:47:10" itemprop="dateCreated datePublished" datetime="2022-04-08T18:47:10+08:00">2022-04-08</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar-check"></i>
+      </span>
+      <span class="post-meta-item-text">更新于</span>
+      <time title="修改时间：2023-03-20 16:32:34" itemprop="dateModified" datetime="2023-03-20T16:32:34+08:00">2023-03-20</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">分类于</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/%E8%AE%A1%E7%AE%97%E6%9C%BA%E8%A7%86%E8%A7%89/" itemprop="url" rel="index"><span itemprop="name">计算机视觉</span></a>
+        </span>
+    </span>
+
+  
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+        <p>GAN是一种生成任务算法，通过两个神经网络进行对抗来生成以假乱真的图像。 GAN的核心就是判别器（D）和生成器（G）。判别算法是指给定实例的一些特征，我么根据这些特征来判断它所属的类别，它建模的是特征和标签之间的关系。例如在MNIST数据集中，我们需要判断一个图片是哪个数字。我们可以用后验概率来建模判别算法，假设一个数据的特征是x，它的标签是 y。判别算法指的是在给定x的前提下，标签是y的概率，表示为p(yx)。生成算法并不关心数据的标签是什么，它关心的是能否生成和数据x同一个分布的特征。</p>
+<span id="more"></span>
+
+<h2 id="1-判别器（D）和生成器（G）"><a href="#1-判别器（D）和生成器（G）" class="headerlink" title="1 判别器（D）和生成器（G）"></a>1 判别器（D）和生成器（G）</h2><p>判别器的任务是判断输入图像是源自数据集中还是由机器生成的。判别器一般使用二分类的神经网络来构建，一般将取自数据集的样本视为正样本，而生成的样本标注为负样本。生成器的任务是接收随机噪声，然后使用反卷积网络来创建一个图像。生成器的随机输入可以看做一个种子，相同的种子会得到相同的生成图像，不同的种子则得到的图像不同，大量种子的作用是保证生成图像的多样性。在最原始的GAN论文中，它都是使用了MLP搭建生成模型和判别模型。 GAN的双系统的目的是让生成器尽量去迷惑判别器，同时让判别器尽可能的对输入图像的来源进行判断。两个模型之间是互相对抗的关系，它们都会通过试图击败对方来使自己变得更好。生成器可以通过判别器得到它生成的图像和数据集图像分布是否一致的反馈，而判别器则可以通过生成器得到更多的训练样本。</p>
+<h2 id="2-训练"><a href="#2-训练" class="headerlink" title="2 训练"></a>2 训练</h2><p>GAN的生成器和判别器通过博弈的手段来不断的对两个模型进行迭代的优化。</p>
+<ol>
+<li>首先初始化判别器和生成器</li>
+<li>从数据集中采样m个真实样本，同时从噪声先验分布中采样m个噪声样本，并且使用生成器获得m个生成样本。</li>
+<li>固定生成器，使用梯度上升策略训练判别器使其能够更好的判断样本是真实样本还是生成样本</li>
+<li>循环多次对判别器的训练后，使用较小的学习率对生成器进行优化，生成器使用梯度下降策略进行优化</li>
+<li>多次更新之后，我们的理想状态是生成器生成一个判别器无法分辨的样本，即最终判别器的分类准确率是 0.5。</li>
+</ol>
+<p>这里之所以先循环多次优化判别器，再优化生成器。是因为我们想要先拥有一个有一定效果的判别器，它能够比较正确区分真实样本和生成样本，这样我们才能够根据判别器的反馈来对生成器进行优化。 <img src="https://blogwh.oss-cn-beijing.aliyuncs.com/img/image-1649413967847.png" alt="file"> 上图中的黑色虚线是真实样本的分布情况，绿色实线是生成样本的分布，蓝色虚线是判别器判别概率的分布情况。z是噪声， z到x的变化是生成器将噪音数据映射到生成数据的过程。从图中可以看出，(a)是出于初始状态，此时生成样本和真实样本的差距比较大，而且判别器也不能对它们进行很好的区分，因此我们需要先对判别器进行优化。在对判别器优化了若干个Epoch后，来到了(b)状态，此时判别器已能够很好的区分真实样本和生成样本。此时生成样本和真实样本的分布差异还是非常明显的，因此我们需要对生成器进行优化。经过训练后真实样本和生成样本的差异缩小了很多，也就是状态(c)。经过若干轮的对判别器很生成器的训练后，我们希望生成样本和真实样本的分布已经完全一致，而此时判别器也无法再区分它们了。</p>
+<h2 id="3-损失函数"><a href="#3-损失函数" class="headerlink" title="3 损失函数"></a>3 损失函数</h2><p>GAN的目标是让生成器生成足以欺骗判别器的样本。从数学角度将，我们希望生成样本和真实样本拥有相同的概率分布，也可以说生成样本和真实样本拥有相同的概率密度函数，即<img src="https://blogwh.oss-cn-beijing.aliyuncs.com/img/image-1649414446511.png" alt="file">。 GAN的损失函数源自于二分类对数似然函数的交叉熵损失函数，它表示为式(3)。其中第一项的作用是用来使正样本的识别结果尽量为1，第二项的作用是使负样本的预测值尽量为0。 <img src="https://blogwh.oss-cn-beijing.aliyuncs.com/img/image-1649414480730.png" alt="file"> 损失函数这部分有点复杂，等以后看论文的时候再详细看看吧。 对于任意给定的G，我们可以找到最优的判别器； 对于全局最优的最优生成器，我们希望它生成数据的分布和真实样本的分布一致，即<img src="https://blogwh.oss-cn-beijing.aliyuncs.com/img/image-1649414719605.png" alt="file"></p>
+<h2 id="4-总结"><a href="#4-总结" class="headerlink" title="4 总结"></a>4 总结</h2><p>GAN是深度学习领域最重要的生成模型之一，GAN对深度学习的贡献，可以从三点出发：生成（G），对抗（A），网络（N）。</p>
+<p>G：机器学习大抵可分为判别模型和生成模型两类。在之前的深度学习中，判别模型得到了充分的发展，例如在CV领域的物体分离，人脸识别，NLP领域的机器翻译，文本分类等，它们都是经典的判别模型。对于判别模型，损失函数是非常好构建的，我们以损失函数为目标，模型优化起来也不那么困难。而对于生成模型而言，它的目标构建起来就非常困难，因为衡量生成样本的质量不能简单的依靠它和训练集的某个数值的关系。一个高质量的生成样本必然从各个角度上都是非常优秀的，例如我们要生成一只猫，它从整体的轮廓到具体到毛发的细节，每一个环节都非常重要。而要做到这一点，GAN正式采用了对抗的思想。</p>
+<p>A：我们对一个生成样本质量的评估，往往是一个很难量化的指标。但是这种无法量化的任务深度学习就无能为力了吗，GAN给出了否定的答案。GAN提出了把评估生成样本的质量的任务也交给一个模型去做，这个模型就是判别器。这个判别器和生成样本的生成器通过对抗的方式不断的通过对方的反馈来提升自己，这种亦敌亦友的关系正是GAN最具创新性的地方。</p>
+<p>N：GAN的理论基础是生成对抗，那GAN的容量基础则是神经网络。比起传统方法，GAN拥有更强的建模能力，尤其是在处理非结构化数据上更是远胜于传统机器学习方法。正式依赖于GAN强大的建模能力，它的生成器和判别器才能通过不断的迭代，无限的逼近全局最优解。</p>
+
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/2022/04/06/swin-transformer/" rel="prev" title="swin-transformer">
+                  <i class="fa fa-chevron-left"></i> swin-transformer
+                </a>
+            </div>
+            <div class="post-nav-item">
+                <a href="/2022/04/13/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E7%AC%AC%E4%B8%80%E5%A4%A9/" rel="next" title="数据结构第一天">
+                  数据结构第一天 <i class="fa fa-chevron-right"></i>
+                </a>
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+
+<div class="copyright">
+  &copy; 
+  <span itemprop="copyrightYear">2023</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Wh&CC</span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io/" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.js.org/pisces/" rel="noopener" target="_blank">NexT.Pisces</a> 强力驱动
+  </div>
+
+    </div>
+  </footer>
+
+  
+  <div class="back-to-top" role="button" aria-label="返回顶部">
+    <i class="fa fa-arrow-up fa-lg"></i>
+    <span>0%</span>
+  </div>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+  
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.1/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous"></script>
+<script src="/js/comments.js"></script><script src="/js/utils.js"></script><script src="/js/motion.js"></script><script src="/js/next-boot.js"></script>
+
+  
+
+
+
+
+  
+
+
+
+
+
+</body>
+</html>

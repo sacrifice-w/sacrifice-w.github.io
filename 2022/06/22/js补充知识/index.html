@@ -1,0 +1,494 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+<meta name="theme-color" content="#222"><meta name="generator" content="Hexo 6.3.0">
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.1/css/all.min.css" integrity="sha256-Z1K5uhUaJXA7Ll0XrZ/0JhX4lAtZFpT6jkKrEDT0drU=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.1.1/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
+
+<script class="next-config" data-name="main" type="application/json">{"hostname":"example.com","root":"/","images":"/images","scheme":"Pisces","darkmode":false,"version":"8.14.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12},"copycode":{"enable":false,"style":null},"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"stickytabs":false,"motion":{"enable":true,"async":false,"transition":{"menu_item":"fadeInDown","post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"}}</script><script src="/js/config.js"></script>
+
+    <meta name="description" content="现代模式现代模式&quot;use strict&quot;;当它处于脚本文件的顶部时，则整个脚本文件都将以“现代”模式进行工作。 &quot;use strict&quot;可以被放在函数体的开头。这样则可以只在该函数中启用严格模式。 但通常人们会在整个脚本中启用严格模式。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="js补充知识">
+<meta property="og:url" content="http://example.com/2022/06/22/js%E8%A1%A5%E5%85%85%E7%9F%A5%E8%AF%86/index.html">
+<meta property="og:site_name" content="小吴的Blog">
+<meta property="og:description" content="现代模式现代模式&quot;use strict&quot;;当它处于脚本文件的顶部时，则整个脚本文件都将以“现代”模式进行工作。 &quot;use strict&quot;可以被放在函数体的开头。这样则可以只在该函数中启用严格模式。 但通常人们会在整个脚本中启用严格模式。">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2022-06-22T05:44:19.000Z">
+<meta property="article:modified_time" content="2023-03-20T08:32:35.762Z">
+<meta property="article:author" content="Wh&amp;CC">
+<meta name="twitter:card" content="summary">
+
+
+<link rel="canonical" href="http://example.com/2022/06/22/js%E8%A1%A5%E5%85%85%E7%9F%A5%E8%AF%86/">
+
+
+
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"zh-CN","comments":true,"permalink":"http://example.com/2022/06/22/js%E8%A1%A5%E5%85%85%E7%9F%A5%E8%AF%86/","path":"2022/06/22/js补充知识/","title":"js补充知识"}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">""</script>
+<title>js补充知识 | 小吴的Blog</title>
+  
+
+
+
+
+
+
+  <script async defer data-website-id="" src=""></script>
+
+  <script defer data-domain="" src=""></script>
+
+  <noscript>
+    <link rel="stylesheet" href="/css/noscript.css">
+  </noscript>
+<link rel="alternate" href="/atom.xml" title="小吴的Blog" type="application/atom+xml">
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <div class="headband"></div>
+
+  <main class="main">
+    <div class="column">
+      <header class="header" itemscope itemtype="http://schema.org/WPHeader"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏" role="button">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <p class="site-title">小吴的Blog</p>
+      <i class="logo-line"></i>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger" aria-label="搜索" role="button">
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu"><li class="menu-item menu-item-home"><a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a></li><li class="menu-item menu-item-about"><a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>关于</a></li><li class="menu-item menu-item-tags"><a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签</a></li><li class="menu-item menu-item-categories"><a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类</a></li><li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档</a></li>
+  </ul>
+</nav>
+
+
+
+
+</header>
+        
+  
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%8E%B0%E4%BB%A3%E6%A8%A1%E5%BC%8F"><span class="nav-number">1.</span> <span class="nav-text">现代模式</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%8F%98%E9%87%8F%E5%92%8C%E5%B8%B8%E9%87%8F"><span class="nav-number">2.</span> <span class="nav-text">变量和常量</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#let-%E5%92%8C-var%E7%9A%84%E5%8C%BA%E5%88%AB"><span class="nav-number">2.1.</span> <span class="nav-text">let 和 var的区别</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#BigInt"><span class="nav-number">3.</span> <span class="nav-text">BigInt</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E9%80%9A%E8%BF%87%E5%8F%8D%E5%BC%95%E5%8F%B7%E5%AF%B9%E5%AD%97%E7%AC%A6%E4%B8%B2%E5%B5%8C%E5%85%A5"><span class="nav-number">4.</span> <span class="nav-text">通过反引号对字符串嵌入</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#for-in-%E5%92%8Cfor-of-%E7%9A%84%E5%8C%BA%E5%88%AB"><span class="nav-number">5.</span> <span class="nav-text">for in 和for of 的区别</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%AF%B9%E8%B1%A1%E7%9A%84%E4%B8%80%E4%BA%9B%E8%A1%A5%E5%85%85%E7%9F%A5%E8%AF%86"><span class="nav-number">6.</span> <span class="nav-text">对象的一些补充知识</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Symbol"><span class="nav-number">7.</span> <span class="nav-text">Symbol</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%95%B0%E5%AD%97%E3%80%81%E5%AD%97%E7%AC%A6%E4%B8%B2%E3%80%81%E6%95%B0%E7%BB%84%E7%9A%84%E8%A1%A5%E5%85%85"><span class="nav-number">8.</span> <span class="nav-text">数字、字符串、数组的补充</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E6%95%B0%E5%AD%97"><span class="nav-number">8.1.</span> <span class="nav-text">数字</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%AD%97%E7%AC%A6%E4%B8%B2"><span class="nav-number">8.2.</span> <span class="nav-text">字符串</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E6%95%B0%E7%BB%84"><span class="nav-number">8.3.</span> <span class="nav-text">数组</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E6%95%B0%E7%BB%84%E7%9A%84%E6%96%B9%E6%B3%95"><span class="nav-number">8.4.</span> <span class="nav-text">数组的方法</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Map-and-Set%EF%BC%88%E6%98%A0%E5%B0%84%E5%92%8C%E9%9B%86%E5%90%88%EF%BC%89"><span class="nav-number">9.</span> <span class="nav-text">Map and Set（映射和集合）</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#Map"><span class="nav-number">9.1.</span> <span class="nav-text">Map</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Set"><span class="nav-number">9.2.</span> <span class="nav-text">Set</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#JSON"><span class="nav-number">10.</span> <span class="nav-text">JSON</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#json%E7%9A%84%E7%BC%96%E7%A0%81"><span class="nav-number">10.1.</span> <span class="nav-text">json的编码</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#json%E7%9A%84%E8%A7%A3%E7%A0%81"><span class="nav-number">10.2.</span> <span class="nav-text">json的解码</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%AE%AD%E5%A4%B4%E5%87%BD%E6%95%B0"><span class="nav-number">11.</span> <span class="nav-text">箭头函数</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E8%B0%83%E5%BA%A6setTimeout-amp-setInterval"><span class="nav-number">12.</span> <span class="nav-text">调度setTimeout &amp; setInterval</span></a></li></ol></div>
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-author animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="Wh&CC"
+      src="/images/avatar.gif">
+  <p class="site-author-name" itemprop="name">Wh&CC</p>
+  <div class="site-description" itemprop="description">Per aspera ad astra</div>
+</div>
+<div class="site-state-wrap animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+        <a href="/archives/">
+          <span class="site-state-item-count">45</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+          <a href="/categories/">
+        <span class="site-state-item-count">3</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author animated">
+      <span class="links-of-author-item">
+        <a href="https://github.com/sacrifice-w" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;sacrifice-w" rel="noopener me" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="mailto:761612239@qq.com" title="E-Mail → mailto:761612239@qq.com" rel="noopener me" target="_blank"><i class="fa fa-envelope fa-fw"></i>E-Mail</a>
+      </span>
+  </div>
+
+        </div>
+      </div>
+    </div>
+
+    
+  </aside>
+
+
+    </div>
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2022/06/22/js%E8%A1%A5%E5%85%85%E7%9F%A5%E8%AF%86/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="Wh&CC">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="小吴的Blog">
+      <meta itemprop="description" content="Per aspera ad astra">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="js补充知识 | 小吴的Blog">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          js补充知识
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+
+      <time title="创建时间：2022-06-22 13:44:19" itemprop="dateCreated datePublished" datetime="2022-06-22T13:44:19+08:00">2022-06-22</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar-check"></i>
+      </span>
+      <span class="post-meta-item-text">更新于</span>
+      <time title="修改时间：2023-03-20 16:32:35" itemprop="dateModified" datetime="2023-03-20T16:32:35+08:00">2023-03-20</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">分类于</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/%E5%89%8D%E7%AB%AF%E7%9F%A5%E8%AF%86/" itemprop="url" rel="index"><span itemprop="name">前端知识</span></a>
+        </span>
+    </span>
+
+  
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+        <h3 id="现代模式"><a href="#现代模式" class="headerlink" title="现代模式"></a>现代模式</h3><p>现代模式<code>&quot;use strict&quot;;</code>当它处于脚本文件的顶部时，则整个脚本文件都将以“现代”模式进行工作。 <code>&quot;use strict&quot;</code>可以被放在函数体的开头。这样则可以只在该函数中启用严格模式。 但通常人们会在整个脚本中启用严格模式。</p>
+<span id="more"></span>
+
+<h3 id="变量和常量"><a href="#变量和常量" class="headerlink" title="变量和常量"></a>变量和常量</h3><p>用<code>let</code>来声明一个变量，原来用<code>var</code>来声明变量是一种比较古老的方式 <code>let message = &quot;hello&quot;;</code> 一个变量应该只能被声明一次，之后只进行引用</p>
+<p>声明一个常数（不变）变量，可以使用 <code>const</code> 而非 <code>let</code>,常量不能被修改，否则会报错 一个普遍的做法是将常量用作别名，以便记住那些在执行之前就已知的难以记住的值。例如使用大写字母和下划线来命名这些常量。</p>
+<h4 id="let-和-var的区别"><a href="#let-和-var的区别" class="headerlink" title="let 和 var的区别"></a>let 和 var的区别</h4><p>var没有块级作用域，它只存在于函数作用域和全局作用域，所以如果有一个代码块的话，等于var会创建一个全局变量。 而let只会存在在代码块内。</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">if</span> (<span class="literal">true</span>) &#123;</span><br><span class="line">  <span class="keyword">var</span> test = <span class="literal">true</span>; <span class="comment">// 使用 &quot;var&quot; 而不是 &quot;let&quot;</span></span><br><span class="line">&#125;</span><br><span class="line"><span class="title function_">alert</span>(test); <span class="comment">// true，变量在 if 结束后仍存在</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span> (<span class="literal">true</span>) &#123;</span><br><span class="line">  <span class="keyword">let</span> test = <span class="literal">true</span>; <span class="comment">// 使用 &quot;let&quot;</span></span><br><span class="line">&#125;</span><br><span class="line"><span class="title function_">alert</span>(test); <span class="comment">// ReferenceError: test is not defined</span></span><br></pre></td></tr></table></figure>
+
+<p><strong>var能够穿透if，for和其它代码块。</strong></p>
+<p>如果我们用 let 在同一作用域下将同一个变量声明两次，则会出现错误。 使用 var，我们可以重复声明一个变量，不管多少次都行。如果我们对一个已经声明的变量使用var，这条新的声明语句会被忽略。 <strong>var 变量声明在函数开头就会被处理（脚本启动对应全局变量）。</strong></p>
+<h3 id="BigInt"><a href="#BigInt" class="headerlink" title="BigInt"></a>BigInt</h3><p>numbe类型无法大于大于 (2^53-1)（即 9007199254740991），或小于 -(2^53-1) 的整数。这是其内部表示形式导致的技术限制。 可以通过将 n 附加到整数字段的末尾来创建 BigInt 值。 <code>const bigInt = 1234567890123456789012345678901234567890n;</code></p>
+<h3 id="通过反引号对字符串嵌入"><a href="#通过反引号对字符串嵌入" class="headerlink" title="通过反引号对字符串嵌入"></a>通过反引号对字符串嵌入</h3><p>反引号是<strong>功能扩展</strong>引号。它们允许我们通过将变量和表达式包装在<code>$&#123;...&#125;</code>中，来将它们嵌入到字符串中</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="title function_">alert</span>( <span class="string">`the result is <span class="subst">$&#123;<span class="number">1</span> + <span class="number">2</span>&#125;</span>`</span> ); <span class="comment">// the result is 3</span></span><br></pre></td></tr></table></figure>
+
+<h3 id="for-in-和for-of-的区别"><a href="#for-in-和for-of-的区别" class="headerlink" title="for in 和for of 的区别"></a>for in 和for of 的区别</h3><p>for in 和for of 都是遍历对象里的每一项，那么他们有什么区别呢？ 区别1： for of无法循环遍历对象 区别2： <strong>for in循环遍历的是数组的索引，for of循环遍历的是数组的值</strong></p>
+<p><strong>可以应用 for..of 的对象被称为 可迭代的。</strong></p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> arr = [<span class="string">&#x27;nick&#x27;</span>,<span class="string">&#x27;freddy&#x27;</span>,<span class="string">&#x27;mike&#x27;</span>,<span class="string">&#x27;james&#x27;</span>];</span><br><span class="line"><span class="keyword">for</span>(<span class="keyword">var</span> key <span class="keyword">in</span> arr)&#123;</span><br><span class="line">    <span class="variable language_">console</span>.<span class="title function_">log</span>(key);   <span class="comment">//输出的是0,1,2,3</span></span><br><span class="line">&#125;</span><br><span class="line"><span class="variable language_">console</span>.<span class="title function_">log</span>(<span class="string">&#x27;-----------分割线-----------&#x27;</span>);</span><br><span class="line"><span class="keyword">for</span>(<span class="keyword">var</span> item <span class="keyword">of</span> arr)&#123;   </span><br><span class="line">    <span class="variable language_">console</span>.<span class="title function_">log</span>(item);  <span class="comment">//输出的是nick&#x27;,&#x27;freddy&#x27;,&#x27;mike&#x27;,&#x27;james&#x27;</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>区别3： for in 会遍历自定义属性，for of不会</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> arr = [<span class="string">&#x27;nick&#x27;</span>,<span class="string">&#x27;freddy&#x27;</span>,<span class="string">&#x27;mike&#x27;</span>,<span class="string">&#x27;james&#x27;</span>];</span><br><span class="line">arr.<span class="property">name</span> = <span class="string">&quot;数组&quot;</span>;</span><br><span class="line"></span><br><span class="line"><span class="keyword">for</span>(<span class="keyword">var</span> key <span class="keyword">in</span> arr)&#123;</span><br><span class="line">    <span class="variable language_">console</span>.<span class="title function_">log</span>(key+<span class="string">&#x27;: &#x27;</span>+arr[key]);   </span><br><span class="line">&#125;</span><br><span class="line"><span class="variable language_">console</span>.<span class="title function_">log</span>(<span class="string">&#x27;-----------分割线-----------&#x27;</span>);</span><br><span class="line"><span class="keyword">for</span>(<span class="keyword">var</span> item <span class="keyword">of</span> arr)&#123;   </span><br><span class="line">    <span class="variable language_">console</span>.<span class="title function_">log</span>(item);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>给数组添加一个自定义属性name，并且赋值”数组”。然后进行遍历输出的，会发现新定义的属性也被for in输出来了，而for of并不会对name进行输出。</p>
+<h3 id="对象的一些补充知识"><a href="#对象的一些补充知识" class="headerlink" title="对象的一些补充知识"></a>对象的一些补充知识</h3><figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">let</span> user = &#123;</span><br><span class="line">    name = <span class="string">&quot;john&quot;</span>,</span><br><span class="line">    age = <span class="number">30</span>,</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+
+<p>列表中的最后一个属性应以逗号结尾,这叫做尾随（trailing）或悬挂（hanging）逗号。这样便于我们添加、删除和移动属性，因为所有的行都是相似的。 通过方括号同样可以对对象进行操作 比如说<code>user[&quot;like birds&quot;] = true;</code>或者是<code>delete user[&quot;like birds&quot;]</code>就可以通过方括号来对对象进行增删查改，并且可以适用于任何字符串</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">let</span> user = &#123;</span><br><span class="line">  <span class="attr">name</span>: <span class="string">&quot;John&quot;</span>,</span><br><span class="line">  <span class="attr">age</span>: <span class="number">30</span></span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="keyword">let</span> key = <span class="title function_">prompt</span>(<span class="string">&quot;What do you want to know about the user?&quot;</span>, <span class="string">&quot;name&quot;</span>);</span><br><span class="line"></span><br><span class="line"><span class="comment">// 访问变量</span></span><br><span class="line"><span class="title function_">alert</span>( user[key] ); <span class="comment">// John（如果输入 &quot;name&quot;）</span></span><br></pre></td></tr></table></figure>
+
+<p>又或者可以通过变量<code>key</code>来访问属性。而点符号则不能使用 key只能访问user中存在的属性，如果属性不存在则显示undefined，这里的key会指向name</p>
+<p>对象的克隆和合并可以使用<code>Object.assign(dest, [src1, src2, src3...])</code>方法 第一个参数 dest 是指目标对象。 更后面的参数 src1, …, srcN（可按需传递多个参数）是源对象。 该方法将所有源对象的属性拷贝到目标对象 dest 中。换句话说，从第二个开始的所有参数的属性都被拷贝到第一个参数的对象中。 调用结果返回 dest。</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">let</span> user = &#123; <span class="attr">name</span>: <span class="string">&quot;John&quot;</span> &#125;;</span><br><span class="line"></span><br><span class="line"><span class="keyword">let</span> permissions1 = &#123; <span class="attr">canView</span>: <span class="literal">true</span> &#125;;</span><br><span class="line"><span class="keyword">let</span> permissions2 = &#123; <span class="attr">canEdit</span>: <span class="literal">true</span> &#125;;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 将 permissions1 和 permissions2 中的所有属性都拷贝到 user 中</span></span><br><span class="line"><span class="title class_">Object</span>.<span class="title function_">assign</span>(user, permissions1, permissions2);</span><br><span class="line"></span><br><span class="line"><span class="comment">// 现在 user = &#123; name: &quot;John&quot;, canView: true, canEdit: true &#125;</span></span><br></pre></td></tr></table></figure>
+
+<p>如果被拷贝的属性的属性名已经存在，那么它会被覆盖：</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">let</span> user = &#123; <span class="attr">name</span>: <span class="string">&quot;John&quot;</span> &#125;;</span><br><span class="line"></span><br><span class="line"><span class="title class_">Object</span>.<span class="title function_">assign</span>(user, &#123; <span class="attr">name</span>: <span class="string">&quot;Pete&quot;</span> &#125;);</span><br><span class="line"></span><br><span class="line"><span class="title function_">alert</span>(user.<span class="property">name</span>); <span class="comment">// 现在 user = &#123; name: &quot;Pete&quot; &#125;</span></span><br></pre></td></tr></table></figure>
+
+<p>我们也可以用 Object.assign 代替 for..in 循环来进行简单克隆：</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">let</span> user = &#123;</span><br><span class="line">  <span class="attr">name</span>: <span class="string">&quot;John&quot;</span>,</span><br><span class="line">  <span class="attr">age</span>: <span class="number">30</span></span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="keyword">let</span> clone = <span class="title class_">Object</span>.<span class="title function_">assign</span>(&#123;&#125;, user);</span><br></pre></td></tr></table></figure>
+
+<h3 id="Symbol"><a href="#Symbol" class="headerlink" title="Symbol"></a>Symbol</h3><p>symbol表示唯一的标识符。 Symbol 保证是唯一的。即使我们创建了许多具有相同描述的 Symbol，它们的值也是不同。描述只是一个标签，不影响任何东西。 例如，这里有两个描述相同的 Symbol —— 它们不相等：</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">let</span> id1 = <span class="title class_">Symbol</span>(<span class="string">&quot;id&quot;</span>);</span><br><span class="line"><span class="keyword">let</span> id2 = <span class="title class_">Symbol</span>(<span class="string">&quot;id&quot;</span>);</span><br><span class="line"><span class="title function_">alert</span>(id1 == id2); <span class="comment">// false</span></span><br></pre></td></tr></table></figure>
+
+<p><strong>Symbol 不会被自动转换为字符串</strong> 如果我们真的想显示一个 Symbol，我们需要在它上面调用 <code>.toString()</code>，如下所示：</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">let</span> id = <span class="title class_">Symbol</span>(<span class="string">&quot;id&quot;</span>);</span><br><span class="line"><span class="title function_">alert</span>(id.<span class="title function_">toString</span>()); <span class="comment">// Symbol(id)，现在它有效了</span></span><br></pre></td></tr></table></figure>
+
+<p>或者获取 symbol.description 属性，只显示描述（description）：</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">let</span> id = <span class="title class_">Symbol</span>(<span class="string">&quot;id&quot;</span>);</span><br><span class="line"><span class="title function_">alert</span>(id.<span class="property">description</span>); <span class="comment">// id</span></span><br></pre></td></tr></table></figure>
+
+<p><strong>Symbol 允许我们创建对象的“隐藏”属性，代码的任何其他部分都不能意外访问或重写这些属性。</strong></p>
+<h3 id="数字、字符串、数组的补充"><a href="#数字、字符串、数组的补充" class="headerlink" title="数字、字符串、数组的补充"></a>数字、字符串、数组的补充</h3><h4 id="数字"><a href="#数字" class="headerlink" title="数字"></a>数字</h4><p>假如我们需要表示 10 亿。显然，我们可以这样写： <code>MARKDOWN_HASH3c0128960a8d24c0e2a3faa7cb76fcf5MARKDOWN_HASH_</code> <em>我们也可以使用下划线</em> 作为分隔符： <code>MARKDOWN_HASH132377f2ba50b82cc7752c46a838738dMARKDOWN_HASH_</code> <em>这里的下划线</em> 扮演了“语法糖”的角色，使得数字具有更强的可读性。JavaScript 引擎会直接忽略数字之间的 _，所以 上面两个例子其实是一样的。 在 JavaScript 中，我们可以通过在数字后面附加字母 “e” 并指定零的个数来缩短数字：</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">let</span> billion = <span class="number">1e9</span>;  <span class="comment">// 10 亿，字面意思：数字 1 后面跟 9 个 0</span></span><br><span class="line"><span class="keyword">let</span> mcs = <span class="number">1e-6</span>; <span class="comment">// 1 的左边有 6 个 0 --&gt;0.000001</span></span><br></pre></td></tr></table></figure>
+
+<p>方法 num.toString(base) 返回在给定 base 进制数字系统中 num 的字符串表示形式。</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">let</span> num = <span class="number">255</span>;</span><br><span class="line"></span><br><span class="line"><span class="title function_">alert</span>( num.<span class="title function_">toString</span>(<span class="number">16</span>) );  <span class="comment">// ff</span></span><br><span class="line"><span class="title function_">alert</span>( num.<span class="title function_">toString</span>(<span class="number">2</span>) );   <span class="comment">// 11111111</span></span><br></pre></td></tr></table></figure>
+
+<p>函数 toFixed(n) 将数字舍入到小数点后 n 位，并以<strong>字符串形式</strong>返回结果。 因为toFixed 的结果是一个字符串。如果小数部分比所需要的短，则在结尾添加零：</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">let</span> num = <span class="number">12.34</span>;</span><br><span class="line"><span class="title function_">alert</span>( num.<span class="title function_">toFixed</span>(<span class="number">5</span>) ); <span class="comment">// &quot;12.34000&quot;，在结尾添加了 0，以达到小数点后五位</span></span><br></pre></td></tr></table></figure>
+
+<p>所以说如果使用toFixed来转换，可以使用一元加号或Number()调用，将其转换为数字：<code>+num.toFixed(5)</code></p>
+<p><strong>因为在js中进行小数操作时，很有可能出现精度损失，所以在处理小数时避免相等性检查。</strong></p>
+<h4 id="字符串"><a href="#字符串" class="headerlink" title="字符串"></a>字符串</h4><p><code>str.charAt[pos]</code>可以获取在pos位置的字符</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">let</span> str = <span class="string">`Hello`</span>;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 第一个字符</span></span><br><span class="line"><span class="title function_">alert</span>( str[<span class="number">0</span>] ); <span class="comment">// H</span></span><br><span class="line"><span class="title function_">alert</span>( str.<span class="title function_">charAt</span>(<span class="number">0</span>) ); <span class="comment">// H</span></span><br><span class="line"></span><br><span class="line"><span class="comment">// 最后一个字符</span></span><br><span class="line"><span class="title function_">alert</span>( str[str.<span class="property">length</span> - <span class="number">1</span>] ); <span class="comment">// o</span></span><br></pre></td></tr></table></figure>
+
+<p><strong><code>str.charCodeAt[pos]</code>可以获取在pos位置的字符的Unicode编码</strong></p>
+<p>toLowerCase() 和 toUpperCase() 方法可以改变大小写：</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="title function_">alert</span>( <span class="string">&#x27;Interface&#x27;</span>.<span class="title function_">toUpperCase</span>() ); <span class="comment">// INTERFACE</span></span><br><span class="line"><span class="title function_">alert</span>( <span class="string">&#x27;Interface&#x27;</span>.<span class="title function_">toLowerCase</span>() ); <span class="comment">// interface</span></span><br></pre></td></tr></table></figure>
+
+<p><code>str.indexOf()</code> 和<code>str.lastIndexOf()</code>用于查找字符串中某个字符或字符串的位置 如果找到则返回位置，没找到则返回-1。 不同的是，indexOf是从头开始寻找，lastIndexOf是从尾部开始寻找，但是这两种方法返回的值都是正向的。</p>
+<p>更现代的方法 str.includes(substr, pos) 根据 str 中是否包含 substr 来返回 true&#x2F;false。 <strong>如果我们需要检测匹配，但不需要它的位置，那么这是正确的选择</strong>：</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="title function_">alert</span>( <span class="string">&quot;Widget with id&quot;</span>.<span class="title function_">includes</span>(<span class="string">&quot;Widget&quot;</span>) ); <span class="comment">// true</span></span><br><span class="line"><span class="title function_">alert</span>( <span class="string">&quot;Hello&quot;</span>.<span class="title function_">includes</span>(<span class="string">&quot;Bye&quot;</span>) ); <span class="comment">// false</span></span><br></pre></td></tr></table></figure>
+
+<p>str.includes 的第二个可选参数是开始搜索的起始位置：</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="title function_">alert</span>( <span class="string">&quot;Midget&quot;</span>.<span class="title function_">includes</span>(<span class="string">&quot;id&quot;</span>) ); <span class="comment">// true</span></span><br><span class="line"><span class="title function_">alert</span>( <span class="string">&quot;Midget&quot;</span>.<span class="title function_">includes</span>(<span class="string">&quot;id&quot;</span>, <span class="number">3</span>) ); <span class="comment">// false, 从位置 3 开始没有 &quot;id&quot;</span></span><br></pre></td></tr></table></figure>
+
+<p>方法 str.startsWith 和 str.endsWith 的功能与其名称所表示的意思相同：</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="title function_">alert</span>( <span class="string">&quot;Widget&quot;</span>.<span class="title function_">startsWith</span>(<span class="string">&quot;Wid&quot;</span>) ); <span class="comment">// true，&quot;Widget&quot; 以 &quot;Wid&quot; 开始</span></span><br><span class="line"><span class="title function_">alert</span>( <span class="string">&quot;Widget&quot;</span>.<span class="title function_">endsWith</span>(<span class="string">&quot;get&quot;</span>) ); <span class="comment">// true，&quot;Widget&quot; 以 &quot;get&quot; 结束</span></span><br></pre></td></tr></table></figure>
+
+<h4 id="数组"><a href="#数组" class="headerlink" title="数组"></a>数组</h4><p>通过数组来实现队列和栈 <strong>队列(queque)：</strong> push 在末端添加一个元素. shift 取出队列首端的一个元素，整个队列往前移，这样原先排第二的元素现在排在了第一。 这两种操作数组都支持。 队列的应用在实践中经常会碰到。例如需要在屏幕上显示消息队列。 <strong>栈：</strong> push 在末端添加一个元素. pop 从末端取出一个元素. 所以新元素的添加和取出都是从“末端”开始的。 栈通常被被形容成一叠卡片：要么在最上面添加卡片，要么从最上面拿走卡片： 对于栈来说，最后放进去的内容是最先接收的，也叫做 LIFO（Last-In-First-Out），即后进先出法则。而与队列相对应的叫做 FIFO（First-In-First-Out），即先进先出。 JavaScript 中的数组既可以用作队列，也可以用作栈。它们允许你从首端&#x2F;末端来添加&#x2F;删除元素。 这在计算机科学中，允许这样的操作的数据结构被称为<strong>双端队列（deque）</strong>。</p>
+<p><strong>不能够使用&#x3D;&#x3D;来比较数组</strong> JavaScript 中的数组与其它一些编程语言的不同，不应该使用 &#x3D;&#x3D; 运算符比较 JavaScript 中的数组。 该运算符不会对数组进行特殊处理，它会像处理任意对象那样处理数组。 所以，<strong>如果我们使用 &#x3D;&#x3D; 来比较数组，除非我们比较的是两个引用同一数组的变量，否则它们永远不相等。</strong></p>
+<h4 id="数组的方法"><a href="#数组的方法" class="headerlink" title="数组的方法"></a>数组的方法</h4><p><code>arr.find(function(item, index, array) &#123;如果返回 true，则返回 item 并停止迭代。对于假值（falsy）的情况，则返回 undefined&#125;)</code>可以找到具有特定条件的对象。 item 是元素。index 是它的索引。array 是数组本身。</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">let</span> users = [</span><br><span class="line">  &#123;<span class="attr">id</span>: <span class="number">1</span>, <span class="attr">name</span>: <span class="string">&quot;John&quot;</span>&#125;,</span><br><span class="line">  &#123;<span class="attr">id</span>: <span class="number">2</span>, <span class="attr">name</span>: <span class="string">&quot;Pete&quot;</span>&#125;,</span><br><span class="line">  &#123;<span class="attr">id</span>: <span class="number">3</span>, <span class="attr">name</span>: <span class="string">&quot;Mary&quot;</span>&#125;</span><br><span class="line">];</span><br><span class="line"></span><br><span class="line"><span class="keyword">let</span> user = users.<span class="title function_">find</span>(<span class="function"><span class="params">item</span> =&gt;</span> item.<span class="property">id</span> == <span class="number">1</span>);</span><br><span class="line"></span><br><span class="line"><span class="title function_">alert</span>(user.<span class="property">name</span>); <span class="comment">// John</span></span><br></pre></td></tr></table></figure>
+
+<p>感觉同理可得如果想要看这个数组是不是全零数组，也可以使用这个来判断 <code>arr.find(item =&gt; item !=0)</code></p>
+<p><code>arr.findIndex</code>方法（与 arr.find 方法）基本上是一样的，但它返回找到元素的索引，而不是元素本身。并且在未找到任何内容时返回 -1。</p>
+<p>find 方法搜索的是使函数返回 true 的第一个（单个）元素。 如果需要匹配的有很多，我们可以使用 arr.filter(fn)。 语法与 find 大致相同，但是 filter 返回的是所有匹配元素组成的数组：</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">let</span> users = [</span><br><span class="line">  &#123;<span class="attr">id</span>: <span class="number">1</span>, <span class="attr">name</span>: <span class="string">&quot;John&quot;</span>&#125;,</span><br><span class="line">  &#123;<span class="attr">id</span>: <span class="number">2</span>, <span class="attr">name</span>: <span class="string">&quot;Pete&quot;</span>&#125;,</span><br><span class="line">  &#123;<span class="attr">id</span>: <span class="number">3</span>, <span class="attr">name</span>: <span class="string">&quot;Mary&quot;</span>&#125;</span><br><span class="line">];</span><br><span class="line"></span><br><span class="line"><span class="comment">// 返回前两个用户的数组</span></span><br><span class="line"><span class="keyword">let</span> someUsers = users.<span class="title function_">filter</span>(<span class="function"><span class="params">item</span> =&gt;</span> item.<span class="property">id</span> &lt; <span class="number">3</span>);</span><br><span class="line"></span><br><span class="line"><span class="title function_">alert</span>(someUsers.<span class="property">length</span>); <span class="comment">// 2</span></span><br></pre></td></tr></table></figure>
+
+<p><strong>map方法</strong>是最有用也最常用的方法 它对数组的每个元素都调用函数，并返回结果数组。</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 将每个元素转换为它的字符串长度</span></span><br><span class="line"><span class="keyword">let</span> lengths = [<span class="string">&quot;Bilbo&quot;</span>, <span class="string">&quot;Gandalf&quot;</span>, <span class="string">&quot;Nazgul&quot;</span>].<span class="title function_">map</span>(<span class="function"><span class="params">item</span> =&gt;</span> item.<span class="property">length</span>);</span><br><span class="line"><span class="title function_">alert</span>(lengths); <span class="comment">// 5,7,6</span></span><br></pre></td></tr></table></figure>
+
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 创建一个数组，数组的每个元素里又有一个子数组</span></span><br><span class="line"><span class="keyword">let</span> r = <span class="number">4</span>,c = <span class="number">3</span>;</span><br><span class="line"><span class="keyword">let</span> arr = <span class="keyword">new</span> <span class="title class_">Array</span>(r).<span class="title function_">fill</span>(<span class="number">0</span>).<span class="title function_">map</span>(<span class="function">() =&gt;</span><span class="keyword">new</span> <span class="title class_">Array</span>(c).<span class="title function_">fill</span>(<span class="number">0</span>));</span><br></pre></td></tr></table></figure>
+
+<p>排序算法：</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">nums1.<span class="title function_">sort</span>(<span class="function">(<span class="params">a, b</span>) =&gt;</span> a-b);</span><br><span class="line">nums2.<span class="title function_">sort</span>(<span class="function">(<span class="params">a, b</span>) =&gt;</span> b-a);</span><br></pre></td></tr></table></figure>
+
+<p>全新的对数字排序方法，本质还是一个函数，但是表示的更加方便了</p>
+<p>通过<code>arr.some(fn)/arr.every(fn)</code>检查数组 与 map 类似，对数组的每个元素调用函数 fn。如果任何&#x2F;所有结果为 true，则返回 true，否则返回 false。 这两个方法的行为类似于 和 &amp;&amp; 运算符：如果 fn 返回一个真值，arr.some() 立即返回 true 并停止迭代其余数组项；如果 fn 返回一个假值，arr.every() 立即返回 false 并停止对其余数组项的迭代。 我们可以使用 every 来比较数组：</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">function</span> <span class="title function_">arraysEqual</span>(<span class="params">arr1, arr2</span>) &#123;</span><br><span class="line">  <span class="keyword">return</span> arr1.<span class="property">length</span> === arr2.<span class="property">length</span> &amp;&amp; arr1.<span class="title function_">every</span>(<span class="function">(<span class="params">value, index</span>) =&gt;</span> value === arr2[index]);</span><br><span class="line">&#125;</span><br><span class="line"><span class="title function_">alert</span>( <span class="title function_">arraysEqual</span>([<span class="number">1</span>, <span class="number">2</span>], [<span class="number">1</span>, <span class="number">2</span>])); <span class="comment">// true</span></span><br></pre></td></tr></table></figure>
+
+<p>arr.fill(value, start, end) —— 从索引 start 到 end，用重复的 value 填充数组 <strong>一般用于制作全0或全1矩阵</strong></p>
+<p>arr.flat(depth)&#x2F;arr.flatMap(fn) 从多维数组创建一个新的扁平数组。</p>
+<p>有一个全局方法<code>Array.from</code>可以接受一个可迭代或类数组的值，并从中获取一个“真正的”数组。 <code>Array.from(obj[, mapFn, thisArg])</code>其完整语法允许我们提供一个可选的“映射（mapping）”函数。 可选的第二个参数 mapFn 可以是一个函数，该函数会在对象中的元素被添加到数组前，被应用于每个元素，此外 thisArg 允许我们为该函数设置 this。</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">range = [<span class="number">1</span>,<span class="number">2</span>,<span class="number">3</span>,<span class="number">4</span>,<span class="number">5</span>];</span><br><span class="line"><span class="comment">// 求每个数的平方</span></span><br><span class="line"><span class="keyword">let</span> arr = <span class="title class_">Array</span>.<span class="title function_">from</span>(range, <span class="function"><span class="params">num</span> =&gt;</span> num * num);</span><br><span class="line"></span><br><span class="line"><span class="title function_">alert</span>(arr); <span class="comment">// 1,4,9,16,25</span></span><br></pre></td></tr></table></figure>
+
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">let</span> str = <span class="string">&#x27;𝒳😂&#x27;</span>;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 将 str 拆分为字符数组</span></span><br><span class="line"><span class="keyword">let</span> chars = <span class="title class_">Array</span>.<span class="title function_">from</span>(str);</span><br><span class="line"></span><br><span class="line"><span class="title function_">alert</span>(chars[<span class="number">0</span>]); <span class="comment">// 𝒳</span></span><br><span class="line"><span class="title function_">alert</span>(chars[<span class="number">1</span>]); <span class="comment">// 😂</span></span><br><span class="line"><span class="title function_">alert</span>(chars.<span class="property">length</span>); <span class="comment">// 2</span></span><br></pre></td></tr></table></figure>
+
+<p>与 str.split 方法不同，它依赖于字符串的可迭代特性。因此，就像 for..of 一样，可以正确地处理代理对（surrogate pair）。（译注：代理对也就是 UTF-16 扩展字符。） 技术上来讲，它和下面这段代码做的是相同的事：</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">let</span> str = <span class="string">&#x27;𝒳😂&#x27;</span>;</span><br><span class="line"></span><br><span class="line"><span class="keyword">let</span> chars = []; <span class="comment">// Array.from 内部执行相同的循环</span></span><br><span class="line"><span class="keyword">for</span> (<span class="keyword">let</span> char <span class="keyword">of</span> str) &#123;</span><br><span class="line">  chars.<span class="title function_">push</span>(char);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="title function_">alert</span>(chars);</span><br></pre></td></tr></table></figure>
+
+<p>……但 Array.from 精简很多。 我们甚至可以基于 Array.from 创建代理感知（surrogate-aware）的slice 方法（译注：也就是能够处理 UTF-16 扩展字符的 slice 方法）：</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">function</span> <span class="title function_">slice</span>(<span class="params">str, start, end</span>) &#123;</span><br><span class="line">  <span class="keyword">return</span> <span class="title class_">Array</span>.<span class="title function_">from</span>(str).<span class="title function_">slice</span>(start, end).<span class="title function_">join</span>(<span class="string">&#x27;&#x27;</span>);</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">let</span> str = <span class="string">&#x27;𝒳😂𩷶&#x27;</span>;</span><br><span class="line"><span class="title function_">alert</span>( <span class="title function_">slice</span>(str, <span class="number">1</span>, <span class="number">3</span>) ); <span class="comment">// 😂𩷶</span></span><br><span class="line"><span class="comment">// 原生方法不支持识别代理对（译注：UTF-16 扩展字符）</span></span><br><span class="line"><span class="title function_">alert</span>( str.<span class="title function_">slice</span>(<span class="number">1</span>, <span class="number">3</span>) ); <span class="comment">// 乱码（两个不同 UTF-16 扩展字符碎片拼接的结果）</span></span><br></pre></td></tr></table></figure>
+
+<h3 id="Map-and-Set（映射和集合）"><a href="#Map-and-Set（映射和集合）" class="headerlink" title="Map and Set（映射和集合）"></a>Map and Set（映射和集合）</h3><h4 id="Map"><a href="#Map" class="headerlink" title="Map"></a>Map</h4><p>Map 是一个带键的数据项的集合，就像一个 Object 一样。 但是它们最大的差别是 Map 允许任何类型的键（key）。</p>
+<ul>
+<li><p>new Map() —— 创建 map。</p>
+</li>
+<li><p>map.set(key, value) —— 根据键存储值。 每一次 map.set 调用都会返回 map 本身，所以我们可以进行“链式”调用：</p>
+</li>
+<li><p>map.get(key) —— 根据键来返回值，如果 map 中不存在对应的 key，则返回 undefined。</p>
+</li>
+<li><p>map.has(key) —— 如果 key 存在则返回 true，否则返回 false。</p>
+</li>
+<li><p>map.delete(key) —— 删除指定键的值。</p>
+</li>
+<li><p>map.clear() —— 清空 map。</p>
+</li>
+<li><p>map.size —— 返回当前元素个数。 map的重点是key，其主要的操作都是对key进行的操作。</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"><span class="keyword">let</span> map = <span class="keyword">new</span> <span class="title class_">Map</span>();</span><br></pre></td></tr></table></figure></li>
+</ul>
+<p>map.set(‘1’, ‘str1’); &#x2F;&#x2F; 字符串键 map.set(1, ‘num1’); &#x2F;&#x2F; 数字键 map.set(true, ‘bool1’); &#x2F;&#x2F; 布尔值键 &#x2F;&#x2F; Map 则会保留键的类型，所以下面这两个结果不同： alert( map.get(1) ); &#x2F;&#x2F; ‘num1’ alert( map.get(‘1’) ); &#x2F;&#x2F; ‘str1’</p>
+<p>alert( map.size ); &#x2F;&#x2F; 3</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line">使用对象作为键是 Map 最值得注意和重要的功能之一。在 Object 中，我们则无法使用对象作为键。在 Object 中使用字符串作为键是可以的，但我们无法使用另一个 Object 作为 Object 中的键。</span><br><span class="line"></span><br><span class="line">- map.keys() —— 遍历并返回所有的键（returns an iterable for keys），</span><br><span class="line">- map.values() —— 遍历并返回所有的值（returns an iterable for values），</span><br><span class="line">- map.entries() —— 遍历并返回所有的实体（returns an iterable for entries）[key, value]，for..of 在默认情况下使用的就是这个。</span><br><span class="line">```js</span><br><span class="line">let recipeMap = new Map([</span><br><span class="line">  [&#x27;cucumber&#x27;, 500],</span><br><span class="line">  [&#x27;tomatoes&#x27;, 350],</span><br><span class="line">  [&#x27;onion&#x27;,    50]</span><br><span class="line">]);</span><br><span class="line">// 遍历所有的键（vegetables）</span><br><span class="line">for (let vegetable of recipeMap.keys()) &#123;</span><br><span class="line">  alert(vegetable); // cucumber, tomatoes, onion</span><br><span class="line">&#125;</span><br><span class="line">// 遍历所有的值（amounts）</span><br><span class="line">for (let amount of recipeMap.values()) &#123;</span><br><span class="line">  alert(amount); // 500, 350, 50</span><br><span class="line">&#125;</span><br><span class="line">// 遍历所有的实体 [key, value]</span><br><span class="line">for (let entry of recipeMap) &#123; // 与 recipeMap.entries() 相同</span><br><span class="line">  alert(entry); // cucumber,500 (and so on)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>这里不管使用什么方法，返回的都是一个可迭代对象，而不是一个数组，如果想要将返回的对象转变为一个数组，需要使用<code>Array.from(map.keys())</code></p>
+<h4 id="Set"><a href="#Set" class="headerlink" title="Set"></a>Set</h4><p>Set 是一个特殊的类型集合 —— “值的集合”（没有键），它的每一个值只能出现一次。</p>
+<ul>
+<li><p>new Set(iterable) —— 创建一个 set，如果提供了一个 iterable 对象（通常是数组），将会从数组里面复制值到 set 中。</p>
+</li>
+<li><p>set.add(value) —— 添加一个值，返回 set 本身</p>
+</li>
+<li><p>set.delete(value) —— 删除值，如果 value 在这个方法调用的时候存在则返回 true ，否则返回 false。</p>
+</li>
+<li><p>set.has(value) —— 如果 value 在 set 中，返回 true，否则返回 false。</p>
+</li>
+<li><p>set.clear() —— 清空 set。</p>
+</li>
+<li><p>set.size —— 返回元素个数。 <strong>它的主要特点是，重复使用同一个值调用 set.add(value) 并不会发生什么改变。这就是 Set 里面的每一个值只出现一次的原因。</strong></p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">let</span> set = <span class="keyword">new</span> <span class="title class_">Set</span>();</span><br><span class="line"><span class="keyword">let</span> john = &#123; <span class="attr">name</span>: <span class="string">&quot;John&quot;</span> &#125;;</span><br><span class="line"><span class="keyword">let</span> pete = &#123; <span class="attr">name</span>: <span class="string">&quot;Pete&quot;</span> &#125;;</span><br><span class="line"><span class="keyword">let</span> mary = &#123; <span class="attr">name</span>: <span class="string">&quot;Mary&quot;</span> &#125;;</span><br><span class="line"><span class="comment">// visits，一些访客来访好几次</span></span><br><span class="line">set.<span class="title function_">add</span>(john);</span><br><span class="line">set.<span class="title function_">add</span>(pete);</span><br><span class="line">set.<span class="title function_">add</span>(mary);</span><br><span class="line">set.<span class="title function_">add</span>(john);</span><br><span class="line">set.<span class="title function_">add</span>(mary);</span><br><span class="line"><span class="comment">// set 只保留不重复的值</span></span><br><span class="line"><span class="title function_">alert</span>( set.<span class="property">size</span> ); <span class="comment">// 3</span></span><br><span class="line"><span class="keyword">for</span> (<span class="keyword">let</span> user <span class="keyword">of</span> set) &#123;</span><br><span class="line"><span class="title function_">alert</span>(user.<span class="property">name</span>); <span class="comment">// John（然后 Pete 和 Mary）</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>Set 的替代方法可以是一个用户数组，用 arr.find 在每次插入值时检查是否重复。但是这样性能会很差，因为这个方法会遍历整个数组来检查每个元素。Set 内部对唯一性检查进行了更好的优化。</p>
+</li>
+</ul>
+<h3 id="JSON"><a href="#JSON" class="headerlink" title="JSON"></a>JSON</h3><p>JSON（JavaScript Object Notation）是表示值和对象的通用格式。在 RFC 4627 标准中有对其的描述。最初它是为 JavaScript 而创建的，但许多其他编程语言也有用于处理它的库。因此，当客户端使用 JavaScript 而服务器端是使用 Ruby&#x2F;PHP&#x2F;Java 等语言编写的时，使用 JSON 可以很容易地进行数据交换。</p>
+<ul>
+<li><code>JSON.stringify</code>将对象转换为 JSON。 方法 JSON.stringify() 接收对象并将其转换为字符串。</li>
+<li><code>JSON.parse</code>将 JSON 转换回对象。</li>
+</ul>
+<h4 id="json的编码"><a href="#json的编码" class="headerlink" title="json的编码"></a>json的编码</h4><figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">let</span> student = &#123;</span><br><span class="line">  <span class="attr">name</span>: <span class="string">&#x27;John&#x27;</span>,</span><br><span class="line">  <span class="attr">age</span>: <span class="number">30</span>,</span><br><span class="line">  <span class="attr">isAdmin</span>: <span class="literal">false</span>,</span><br><span class="line">  <span class="attr">courses</span>: [<span class="string">&#x27;html&#x27;</span>, <span class="string">&#x27;css&#x27;</span>, <span class="string">&#x27;js&#x27;</span>],</span><br><span class="line">  <span class="attr">wife</span>: <span class="literal">null</span></span><br><span class="line">&#125;;</span><br><span class="line"><span class="keyword">let</span> json = <span class="title class_">JSON</span>.<span class="title function_">stringify</span>(student);</span><br><span class="line"><span class="title function_">alert</span>(<span class="keyword">typeof</span> json); <span class="comment">// we&#x27;ve got a string!</span></span><br><span class="line"><span class="title function_">alert</span>(json);</span><br><span class="line"><span class="comment">/* JSON 编码的对象：</span></span><br><span class="line"><span class="comment">&#123;</span></span><br><span class="line"><span class="comment">  &quot;name&quot;: &quot;John&quot;,</span></span><br><span class="line"><span class="comment">  &quot;age&quot;: 30,</span></span><br><span class="line"><span class="comment">  &quot;isAdmin&quot;: false,</span></span><br><span class="line"><span class="comment">  &quot;courses&quot;: [&quot;html&quot;, &quot;css&quot;, &quot;js&quot;],</span></span><br><span class="line"><span class="comment">  &quot;wife&quot;: null</span></span><br><span class="line"><span class="comment">&#125;</span></span><br><span class="line"><span class="comment">*/</span></span><br></pre></td></tr></table></figure>
+
+<p>得到的json字符串是一个被称为JSON编码（JSON-encoded）或序列化（serialized）或字符串化（stringified）或编组化（marshalled）的对象。 我们现在已经准备好通过有线发送它或将其放入普通数据存储。 JSON 编码的对象与对象字面量有几个重要的区别： 字符串使用双引号。JSON 中没有单引号或反引号。所以 ‘John’ 被转换为 “John”。 对象属性名称也是双引号的。这是强制性的。所以 age:30 被转换成 “age”:30。 <strong>JSON 是语言无关的纯数据规范，因此一些特定于 JavaScript 的对象属性会被 JSON.stringify 跳过。</strong> 函数属性（方法）。Symbol 类型的键和值。存储 undefined 的属性。会被跳过</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 数字在 JSON 还是数字</span></span><br><span class="line"><span class="title function_">alert</span>( <span class="title class_">JSON</span>.<span class="title function_">stringify</span>(<span class="number">1</span>) ) <span class="comment">// 1</span></span><br><span class="line"><span class="comment">// 字符串在 JSON 中还是字符串，只是被双引号扩起来</span></span><br><span class="line"><span class="title function_">alert</span>( <span class="title class_">JSON</span>.<span class="title function_">stringify</span>(<span class="string">&#x27;test&#x27;</span>) ) <span class="comment">// &quot;test&quot;</span></span><br><span class="line"><span class="title function_">alert</span>( <span class="title class_">JSON</span>.<span class="title function_">stringify</span>(<span class="literal">true</span>) ); <span class="comment">// true</span></span><br><span class="line"><span class="title function_">alert</span>( <span class="title class_">JSON</span>.<span class="title function_">stringify</span>([<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>]) ); <span class="comment">// [1,2,3]</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">let</span> user = &#123;</span><br><span class="line">  <span class="title function_">sayHi</span>(<span class="params"></span>) &#123; <span class="comment">// 被忽略</span></span><br><span class="line">    <span class="title function_">alert</span>(<span class="string">&quot;Hello&quot;</span>);</span><br><span class="line">  &#125;,</span><br><span class="line">  [<span class="title class_">Symbol</span>(<span class="string">&quot;id&quot;</span>)]: <span class="number">123</span>, <span class="comment">// 被忽略</span></span><br><span class="line">  <span class="attr">something</span>: <span class="literal">undefined</span> <span class="comment">// 被忽略</span></span><br><span class="line">&#125;;</span><br><span class="line"><span class="title function_">alert</span>( <span class="title class_">JSON</span>.<span class="title function_">stringify</span>(user) ); <span class="comment">// &#123;&#125;（空对象）</span></span><br></pre></td></tr></table></figure>
+
+<p>并且json支持嵌套对象转换并进行自动转码</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">let</span> meetup = &#123;</span><br><span class="line">  <span class="attr">title</span>: <span class="string">&quot;Conference&quot;</span>,</span><br><span class="line">  <span class="attr">room</span>: &#123;</span><br><span class="line">    <span class="attr">number</span>: <span class="number">23</span>,</span><br><span class="line">    <span class="attr">participants</span>: [<span class="string">&quot;john&quot;</span>, <span class="string">&quot;ann&quot;</span>]</span><br><span class="line">  &#125;</span><br><span class="line">&#125;;</span><br><span class="line"><span class="title function_">alert</span>( <span class="title class_">JSON</span>.<span class="title function_">stringify</span>(meetup) );</span><br><span class="line"><span class="comment">/* 整个解构都被字符串化了</span></span><br><span class="line"><span class="comment">&#123;</span></span><br><span class="line"><span class="comment">  &quot;title&quot;:&quot;Conference&quot;,</span></span><br><span class="line"><span class="comment">  &quot;room&quot;:&#123;&quot;number&quot;:23,&quot;participants&quot;:[&quot;john&quot;,&quot;ann&quot;]&#125;,</span></span><br><span class="line"><span class="comment">&#125;</span></span><br><span class="line"><span class="comment">*/</span></span><br></pre></td></tr></table></figure>
+
+<p><code>JSON.stringify</code>的完整语法是： <code>let json = JSON.stringify(value,[replacer, space])</code> value:要编码的值。 replacer:要编码的属性数组或映射函数 function(key, value)。 space:用于格式化的空格数量 如果space&#x3D;2则等于告诉JavaScript在多行中显示嵌套的对象，对象内部缩进2个空格。 <strong>spaces 参数仅用于日志记录和美化输出。</strong> 大部分情况，JSON.stringify仅与第一个参数一起使用。但是，如果我们需要微调替换过程，比如过滤掉循环引用，我们可以使用JSON.stringify的第二个参数。 如果我们传递一个属性数组给它，那么只有这些属性会被编码。</p>
+<p>像 toString 进行字符串转换，对象也可以提供 toJSON 方法来进行 JSON 转换。如果可用，JSON.stringify 会自动调用它。</p>
+<h4 id="json的解码"><a href="#json的解码" class="headerlink" title="json的解码"></a>json的解码</h4><p><code>let value = JSON.parse(str, [reviver]);</code> str:要解析的 JSON 字符串。 reviver:可选的函数 function(key,value)，该函数将为每个 (key, value) 对调用，并可以对值进行转换。</p>
+<p>JSON 不支持注释。向 JSON 添加注释无效。 还有另一种名为 JSON5 的格式，它允许未加引号的键，也允许注释等。但这是一个独立的库，不在语言的规范中。 常规的 JSON 格式严格，并不是因为它的开发者很懒，而是为了实现简单，可靠且快速地实现解析算法。</p>
+<h3 id="箭头函数"><a href="#箭头函数" class="headerlink" title="箭头函数"></a>箭头函数</h3><p><code>let func = (arg1, arg2, ..., argN) =&gt; expression;</code> 箭头函数左边是接受的参数，并对右边求值并返回 如果我们只有一个参数，还可以省略掉参数外的圆括号，使代码更短。<code>let double = n =&gt; n * 2;</code> 如果没有参数，括号则是空的（但括号必须保留）：<code>let sayHi = () =&gt; alert(&quot;Hello!&quot;);</code></p>
+<p><strong>箭头函数对于简单的单行行为（action）来说非常方便，尤其是当我们懒得打太多字的时候。</strong> 带花括号：(…args) &#x3D;&gt; { body } — 花括号允许我们在函数中编写多个语句，但是我们需要显式地 return 来返回一些内容。</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">let</span> <span class="title function_">sum</span> = (<span class="params">a, b</span>) =&gt; &#123;  <span class="comment">// 花括号表示开始一个多行函数</span></span><br><span class="line">  <span class="keyword">let</span> result = a + b;</span><br><span class="line">  <span class="keyword">return</span> result; <span class="comment">// 如果我们使用了花括号，那么我们需要一个显式的 “return”</span></span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="title function_">alert</span>( <span class="title function_">sum</span>(<span class="number">1</span>, <span class="number">2</span>) ); <span class="comment">// 3</span></span><br></pre></td></tr></table></figure>
+
+<p><strong>箭头函数没有 this。如果访问 this，则会从外部获取。</strong> <strong>不具有 this 自然也就意味着另一个限制：箭头函数不能用作构造器（constructor）。不能用 new 调用它们。</strong> <strong>箭头函数也没有 arguments 变量。</strong></p>
+<h3 id="调度setTimeout-amp-setInterval"><a href="#调度setTimeout-amp-setInterval" class="headerlink" title="调度setTimeout &amp; setInterval"></a>调度setTimeout &amp; setInterval</h3><p>有时我们并不想立即执行一个函数，而是等待特定一段时间之后再执行。这就是所谓的“计划调用（scheduling a call）”。 setTimeout 允许我们将函数推迟到一段时间间隔之后再执行。 setInterval 允许我们重复运行一个函数，从一段时间间隔之后开始运行，之后以该时间间隔连续重复运行该函数。 <code>let timerId = setTimeout(funccode, [delay], [arg1], [arg2], ...)</code> <code>funccode</code>想要执行的函数或代码字符串。 一般传入的都是函数。由于某些历史原因，支持传入代码字符串，但是不建议这样做。 <code>delay</code>执行前的延时，以毫秒为单位（1000 毫秒 &#x3D; 1 秒），默认值是 0； <code>arg1，arg2…</code>要传入被执行函数（或代码字符串）的参数列表（IE9 以下不支持）</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">function</span> <span class="title function_">sayHi</span>(<span class="params"></span>) &#123;</span><br><span class="line">  <span class="title function_">alert</span>(<span class="string">&#x27;Hello&#x27;</span>);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="built_in">setTimeout</span>(sayHi, <span class="number">1000</span>);</span><br></pre></td></tr></table></figure>
+
+<p>需要注意的是，setTimeout()里的function不能加()，以上面为例，需要使用sayHi而不能使用sayHi()，因为这个方法是对函数的引用。</p>
+<p><strong>任何 setTimeout 都只会在当前代码执行完毕之后才会执行。</strong></p>
+<p><strong>可以用clearTimeout来取消调度</strong> setTimeout 在调用时会返回一个“定时器标识符（timer identifier）”，在我们的例子中是 timerId，我们可以使用它来取消执行。</p>
+<p><code>setInterval</code>方法和<code>setTimeout</code>的语法相同：<code>let timerId = setInterval(funccode, [delay], [arg1], [arg2], ...)</code> 所有参数的意义也是相同的。不过与 setTimeout 只执行一次不同，setInterval 是每间隔给定的时间周期性执行。 想要阻止后续调用，我们需要调用 clearInterval(timerId)。</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 每 2 秒重复一次</span></span><br><span class="line"><span class="keyword">let</span> timerId = <span class="built_in">setInterval</span>(<span class="function">() =&gt;</span> <span class="title function_">alert</span>(<span class="string">&#x27;tick&#x27;</span>), <span class="number">2000</span>);</span><br><span class="line"><span class="comment">// 5 秒之后停止</span></span><br><span class="line"><span class="built_in">setTimeout</span>(<span class="function">() =&gt;</span> &#123; <span class="built_in">clearInterval</span>(timerId); <span class="title function_">alert</span>(<span class="string">&#x27;stop&#x27;</span>); &#125;, <span class="number">5000</span>);</span><br></pre></td></tr></table></figure>
+
+<p>在大多数浏览器中，包括Chrome和Firefox，在显示alert&#x2F;confirm&#x2F;prompt弹窗时，内部的定时器仍旧会继续“嘀嗒”。 所以，在运行上面的代码时，如果在一定时间内没有关掉alert弹窗，那么在你关闭弹窗后，下一个 alert 会立即显示。两次alert之间的时间间隔将小于2秒。</p>
+<p><strong>嵌套的 setTimeout 能够精确地设置两次执行之间的延时，而 setInterval 却不能。</strong></p>
+
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/2022/06/22/dom/" rel="prev" title="DOM">
+                  <i class="fa fa-chevron-left"></i> DOM
+                </a>
+            </div>
+            <div class="post-nav-item">
+                <a href="/2022/07/03/%E7%BD%91%E9%A1%B5%E7%9A%84%E7%94%9F%E5%91%BD%E5%91%A8%E6%9C%9F%E5%92%8Ccookie/" rel="next" title="网页的生命周期和cookie">
+                  网页的生命周期和cookie <i class="fa fa-chevron-right"></i>
+                </a>
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+
+<div class="copyright">
+  &copy; 
+  <span itemprop="copyrightYear">2023</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Wh&CC</span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io/" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.js.org/pisces/" rel="noopener" target="_blank">NexT.Pisces</a> 强力驱动
+  </div>
+
+    </div>
+  </footer>
+
+  
+  <div class="back-to-top" role="button" aria-label="返回顶部">
+    <i class="fa fa-arrow-up fa-lg"></i>
+    <span>0%</span>
+  </div>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+  
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.1/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous"></script>
+<script src="/js/comments.js"></script><script src="/js/utils.js"></script><script src="/js/motion.js"></script><script src="/js/next-boot.js"></script>
+
+  
+
+
+
+
+  
+
+
+
+
+
+</body>
+</html>

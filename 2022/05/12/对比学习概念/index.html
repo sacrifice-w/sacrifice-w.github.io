@@ -1,0 +1,346 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+<meta name="theme-color" content="#222"><meta name="generator" content="Hexo 6.3.0">
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.1/css/all.min.css" integrity="sha256-Z1K5uhUaJXA7Ll0XrZ/0JhX4lAtZFpT6jkKrEDT0drU=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.1.1/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
+
+<script class="next-config" data-name="main" type="application/json">{"hostname":"example.com","root":"/","images":"/images","scheme":"Pisces","darkmode":false,"version":"8.14.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12},"copycode":{"enable":false,"style":null},"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"stickytabs":false,"motion":{"enable":true,"async":false,"transition":{"menu_item":"fadeInDown","post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"}}</script><script src="/js/config.js"></script>
+
+    <meta name="description" content="1 对比学习的概念 对比学习是一种自监督学习方法，用于在没有标签的情况下，通过让模型学习哪些数据点相似或不同来学习数据集的一般特征。 本质上，对比学习允许我们的机器学习模型做同样的事情。它会观察哪些数据点对“相似”和“不同”，以便在执行分类或分割等任务之前了解数据更高阶的特征。 可以在没有任何注释或标签的情况下，训练模型以学习很多关于我们的数据的知识，因此其属于自监督学习。  与生成模型不同，对比">
+<meta property="og:type" content="article">
+<meta property="og:title" content="对比学习概念">
+<meta property="og:url" content="http://example.com/2022/05/12/%E5%AF%B9%E6%AF%94%E5%AD%A6%E4%B9%A0%E6%A6%82%E5%BF%B5/index.html">
+<meta property="og:site_name" content="小吴的Blog">
+<meta property="og:description" content="1 对比学习的概念 对比学习是一种自监督学习方法，用于在没有标签的情况下，通过让模型学习哪些数据点相似或不同来学习数据集的一般特征。 本质上，对比学习允许我们的机器学习模型做同样的事情。它会观察哪些数据点对“相似”和“不同”，以便在执行分类或分割等任务之前了解数据更高阶的特征。 可以在没有任何注释或标签的情况下，训练模型以学习很多关于我们的数据的知识，因此其属于自监督学习。  与生成模型不同，对比">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://blogwh.oss-cn-beijing.aliyuncs.com/img/duibi.jpg">
+<meta property="og:image" content="https://blogwh.oss-cn-beijing.aliyuncs.com/img/zhengyangben.jpg">
+<meta property="og:image" content="https://blogwh.oss-cn-beijing.aliyuncs.com/img/pingtu.jpg">
+<meta property="article:published_time" content="2022-05-12T05:19:08.000Z">
+<meta property="article:modified_time" content="2023-03-20T08:32:38.498Z">
+<meta property="article:author" content="Wh&amp;CC">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://blogwh.oss-cn-beijing.aliyuncs.com/img/duibi.jpg">
+
+
+<link rel="canonical" href="http://example.com/2022/05/12/%E5%AF%B9%E6%AF%94%E5%AD%A6%E4%B9%A0%E6%A6%82%E5%BF%B5/">
+
+
+
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"zh-CN","comments":true,"permalink":"http://example.com/2022/05/12/%E5%AF%B9%E6%AF%94%E5%AD%A6%E4%B9%A0%E6%A6%82%E5%BF%B5/","path":"2022/05/12/对比学习概念/","title":"对比学习概念"}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">""</script>
+<title>对比学习概念 | 小吴的Blog</title>
+  
+
+
+
+
+
+
+  <script async defer data-website-id="" src=""></script>
+
+  <script defer data-domain="" src=""></script>
+
+  <noscript>
+    <link rel="stylesheet" href="/css/noscript.css">
+  </noscript>
+<link rel="alternate" href="/atom.xml" title="小吴的Blog" type="application/atom+xml">
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <div class="headband"></div>
+
+  <main class="main">
+    <div class="column">
+      <header class="header" itemscope itemtype="http://schema.org/WPHeader"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏" role="button">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <p class="site-title">小吴的Blog</p>
+      <i class="logo-line"></i>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger" aria-label="搜索" role="button">
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu"><li class="menu-item menu-item-home"><a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a></li><li class="menu-item menu-item-about"><a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>关于</a></li><li class="menu-item menu-item-tags"><a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签</a></li><li class="menu-item menu-item-categories"><a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类</a></li><li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档</a></li>
+  </ul>
+</nav>
+
+
+
+
+</header>
+        
+  
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#1-%E5%AF%B9%E6%AF%94%E5%AD%A6%E4%B9%A0%E7%9A%84%E6%A6%82%E5%BF%B5"><span class="nav-number">1.</span> <span class="nav-text">1 对比学习的概念</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-%E5%89%8D%E7%BD%AE%E4%BB%BB%E5%8A%A1"><span class="nav-number">2.</span> <span class="nav-text">2 前置任务</span></a></li></ol></div>
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-author animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="Wh&CC"
+      src="/images/avatar.gif">
+  <p class="site-author-name" itemprop="name">Wh&CC</p>
+  <div class="site-description" itemprop="description">Per aspera ad astra</div>
+</div>
+<div class="site-state-wrap animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+        <a href="/archives/">
+          <span class="site-state-item-count">45</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+          <a href="/categories/">
+        <span class="site-state-item-count">3</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author animated">
+      <span class="links-of-author-item">
+        <a href="https://github.com/sacrifice-w" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;sacrifice-w" rel="noopener me" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="mailto:761612239@qq.com" title="E-Mail → mailto:761612239@qq.com" rel="noopener me" target="_blank"><i class="fa fa-envelope fa-fw"></i>E-Mail</a>
+      </span>
+  </div>
+
+        </div>
+      </div>
+    </div>
+
+    
+  </aside>
+
+
+    </div>
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2022/05/12/%E5%AF%B9%E6%AF%94%E5%AD%A6%E4%B9%A0%E6%A6%82%E5%BF%B5/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="Wh&CC">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="小吴的Blog">
+      <meta itemprop="description" content="Per aspera ad astra">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="对比学习概念 | 小吴的Blog">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          对比学习概念
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+
+      <time title="创建时间：2022-05-12 13:19:08" itemprop="dateCreated datePublished" datetime="2022-05-12T13:19:08+08:00">2022-05-12</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar-check"></i>
+      </span>
+      <span class="post-meta-item-text">更新于</span>
+      <time title="修改时间：2023-03-20 16:32:38" itemprop="dateModified" datetime="2023-03-20T16:32:38+08:00">2023-03-20</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">分类于</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/%E8%AE%A1%E7%AE%97%E6%9C%BA%E8%A7%86%E8%A7%89/" itemprop="url" rel="index"><span itemprop="name">计算机视觉</span></a>
+        </span>
+    </span>
+
+  
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+        <h3 id="1-对比学习的概念"><a href="#1-对比学习的概念" class="headerlink" title="1 对比学习的概念"></a>1 对比学习的概念</h3><ul>
+<li>对比学习是一<strong>种自监督学习</strong>方法，用于在没有标签的情况下，<strong>通过让模型学习哪些数据点相似或不同来学习数据集的一般特征</strong>。</li>
+<li>本质上，<strong>对比学习</strong>允许我们的机器学习模型做同样的事情。它会观察哪些数据点对“相似”和“不同”，以便在执行分类或分割等任务之前了解数据更高阶的特征。</li>
+<li>可以在没有任何注释或标签的情况下，训练模型以学习很多关于我们的数据的知识，因此其属于自监督学习。</li>
+</ul>
+<p>与生成模型不同，对比学习是一种判别模型，它让相似样本变近，不同样本变远。 为了达到这一点，一种衡量远近的指标被用来衡量嵌入之间的远近。 如图所示，对比损失用来训练对比学习模型。一般来说，以图片为例，对比学习把一张图片的增强版本当作一个正例，其余图片当作反例，然后训练一个模型来区分正反例。区分依赖于某种前置任务。 [<img src="https://blogwh.oss-cn-beijing.aliyuncs.com/img/duibi.jpg">] 这样做，学习到的表示就可以用到下游任务之中。</p>
+<h3 id="2-前置任务"><a href="#2-前置任务" class="headerlink" title="2 前置任务"></a>2 前置任务</h3><p>前置任务（pretext task）可以让模型从伪标签中来学习特征。例如图像修复、图像着色、拼图、超分辨率、视频帧预测、视听对应等。这些前置任务被证明可以学习到很好的表示。 在对比学习的前置任务之中，原始图片被当作一种anchor，其增强的图片被当作正样本（positive sample），然后其余的图片被当作负样本。 大多数的前置任务可以被分为四类：</p>
+<ul>
+<li><p>颜色变换 –&gt; 原图、高斯噪声、高斯模糊、颜色失真等</p>
+</li>
+<li><p>几何变换 –&gt; 原图、裁剪、旋转、翻转等 [<img src="https://blogwh.oss-cn-beijing.aliyuncs.com/img/zhengyangben.jpg">]</p>
+</li>
+<li><p>基于上下文的任务</p>
+<ul>
+<li>拼图 [<img src="https://blogwh.oss-cn-beijing.aliyuncs.com/img/pingtu.jpg">]解决一个拼图问题被当作学习表示的前置任务 原图被当作anchor，打乱后的图片被当作正样本，其余图片被当作负样本。</li>
+<li>基于帧的数据</li>
+<li>应用于时序数据，例如传感器的数据或者一系列视频帧。 策略背后的意义是：时间上相近的相似，时间上很远的不相似。</li>
+<li>解决这样的前置任务可以让模型学习到一些跟时间有关的表示。</li>
+<li>在这里，一个视频中的帧被当作<strong>正样本</strong>，其余视频被当作<strong>负样本</strong>。</li>
+<li>其余的方法还包括：随机抽样一个长视频中的两个片段，或者对每个视频片段做几何变换。 目标是使用对比损失（contrastive loss）来训练模型，使得来自一个视频的片段在嵌入空间中相近，来自不同视频的片段不相近。</li>
+<li>或者说<strong>将两个正样本和其余所有的负样本之间进行对比</strong>。 一对正样本是两个增强的来自同一个视频的视频片段。这样，所有的视频在嵌入空间中都是分割开来的，每个视频占据一个小的嵌入空间。</li>
+</ul>
+</li>
+<li><p>基于交叉模式的任务</p>
+</li>
+</ul>
+<p><strong>选择什么样的前置任务取决于你所要解决的任务。</strong> 前置任务的本质是：模型可以学习到数据本身的一些转换（数据转换之后依然被认作是原数据，转换后到数据和原数据处于同一嵌入空间），同时模型可以判别其他不同的数据样本。</p>
+<p><strong>选择正确的前置任务很重要。</strong></p>
+<p>基于时序数据的几篇论文： 《Time-Contrastive Networks: Self-Supervised Learning from Video》 对于视频中的每一帧，其实存在着特征相似的概念，可以认为相邻帧特征是相似的，而相隔较远的视频帧是不相似的，通过构建这种position和negative的样本来进行自监督约束。 对于同一个物体的拍摄是可能存在多个视角（multi-view），对于多个视角中的同一帧，可以认为特征是相似的，对于不同帧可以认为是不相似的。</p>
+<p>《Unsupervised Learning of Visual Representations Using Videos》 基于无监督追踪方法，首先在大量的无标签视频中进行无监督追踪，获取大量的物体追踪框。那么对于一个物体追踪框在不同帧的特征应该是相似的，而对于不同物体的追踪框中的特征应该是不相似的。</p>
+<p>《Shuffle and learn: unsupervised learning using temporal order verification》 基于顺序约束的方法，可以从视频中采样出正确的视频序列和不正确的视频序列，构造成正负样本对然后进行训练。简而言之，就是设计一个模型，来判断当前的视频序列是否是正确的顺序。</p>
+
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/2022/05/10/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E7%AC%AC%E5%8D%81%E4%BA%8C%E5%A4%A9/" rel="prev" title="数据结构第十二天">
+                  <i class="fa fa-chevron-left"></i> 数据结构第十二天
+                </a>
+            </div>
+            <div class="post-nav-item">
+                <a href="/2022/05/12/moco%E7%B2%BE%E8%AF%BB/" rel="next" title="MOCO精读">
+                  MOCO精读 <i class="fa fa-chevron-right"></i>
+                </a>
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+
+<div class="copyright">
+  &copy; 
+  <span itemprop="copyrightYear">2023</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Wh&CC</span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io/" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.js.org/pisces/" rel="noopener" target="_blank">NexT.Pisces</a> 强力驱动
+  </div>
+
+    </div>
+  </footer>
+
+  
+  <div class="back-to-top" role="button" aria-label="返回顶部">
+    <i class="fa fa-arrow-up fa-lg"></i>
+    <span>0%</span>
+  </div>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+  
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.1/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous"></script>
+<script src="/js/comments.js"></script><script src="/js/utils.js"></script><script src="/js/motion.js"></script><script src="/js/next-boot.js"></script>
+
+  
+
+
+
+
+  
+
+
+
+
+
+</body>
+</html>

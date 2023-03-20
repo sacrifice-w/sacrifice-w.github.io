@@ -1,0 +1,334 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+<meta name="theme-color" content="#222"><meta name="generator" content="Hexo 6.3.0">
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.1/css/all.min.css" integrity="sha256-Z1K5uhUaJXA7Ll0XrZ/0JhX4lAtZFpT6jkKrEDT0drU=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.1.1/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
+
+<script class="next-config" data-name="main" type="application/json">{"hostname":"example.com","root":"/","images":"/images","scheme":"Pisces","darkmode":false,"version":"8.14.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12},"copycode":{"enable":false,"style":null},"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"stickytabs":false,"motion":{"enable":true,"async":false,"transition":{"menu_item":"fadeInDown","post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"}}</script><script src="/js/config.js"></script>
+
+    <meta name="description" content="An IMAGE IS WORTH 16×16 WORDS: TRANSFORMERS FOR IMAGE RECOGNITON AT SCALE 把一个图像分割成很多个大小为16×16的patch，再用transformer做大规模的图像识别 1 摘要通常自注意力机制都是和CNN结合的，或者是attention去替换CNN的组件，但总体保持的还是CNN的结构，但是其实这是不必要的，这里说将att">
+<meta property="og:type" content="article">
+<meta property="og:title" content="VIT精读 Vision Transformer">
+<meta property="og:url" content="http://example.com/2022/03/17/vit%E7%B2%BE%E8%AF%BB-vision-transformer/index.html">
+<meta property="og:site_name" content="小吴的Blog">
+<meta property="og:description" content="An IMAGE IS WORTH 16×16 WORDS: TRANSFORMERS FOR IMAGE RECOGNITON AT SCALE 把一个图像分割成很多个大小为16×16的patch，再用transformer做大规模的图像识别 1 摘要通常自注意力机制都是和CNN结合的，或者是attention去替换CNN的组件，但总体保持的还是CNN的结构，但是其实这是不必要的，这里说将att">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="http://whcoding.cc/wp-content/uploads/2022/03/image-1647491779446.png">
+<meta property="og:image" content="http://121.40.200.50/wp-content/uploads/2022/03/image-1647493083673.png">
+<meta property="article:published_time" content="2022-03-17T05:20:58.000Z">
+<meta property="article:modified_time" content="2023-03-20T08:32:38.294Z">
+<meta property="article:author" content="Wh&amp;CC">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://whcoding.cc/wp-content/uploads/2022/03/image-1647491779446.png">
+
+
+<link rel="canonical" href="http://example.com/2022/03/17/vit%E7%B2%BE%E8%AF%BB-vision-transformer/">
+
+
+
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"zh-CN","comments":true,"permalink":"http://example.com/2022/03/17/vit%E7%B2%BE%E8%AF%BB-vision-transformer/","path":"2022/03/17/vit精读-vision-transformer/","title":"VIT精读 Vision Transformer"}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">""</script>
+<title>VIT精读 Vision Transformer | 小吴的Blog</title>
+  
+
+
+
+
+
+
+  <script async defer data-website-id="" src=""></script>
+
+  <script defer data-domain="" src=""></script>
+
+  <noscript>
+    <link rel="stylesheet" href="/css/noscript.css">
+  </noscript>
+<link rel="alternate" href="/atom.xml" title="小吴的Blog" type="application/atom+xml">
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <div class="headband"></div>
+
+  <main class="main">
+    <div class="column">
+      <header class="header" itemscope itemtype="http://schema.org/WPHeader"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏" role="button">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <p class="site-title">小吴的Blog</p>
+      <i class="logo-line"></i>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger" aria-label="搜索" role="button">
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu"><li class="menu-item menu-item-home"><a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a></li><li class="menu-item menu-item-about"><a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>关于</a></li><li class="menu-item menu-item-tags"><a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签</a></li><li class="menu-item menu-item-categories"><a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类</a></li><li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档</a></li>
+  </ul>
+</nav>
+
+
+
+
+</header>
+        
+  
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#1-%E6%91%98%E8%A6%81"><span class="nav-number">1.</span> <span class="nav-text">1 摘要</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#2-%E5%BC%95%E8%A8%80"><span class="nav-number">2.</span> <span class="nav-text">2 引言</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#3-%E7%BB%93%E8%AE%BA"><span class="nav-number">3.</span> <span class="nav-text">3 结论</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#4-%E7%9B%B8%E5%85%B3%E5%B7%A5%E4%BD%9C"><span class="nav-number">4.</span> <span class="nav-text">4 相关工作</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#5-VIT%E6%A8%A1%E5%9E%8B"><span class="nav-number">5.</span> <span class="nav-text">5 VIT模型</span></a></li></ol></div>
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-author animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="Wh&CC"
+      src="/images/avatar.gif">
+  <p class="site-author-name" itemprop="name">Wh&CC</p>
+  <div class="site-description" itemprop="description">Per aspera ad astra</div>
+</div>
+<div class="site-state-wrap animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+        <a href="/archives/">
+          <span class="site-state-item-count">45</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+          <a href="/categories/">
+        <span class="site-state-item-count">3</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author animated">
+      <span class="links-of-author-item">
+        <a href="https://github.com/sacrifice-w" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;sacrifice-w" rel="noopener me" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="mailto:761612239@qq.com" title="E-Mail → mailto:761612239@qq.com" rel="noopener me" target="_blank"><i class="fa fa-envelope fa-fw"></i>E-Mail</a>
+      </span>
+  </div>
+
+        </div>
+      </div>
+    </div>
+
+    
+  </aside>
+
+
+    </div>
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2022/03/17/vit%E7%B2%BE%E8%AF%BB-vision-transformer/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="Wh&CC">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="小吴的Blog">
+      <meta itemprop="description" content="Per aspera ad astra">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="VIT精读 Vision Transformer | 小吴的Blog">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          VIT精读 Vision Transformer
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+
+      <time title="创建时间：2022-03-17 13:20:58" itemprop="dateCreated datePublished" datetime="2022-03-17T13:20:58+08:00">2022-03-17</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar-check"></i>
+      </span>
+      <span class="post-meta-item-text">更新于</span>
+      <time title="修改时间：2023-03-20 16:32:38" itemprop="dateModified" datetime="2023-03-20T16:32:38+08:00">2023-03-20</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">分类于</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/%E8%AE%A1%E7%AE%97%E6%9C%BA%E8%A7%86%E8%A7%89/" itemprop="url" rel="index"><span itemprop="name">计算机视觉</span></a>
+        </span>
+    </span>
+
+  
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+        <p>An IMAGE IS WORTH 16×16 WORDS: TRANSFORMERS FOR IMAGE RECOGNITON AT SCALE 把一个图像分割成很多个大小为16×16的patch，再用transformer做大规模的图像识别</p>
+<h2 id="1-摘要"><a href="#1-摘要" class="headerlink" title="1 摘要"></a>1 摘要</h2><p>通常自注意力机制都是和CNN结合的，或者是attention去替换CNN的组件，但总体保持的还是CNN的结构，但是其实这是不必要的，这里说将attention和transformer一起用，效果特别好！！</p>
+<h2 id="2-引言"><a href="#2-引言" class="headerlink" title="2 引言"></a>2 引言</h2><p>transformer在nlp中应用的时候，用大规模数据集去预训练，再在特定的领域的小数据集做微调。 在cv领域中，像素点输入的话，序列太长了，比如一个224×224的图片，转换成像素点序列就会有50176的长度，是长度为512的BERT的100倍。 VIT想直接用一个标准的transformer，少做修改，但是为了解决序列长度的问题，所以把一个图片打成了很多16×16的patch，224&#x2F;16&#x3D;14,将每一个patch当成一个元素，所以序列长度就是14×14&#x3D;196，这对于transformer来说是一个还可以的长度，之后这些patch每一个都会经过FC layer（fully connected layer）得到了一个linear embedding，再将这个linear embedding输入到transformer中。 <strong>其实这里等于是用NLP的思想去做VISION，每一个patch相当于一个word，这也是标题的由来</strong> 但是VIT用的是有监督训练，NLP一般都是无监督的。 在中等大小的数据集中（比如imagenet），比resnet还要低几个点。但是这个是可以预期的，因为CNN有归纳偏置，也就是先验知识或者说是提前假设，而transformer没有先验知识，他只能从图片数据里自己学习对视觉的感知 但是当VIT在大数据集上进行预训练时，比如ImageNet21k（1400万）-JFT-300（3000万张）数据集上预训练，结果就更好了。</p>
+<span id="more"></span>
+
+<h2 id="3-结论"><a href="#3-结论" class="headerlink" title="3 结论"></a>3 结论</h2><p>和其它 self-attention in CV 的工作不同：除了 将图片转成 16 * 16 patches + 位置编码 之外，没有额外引入 图像特有的 inductive bias 不需要对 vision 领域的了解，不需要 domain knowledge，直接把 图片理解成 a sequence of patches 直接用 NLP 里的 Transformer encoder， simple yet scalable，大规模预训练数据集，效果非常好。 挖了一堆坑，新模型VIT</p>
+<h2 id="4-相关工作"><a href="#4-相关工作" class="headerlink" title="4 相关工作"></a>4 相关工作</h2><ul>
+<li><p>self-attention to each image with approximations： 不用整张图，只用 local neighborhoods，降低序列长度</p>
+</li>
+<li><p>sparse transformer 全局注意力的近似，只对稀疏的点做注意力</p>
+</li>
+<li><p>scale attention by applying attention in blocks of varying size 把自注意力用到不同大小的 blocks in the extreme case only along individual axes 极端情况，只关心轴， axial self-attention，横轴 + 纵轴 小结：以上 self-attention + CV 效果不错，但工程实现加速很难。可在 cpu gpu跑，但大规模训练不行。</p>
+<h2 id="5-VIT模型"><a href="#5-VIT模型" class="headerlink" title="5 VIT模型"></a>5 VIT模型</h2><p><img src="http://whcoding.cc/wp-content/uploads/2022/03/image-1647491779446.png" alt="file"> <strong>Input</strong>: 1 张图 <strong>Process</strong>: 九宫格 9 patches –&gt; Flattened Patches (3 _ 3 –&gt; 1 _ 9 拍平) –&gt; Linear Projections —&gt; Patch embedding <strong>Why need position embedding?</strong> self-attention 所有元素两两算自注意力，和顺序位置无关。但图片的 patches 是有顺序的，+ position embedding Patch embedding + position embedding &#x3D;&#x3D; token 包含 图片 patch 信息 和 patch 在原图中的位置信息。 ViT 对 图片的操作： 划分 patches，flatten patches 的线性投影 + patches 的位置信息，得到输入 transformer 的 tokens 得到 tokens 之后，对 visual tokens 进行 NLP 操作： tokens 传入 Transformer encoder，得到很多输出。 为了输出分类，通过借鉴BERT，增加了一个额外的CLS(extra learnable embedding)，它的position embedding永远是0 但是因为transformer的token在做两两的交互信息，所以CLS也会和所有的图片patches的token交互，所以CLS也会学到有用信息，从而用CLS来作分类判断</p>
+</li>
+</ul>
+<p>图片 X： 224 <em>224</em> 3 (RGB, 3 channels) patches 数 N： 224 ^ 2 &#x2F; 16 ^ 2 &#x3D; 14 ^ 2 &#x3D; 196 每一个 patch 的维度：16 <em>16</em> 3 (RGB, 3 channels) &#x3D; 768 Linear Projection 全连接层 E: 768( 不变，patch 计算而来 ) <em>D(embedding_dim) 768 或 更大 图片 X</em> E &#x3D; patches (196 patches 个数 <em>768 每个 patch 的维度)</em> E ( 768 <em>D ) &#x3D; 196</em> D (768) 图片是196 <em>768的，之后再添加一个CLS，所以最后输入的是197</em> 768。 当然还得添加位置向量，将patch embedding 和position embedding相加。 <img src="http://121.40.200.50/wp-content/uploads/2022/03/image-1647493083673.png" alt="file"> ViT base: 12 heads MLP：放大 4 倍，再缩小到原维度大小 Transfomer encoder 输入输出维度一致，可以直接叠加 L 个</p>
+<p>CV 通常的 全局特征：i.e., Res50 feature map (14 * 14) –&gt; GAP globally average-pooling 全局平均池化 –&gt; a flatten vector 全局的图片特征向量 –&gt; MLP 分类 CV 的 CLS GAP 和 NLP 的 CLS 效果差异不大，但是适用参数不一样。</p>
+<p>微调时用大图片尺寸 i.e., 256 <em>256， 320</em> 320 而不是 224 * 224，效果更好</p>
+<p>if patch size 不变 16 <em>16，更大尺寸的图片 –&gt; 序列长度的增加 i.e., 14</em> 14 –&gt; 20 <em>20 in 320</em> 320 image 虽然Transformer 理论上，可以处理任意长度。但是可能导致提前训练好的 position embedding 可能失效 1 - 9 的九宫格 图片 patches 位置编码 –&gt; patches 增多，1 - 25 位置编码 patches 数增多，想要使用已预训练好的位置编码，可以使用2d插值，torch 的 interpolate 函数实现；但也不是任意长度增加都能保持效果。 256–&gt;512 –&gt;768 长度的增加，直接使用差值，最后效果掉点。（采样定理） 插值interpolate是一个临时解决方案，也是ViT 微调时的一个局限。</p>
+<p>大数据集+长时间+tpuv3&#x3D;&#x3D;<strong>MONEY IS ALL YOU NEED</strong></p>
+
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/2022/03/15/css%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/" rel="prev" title="CSS学习笔记">
+                  <i class="fa fa-chevron-left"></i> CSS学习笔记
+                </a>
+            </div>
+            <div class="post-nav-item">
+                <a href="/2022/03/22/%E5%85%B3%E4%BA%8E%E9%98%BF%E9%87%8C%E4%BA%91%E8%BD%BB%E9%87%8F%E7%BA%A7%E5%BA%94%E7%94%A8%E6%9C%8D%E5%8A%A1%E5%99%A8%E4%B8%ADwordpress%E4%B8%AD%E5%B0%86http%E8%BD%AC%E6%8D%A2%E4%B8%BAhttps%E4%B8%AD/" rel="next" title="关于阿里云轻量级应用服务器中WordPress中将HTTP转换为HTTPS中踩的坑">
+                  关于阿里云轻量级应用服务器中WordPress中将HTTP转换为HTTPS中踩的坑 <i class="fa fa-chevron-right"></i>
+                </a>
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+
+<div class="copyright">
+  &copy; 
+  <span itemprop="copyrightYear">2023</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Wh&CC</span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io/" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.js.org/pisces/" rel="noopener" target="_blank">NexT.Pisces</a> 强力驱动
+  </div>
+
+    </div>
+  </footer>
+
+  
+  <div class="back-to-top" role="button" aria-label="返回顶部">
+    <i class="fa fa-arrow-up fa-lg"></i>
+    <span>0%</span>
+  </div>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+  
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.1/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous"></script>
+<script src="/js/comments.js"></script><script src="/js/utils.js"></script><script src="/js/motion.js"></script><script src="/js/next-boot.js"></script>
+
+  
+
+
+
+
+  
+
+
+
+
+
+</body>
+</html>

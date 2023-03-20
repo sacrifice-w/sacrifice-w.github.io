@@ -1,0 +1,605 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+<meta name="theme-color" content="#222"><meta name="generator" content="Hexo 6.3.0">
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.1/css/all.min.css" integrity="sha256-Z1K5uhUaJXA7Ll0XrZ/0JhX4lAtZFpT6jkKrEDT0drU=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.1.1/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
+
+<script class="next-config" data-name="main" type="application/json">{"hostname":"example.com","root":"/","images":"/images","scheme":"Pisces","darkmode":false,"version":"8.14.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12},"copycode":{"enable":false,"style":null},"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"stickytabs":false,"motion":{"enable":true,"async":false,"transition":{"menu_item":"fadeInDown","post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"}}</script><script src="/js/config.js"></script>
+
+    <meta name="description" content="一、简介 以JavaScript为基础构建的语言 其是一个JavaScript的超集 TypeScript拓展了JavaScript，并添加了类型 TS不能被JS解析器直接执行，需要将ts编译为js进行执行 JavaScript是弱类型语言, 很多错误只有在运行时才会被发现。而TypeScript提供了一套静态检测机制, 可以帮助我们在编译时就发现错误">
+<meta property="og:type" content="article">
+<meta property="og:title" content="typescript基础">
+<meta property="og:url" content="http://example.com/2022/08/17/typescript%E5%9F%BA%E7%A1%80/index.html">
+<meta property="og:site_name" content="小吴的Blog">
+<meta property="og:description" content="一、简介 以JavaScript为基础构建的语言 其是一个JavaScript的超集 TypeScript拓展了JavaScript，并添加了类型 TS不能被JS解析器直接执行，需要将ts编译为js进行执行 JavaScript是弱类型语言, 很多错误只有在运行时才会被发现。而TypeScript提供了一套静态检测机制, 可以帮助我们在编译时就发现错误">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2022-08-17T01:12:36.000Z">
+<meta property="article:modified_time" content="2023-03-20T08:32:38.187Z">
+<meta property="article:author" content="Wh&amp;CC">
+<meta name="twitter:card" content="summary">
+
+
+<link rel="canonical" href="http://example.com/2022/08/17/typescript%E5%9F%BA%E7%A1%80/">
+
+
+
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"zh-CN","comments":true,"permalink":"http://example.com/2022/08/17/typescript%E5%9F%BA%E7%A1%80/","path":"2022/08/17/typescript基础/","title":"typescript基础"}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">""</script>
+<title>typescript基础 | 小吴的Blog</title>
+  
+
+
+
+
+
+
+  <script async defer data-website-id="" src=""></script>
+
+  <script defer data-domain="" src=""></script>
+
+  <noscript>
+    <link rel="stylesheet" href="/css/noscript.css">
+  </noscript>
+<link rel="alternate" href="/atom.xml" title="小吴的Blog" type="application/atom+xml">
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <div class="headband"></div>
+
+  <main class="main">
+    <div class="column">
+      <header class="header" itemscope itemtype="http://schema.org/WPHeader"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏" role="button">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <p class="site-title">小吴的Blog</p>
+      <i class="logo-line"></i>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger" aria-label="搜索" role="button">
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu"><li class="menu-item menu-item-home"><a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a></li><li class="menu-item menu-item-about"><a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>关于</a></li><li class="menu-item menu-item-tags"><a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签</a></li><li class="menu-item menu-item-categories"><a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类</a></li><li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档</a></li>
+  </ul>
+</nav>
+
+
+
+
+</header>
+        
+  
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#%E4%B8%80%E3%80%81%E7%AE%80%E4%BB%8B"><span class="nav-number">1.</span> <span class="nav-text">一、简介</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#1-1-%E5%AE%89%E8%A3%85%E5%92%8C%E4%BD%BF%E7%94%A8"><span class="nav-number">1.1.</span> <span class="nav-text">1.1 安装和使用</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#1-2-%E5%85%A5%E9%97%A8%E7%BD%91%E7%AB%99"><span class="nav-number">1.2.</span> <span class="nav-text">1.2 入门网站</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E4%BA%8C%E3%80%81%E5%9F%BA%E7%A1%80"><span class="nav-number">2.</span> <span class="nav-text">二、基础</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#2-1-%E7%B1%BB%E5%9E%8B"><span class="nav-number">2.1.</span> <span class="nav-text">2.1 类型</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#2-1-1-%E6%B3%A8%E6%84%8F%E7%82%B9"><span class="nav-number">2.1.1.</span> <span class="nav-text">2.1.1 注意点</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-1-2-ts%E4%B8%AD%E7%9A%84%E6%96%B0%E7%B1%BB%E5%9E%8B"><span class="nav-number">2.1.2.</span> <span class="nav-text">2.1.2 ts中的新类型</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#2-2-ts%E7%9A%84%E7%BC%96%E8%AF%91"><span class="nav-number">2.2.</span> <span class="nav-text">2.2 ts的编译</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#2-3-%E7%94%A8webpack%E6%89%93%E5%8C%85ts%E4%BB%A3%E7%A0%81"><span class="nav-number">2.3.</span> <span class="nav-text">2.3 用webpack打包ts代码</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#2-4-%E7%B1%BB%E3%80%81%E6%9E%84%E9%80%A0%E5%87%BD%E6%95%B0%E5%92%8Cthis"><span class="nav-number">2.4.</span> <span class="nav-text">2.4 类、构造函数和this</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#2-5-%E7%BB%A7%E6%89%BF%E5%92%8C%E6%8A%BD%E8%B1%A1%E7%B1%BB"><span class="nav-number">2.5.</span> <span class="nav-text">2.5 继承和抽象类</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E4%B8%89%E3%80%81%E6%8E%A5%E5%8F%A3"><span class="nav-number">3.</span> <span class="nav-text">三、接口</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#3-1-%E5%8F%AF%E9%80%89%E5%8F%AA%E8%AF%BB%E5%B1%9E%E6%80%A7"><span class="nav-number">3.1.</span> <span class="nav-text">3.1 可选只读属性</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#3-2-%E5%87%A0%E7%A7%8D%E7%BB%95%E5%BC%80%E9%A2%9D%E5%A4%96%E5%B1%9E%E6%80%A7%E6%A3%80%E6%9F%A5%E7%9A%84%E6%96%B9%E6%B3%95"><span class="nav-number">3.2.</span> <span class="nav-text">3.2 几种绕开额外属性检查的方法</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#3-2-1-%E9%B8%AD%E5%BC%8F%E8%BE%A9%E5%9E%8B%E6%B3%95"><span class="nav-number">3.2.1.</span> <span class="nav-text">3.2.1 鸭式辩型法</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3-2-2-%E7%B1%BB%E5%9E%8B%E6%96%AD%E8%A8%80"><span class="nav-number">3.2.2.</span> <span class="nav-text">3.2.2 类型断言</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3-2-3-%E7%B4%A2%E5%BC%95%E7%AD%BE%E5%90%8D"><span class="nav-number">3.2.3.</span> <span class="nav-text">3.2.3 索引签名</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#3-3-%E6%8E%A5%E5%8F%A3%E5%92%8C%E7%B1%BB%E5%9E%8B%E5%88%AB%E5%90%8D"><span class="nav-number">3.3.</span> <span class="nav-text">3.3 接口和类型别名</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E5%9B%9B%E3%80%81%E5%B1%9E%E6%80%A7%E7%9A%84%E5%B0%81%E8%A3%85"><span class="nav-number">4.</span> <span class="nav-text">四、属性的封装</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E4%BA%94%E3%80%81%E6%B3%9B%E5%9E%8B"><span class="nav-number">5.</span> <span class="nav-text">五、泛型</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#5-1-typeof"><span class="nav-number">5.1.</span> <span class="nav-text">5.1 typeof</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#5-2-keyof"><span class="nav-number">5.2.</span> <span class="nav-text">5.2 keyof</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E5%85%AD%E3%80%81tsconfig-json%E6%96%87%E4%BB%B6"><span class="nav-number">6.</span> <span class="nav-text">六、tsconfig.json文件</span></a></li></ol></div>
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-author animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="Wh&CC"
+      src="/images/avatar.gif">
+  <p class="site-author-name" itemprop="name">Wh&CC</p>
+  <div class="site-description" itemprop="description">Per aspera ad astra</div>
+</div>
+<div class="site-state-wrap animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+        <a href="/archives/">
+          <span class="site-state-item-count">45</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+          <a href="/categories/">
+        <span class="site-state-item-count">3</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author animated">
+      <span class="links-of-author-item">
+        <a href="https://github.com/sacrifice-w" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;sacrifice-w" rel="noopener me" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="mailto:761612239@qq.com" title="E-Mail → mailto:761612239@qq.com" rel="noopener me" target="_blank"><i class="fa fa-envelope fa-fw"></i>E-Mail</a>
+      </span>
+  </div>
+
+        </div>
+      </div>
+    </div>
+
+    
+  </aside>
+
+
+    </div>
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2022/08/17/typescript%E5%9F%BA%E7%A1%80/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="Wh&CC">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="小吴的Blog">
+      <meta itemprop="description" content="Per aspera ad astra">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="typescript基础 | 小吴的Blog">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          typescript基础
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+
+      <time title="创建时间：2022-08-17 09:12:36" itemprop="dateCreated datePublished" datetime="2022-08-17T09:12:36+08:00">2022-08-17</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar-check"></i>
+      </span>
+      <span class="post-meta-item-text">更新于</span>
+      <time title="修改时间：2023-03-20 16:32:38" itemprop="dateModified" datetime="2023-03-20T16:32:38+08:00">2023-03-20</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">分类于</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/%E5%89%8D%E7%AB%AF%E7%9F%A5%E8%AF%86/" itemprop="url" rel="index"><span itemprop="name">前端知识</span></a>
+        </span>
+    </span>
+
+  
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+        <h1 id="一、简介"><a href="#一、简介" class="headerlink" title="一、简介"></a>一、简介</h1><ol>
+<li>以JavaScript为基础构建的语言</li>
+<li>其是一个JavaScript的超集</li>
+<li>TypeScript拓展了JavaScript，并添加了类型</li>
+<li>TS不能被JS解析器直接执行，需要将ts编译为js进行执行</li>
+<li>JavaScript是弱类型语言, 很多错误只有在运行时才会被发现。而TypeScript提供了一套静态检测机制, 可以帮助我们在编译时就发现错误</li>
+</ol>
+<span id="more"></span>
+
+<h2 id="1-1-安装和使用"><a href="#1-1-安装和使用" class="headerlink" title="1.1 安装和使用"></a>1.1 安装和使用</h2><p>首先需要node.js 之后使用npm来下载ts</p>
+<ol>
+<li>首先将npm配置为淘宝镜像地址<code>npm config set registry https://registry.npm.taobao.org</code></li>
+<li>下载typescript<code>npm i -g typescript</code></li>
+<li>下载ts-node<code>npm i -g ts-node</code></li>
+<li>通过<code>tsc --init</code>创建一个tsconfig.json文件</li>
+<li>创建一个示例<code>xxx.ts</code>文件</li>
+<li>然后就能通过<code>ts-node xxx.ts</code>来运行示例了</li>
+<li>或者可以通过<code>tsc xxx.ts</code>来将ts编译成js</li>
+</ol>
+<h2 id="1-2-入门网站"><a href="#1-2-入门网站" class="headerlink" title="1.2 入门网站"></a>1.2 入门网站</h2><p>官方网站：<a target="_blank" rel="noopener" href="https://www.typescriptlang.org/zh/">https://www.typescriptlang.org/zh/</a> 一个很不错的入门教程：<a target="_blank" rel="noopener" href="https://juejin.cn/post/7018805943710253086?share_token=c4029c41-9cc7-4e39-9e2d-c57b6617d2d8">https://juejin.cn/post/7018805943710253086?share_token&#x3D;c4029c41-9cc7-4e39-9e2d-c57b6617d2d8</a></p>
+<h1 id="二、基础"><a href="#二、基础" class="headerlink" title="二、基础"></a>二、基础</h1><p><strong>typescript是强类型语言</strong></p>
+<h2 id="2-1-类型"><a href="#2-1-类型" class="headerlink" title="2.1 类型"></a>2.1 类型</h2><ol>
+<li><p>ts中需要对声明的变量进行类型的赋予</p>
+</li>
+<li><p>声明变量可以直接进行赋值</p>
+</li>
+<li><p>如果变量的声明和赋值是同时进行的，ts可以自动对变量进行类型检测</p>
+</li>
+<li><p>js中的函数是不考虑参数的类型和个数的</p>
+</li>
+<li><p>在ts中可以通过限制类型来控制传入参数的类型</p>
+<figure class="highlight ts"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 可以先对变量进行类型的赋予，之后这个变量的类型便固定了，如果赋予其不同类型的值则会报错</span></span><br><span class="line"><span class="keyword">let</span> <span class="attr">a</span>:<span class="built_in">number</span>;</span><br><span class="line"><span class="keyword">let</span> <span class="attr">b</span>:<span class="built_in">string</span>;</span><br><span class="line">a = <span class="number">123</span>;</span><br><span class="line">b = <span class="string">&#x27;hello&#x27;</span>;</span><br><span class="line"><span class="comment">// 如果不进行类型赋予，会以其第一个赋予的值作为其类型</span></span><br><span class="line"><span class="comment">// 这里就将c赋予了Boolean值类型</span></span><br><span class="line"><span class="keyword">let</span> c = <span class="literal">false</span>;</span><br><span class="line">c = <span class="literal">true</span>;</span><br><span class="line"><span class="comment">// 使用js中的函数形式</span></span><br><span class="line"><span class="keyword">function</span> <span class="title function_">sum</span>(<span class="params">aa,bb</span>)&#123;</span><br><span class="line"><span class="keyword">return</span> aa + bb;  </span><br><span class="line">&#125;</span><br><span class="line"><span class="title function_">sum</span>(<span class="attr">aa</span>:<span class="number">123</span>,<span class="attr">bb</span>:<span class="string">&#x27;hello&#x27;</span>); <span class="comment">//这里返回的就是123hello。变成了字符串拼串</span></span><br><span class="line"><span class="comment">// ts</span></span><br><span class="line"><span class="keyword">function</span> <span class="title function_">sum</span>(<span class="params">aaa:<span class="built_in">number</span>,bbb:<span class="built_in">number</span></span>)&#123;</span><br><span class="line"><span class="keyword">return</span> aaa + bbb; <span class="comment">//这里就限制了两个传入参数都必须是数字类型</span></span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">// 传入除数字类型和多传入参数都会报错</span></span><br><span class="line"><span class="title function_">sum</span>(<span class="attr">aaa</span>:<span class="number">123</span>, <span class="attr">bbb</span>:<span class="string">&#x27;hello&#x27;</span>,<span class="number">345</span>);</span><br></pre></td></tr></table></figure></li>
+</ol>
+<h3 id="2-1-1-注意点"><a href="#2-1-1-注意点" class="headerlink" title="2.1.1 注意点"></a>2.1.1 注意点</h3><p><strong>js中的八种类型值</strong></p>
+<figure class="highlight ts"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">let</span> <span class="attr">str</span>: <span class="built_in">string</span> = <span class="string">&quot;jimmy&quot;</span>;</span><br><span class="line"><span class="keyword">let</span> <span class="attr">num</span>: <span class="built_in">number</span> = <span class="number">24</span>;</span><br><span class="line"><span class="keyword">let</span> <span class="attr">bool</span>: <span class="built_in">boolean</span> = <span class="literal">false</span>;</span><br><span class="line"><span class="keyword">let</span> <span class="attr">u</span>: <span class="literal">undefined</span> = <span class="literal">undefined</span>;</span><br><span class="line"><span class="keyword">let</span> <span class="attr">n</span>: <span class="literal">null</span> = <span class="literal">null</span>;</span><br><span class="line"><span class="keyword">let</span> <span class="attr">obj</span>: <span class="built_in">object</span> = &#123;<span class="attr">x</span>: <span class="number">1</span>&#125;;</span><br><span class="line"><span class="keyword">let</span> <span class="attr">big</span>: <span class="built_in">bigint</span> = <span class="number">100n</span>;</span><br><span class="line"><span class="keyword">let</span> <span class="attr">sym</span>: <span class="built_in">symbol</span> = <span class="title class_">Symbol</span>(<span class="string">&quot;me&quot;</span>); </span><br></pre></td></tr></table></figure>
+
+<p>默认情况下<code>null</code>和<code>undefined</code>是<strong>所有类型</strong>的子类型。 就是说你可以把<code>null</code>和<code>undefined</code>赋值给其他类型。</p>
+<figure class="highlight ts"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// null和undefined赋值给string</span></span><br><span class="line"><span class="keyword">let</span> <span class="attr">str</span>:<span class="built_in">string</span> = <span class="string">&quot;666&quot;</span>;</span><br><span class="line">str = <span class="literal">null</span></span><br><span class="line">str= <span class="literal">undefined</span></span><br><span class="line"></span><br><span class="line"><span class="comment">// null和undefined赋值给number</span></span><br><span class="line"><span class="keyword">let</span> <span class="attr">num</span>:<span class="built_in">number</span> = <span class="number">666</span>;</span><br><span class="line">num = <span class="literal">null</span></span><br><span class="line">num= <span class="literal">undefined</span></span><br></pre></td></tr></table></figure>
+
+<p>如果你在<code>tsconfig.json</code>指定了<code>&quot;strictNullChecks&quot;:true</code>，<code>null</code>和<code>undefined</code>只能赋值给<code>void</code>和它们各自的类型。</p>
+<p>虽然<code>number</code>和<code>bigint</code>都表示数字，但是这两个类型不兼容。</p>
+<figure class="highlight ts"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">let</span> <span class="attr">big</span>: <span class="built_in">bigint</span> =  <span class="number">100n</span>;</span><br><span class="line"><span class="keyword">let</span> <span class="attr">num</span>: <span class="built_in">number</span> = <span class="number">6</span>;</span><br><span class="line">big = num;</span><br><span class="line">num = big;</span><br></pre></td></tr></table></figure>
+
+<p>会抛出一个类型不兼容的 ts(2322) 错误。</p>
+<h3 id="2-1-2-ts中的新类型"><a href="#2-1-2-ts中的新类型" class="headerlink" title="2.1.2 ts中的新类型"></a>2.1.2 ts中的新类型</h3><ol>
+<li><p>可以直接使用字面量进行类型声明</p>
+<figure class="highlight ts"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">let</span> a : <span class="number">10</span>;</span><br><span class="line">a = <span class="number">10</span>;</span><br><span class="line">a = <span class="number">11</span>; <span class="comment">//报错，不能将类型11分配给类型10</span></span><br><span class="line"><span class="comment">// 这样就限定了某一个变量的值</span></span><br></pre></td></tr></table></figure>
+</li>
+<li><p>但是可以使用来连接多个类型(联合类型)</p>
+<figure class="highlight ts"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">let</span> b : <span class="string">&#x27;male&#x27;</span>  <span class="string">&#x27;female&#x27;</span>;</span><br><span class="line">b = <span class="string">&#x27;male&#x27;</span>;</span><br><span class="line">b = <span class="string">&#x27;female&#x27;</span>;</span><br><span class="line"><span class="keyword">let</span> c : <span class="built_in">boolean</span>  <span class="built_in">string</span>;</span><br><span class="line">c = <span class="literal">true</span>;</span><br><span class="line">c = <span class="string">&#x27;hello&#x27;</span>;</span><br></pre></td></tr></table></figure>
+
+<p>这样就可以为一个变量进行多个赋值的选择。或者多种类型的选择</p>
+</li>
+<li><p>any 表示任意的类型，一个变量设置类型为any后相当于对该变量关闭ts的类型检测</p>
+<figure class="highlight ts"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">let</span> <span class="attr">d</span>:<span class="built_in">any</span>;</span><br><span class="line">d = <span class="number">10</span>;</span><br><span class="line">d = <span class="string">&#x27;hello&#x27;</span>;</span><br><span class="line">d = <span class="literal">true</span>;</span><br><span class="line"><span class="comment">// 声明变量如果不指定类型，则会自动判断变量的类型为any（隐式的any）</span></span><br><span class="line"><span class="keyword">let</span> d;</span><br></pre></td></tr></table></figure>
+
+<p><strong>在实际应用中尽量别用any</strong></p>
+</li>
+<li><p>unknown 表示未知类型的值</p>
+<ol>
+<li>unknown实际上就是一个类型安全的any</li>
+<li>因为any类型的变量可以复制给任意变量，从而导致可能存在的各种问题</li>
+<li>但是unknown类型的变量，不能直接赋值给其他变量</li>
+</ol>
+</li>
+<li><p>类型断言：可以用来告诉解析器变量的实际类型</p>
+<ol>
+<li><p>变量 as 类型</p>
+</li>
+<li><p>&lt;类型&gt;变量</p>
+<figure class="highlight ts"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">let</span> e : <span class="built_in">unknown</span>;</span><br><span class="line"><span class="keyword">let</span> s : <span class="built_in">string</span>;</span><br><span class="line">e = <span class="string">&#x27;hello&#x27;</span>;</span><br><span class="line">s = e; <span class="comment">//这样会报错，因为unknown不能直接赋值给其他变量</span></span><br><span class="line"><span class="comment">// 下面是类型断言，两种方式都可以</span></span><br><span class="line">s = e <span class="keyword">as</span> <span class="built_in">string</span>;</span><br><span class="line">s = &lt;<span class="built_in">string</span>&gt;e;</span><br></pre></td></tr></table></figure></li>
+</ol>
+</li>
+<li><p>void用来表示空，以函数为例，就表示没有返回值的函数</p>
+<figure class="highlight ts"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">function</span> <span class="title function_">fn</span>(<span class="params"></span>): <span class="built_in">void</span>&#123;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>never表示永远不会返回结果</p>
+<ol>
+<li><p>在 TypeScript 中，可以利用 never 类型的特性来实现全面性检查</p>
+</li>
+<li><p>使用 never 避免出现新增了联合类型没有对应的实现，目的就是写出类型绝对安全的代码</p>
+<figure class="highlight ts"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">type</span> <span class="title class_">Foo</span> = <span class="built_in">string</span>  <span class="built_in">number</span>;</span><br><span class="line"><span class="keyword">function</span> <span class="title function_">controlFlowAnalysisWithNever</span>(<span class="params">foo: Foo</span>) &#123;</span><br><span class="line"><span class="keyword">if</span> (<span class="keyword">typeof</span> foo === <span class="string">&quot;string&quot;</span>) &#123;</span><br><span class="line"><span class="comment">// 这里 foo 被收窄为 string 类型</span></span><br><span class="line">&#125; <span class="keyword">else</span> <span class="keyword">if</span> (<span class="keyword">typeof</span> foo === <span class="string">&quot;number&quot;</span>) &#123;</span><br><span class="line"><span class="comment">// 这里 foo 被收窄为 number 类型</span></span><br><span class="line">&#125; <span class="keyword">else</span> &#123;</span><br><span class="line"><span class="comment">// foo 在这里是 never</span></span><br><span class="line"><span class="keyword">const</span> <span class="attr">check</span>: <span class="built_in">never</span> = foo;</span><br><span class="line">&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></li>
+</ol>
+</li>
+<li><p>array类型。表示一个数组。数组有两种表示形式：</p>
+<ol>
+<li><p>string[]</p>
+</li>
+<li><p>Array&lt;&gt;</p>
+<figure class="highlight ts"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 下面这两种表示形式是一样的</span></span><br><span class="line"><span class="keyword">let</span> g = <span class="built_in">number</span>[];</span><br><span class="line"><span class="keyword">let</span> g : <span class="title class_">Array</span>&lt;<span class="built_in">number</span>&gt;;</span><br><span class="line">g=[<span class="number">1</span>,<span class="number">2</span>,<span class="number">3</span>];</span><br><span class="line"><span class="keyword">let</span> <span class="attr">arr</span>:(<span class="built_in">number</span>  <span class="built_in">string</span>)[];</span><br><span class="line"><span class="comment">// 表示定义了一个名称叫做arr的数组, </span></span><br><span class="line"><span class="comment">// 这个数组中将来既可以存储数值类型的数据, 也可以存储字符串类型的数据</span></span><br><span class="line">arr3 = [<span class="number">1</span>, <span class="string">&#x27;b&#x27;</span>, <span class="number">2</span>, <span class="string">&#x27;c&#x27;</span>];</span><br><span class="line"><span class="comment">// interface是接口,后面会讲到</span></span><br><span class="line"><span class="keyword">interface</span> <span class="title class_">Arrobj</span>&#123;</span><br><span class="line"><span class="attr">name</span>:<span class="built_in">string</span>,</span><br><span class="line"><span class="attr">age</span>:<span class="built_in">number</span></span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">let</span> <span class="attr">arr3</span>:<span class="title class_">Arrobj</span>[]=[&#123;<span class="attr">name</span>:<span class="string">&#x27;jimmy&#x27;</span>,<span class="attr">age</span>:<span class="number">22</span>&#125;]</span><br></pre></td></tr></table></figure></li>
+</ol>
+</li>
+<li><p>元祖：元祖就是固定长度的数组</p>
+<ol>
+<li><p>元组最重要的特性是可以限制数组元素的个数和类型，它特别适合用来实现多值返回。</p>
+</li>
+<li><p>元组类型只能表示一个已知元素数量和类型的数组，长度已指定，越界访问会提示错误。如果一个数组中可能有多种类型，数量和类型都不确定，那就直接any[]</p>
+</li>
+<li><p>元祖支持解构赋值</p>
+</li>
+<li><p>元祖也支持？表示可选元素</p>
+</li>
+<li><p>可以通过…X来表示一个长度不固定的数组，也就是拼接数组</p>
+</li>
+<li><p>可以通过readonly前缀来设置只读元祖<code>const point: readonly [number, number] = [10, 20];</code></p>
+<figure class="highlight ts"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 这就是一个元祖形式，其类型必须匹配，并且长度为2</span></span><br><span class="line"><span class="keyword">let</span> <span class="attr">h</span>:[<span class="built_in">string</span>,<span class="built_in">number</span>];</span><br><span class="line">h = [<span class="string">&#x27;hello&#x27;</span>,<span class="number">123</span>]</span><br></pre></td></tr></table></figure>
+
+<p>对于解构赋值的例子：</p>
+<figure class="highlight ts"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">let</span> <span class="attr">employee</span>: [<span class="built_in">number</span>, <span class="built_in">string</span>] = [<span class="number">1</span>, <span class="string">&quot;Semlinker&quot;</span>];</span><br><span class="line"><span class="keyword">let</span> [id, username] = employee;</span><br><span class="line"><span class="variable language_">console</span>.<span class="title function_">log</span>(<span class="string">`id: <span class="subst">$&#123;id&#125;</span>`</span>); <span class="comment">//id:1</span></span><br><span class="line"><span class="variable language_">console</span>.<span class="title function_">log</span>(<span class="string">`username: <span class="subst">$&#123;username&#125;</span>`</span>); <span class="comment">//username:Semlinker</span></span><br><span class="line"><span class="comment">// 解构数组元素的个数不能超过元祖中元素的个数，否则会出错</span></span><br><span class="line"><span class="keyword">let</span> [id, username, age] = employee; <span class="comment">//error</span></span><br></pre></td></tr></table></figure>
+
+<p>对于拼接的例子：</p>
+<figure class="highlight ts"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">type</span> <span class="title class_">RestTupleType</span> = [<span class="built_in">number</span>, ...<span class="built_in">string</span>[]];</span><br><span class="line"><span class="keyword">let</span> <span class="attr">restTuple</span>: <span class="title class_">RestTupleType</span> = [<span class="number">666</span>, <span class="string">&quot;Semlinker&quot;</span>, <span class="string">&quot;Kakuqo&quot;</span>, <span class="string">&quot;Lolo&quot;</span>];</span><br><span class="line"><span class="variable language_">console</span>.<span class="title function_">log</span>(restTuple[<span class="number">0</span>]);   <span class="comment">//666</span></span><br><span class="line"><span class="variable language_">console</span>.<span class="title function_">log</span>(restTuple[<span class="number">1</span>]);   <span class="comment">//Semlinker</span></span><br></pre></td></tr></table></figure></li>
+</ol>
+</li>
+<li><p>enum 枚举,通过</p>
+</li>
+</ol>
+<pre><code><figure class="highlight ts"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">enum</span> <span class="title class_">Gender</span>&#123;</span><br><span class="line"><span class="title class_">Male</span> = <span class="number">0</span>,</span><br><span class="line"><span class="title class_">Female</span> = <span class="number">1</span></span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">let</span> <span class="attr">i</span>: &#123;<span class="attr">name</span>:<span class="built_in">string</span>, <span class="attr">gender</span>:<span class="title class_">Gender</span>&#125;;</span><br><span class="line">i = &#123;</span><br><span class="line"><span class="attr">name</span>: <span class="string">&#x27;wh&#x27;</span>,</span><br><span class="line"><span class="attr">gender</span>:<span class="title class_">Gender</span>.<span class="property">Male</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+</code></pre>
+<ol start="11">
+<li>object表示一个js对象</li>
+</ol>
+<pre><code><figure class="highlight ts"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">let</span> <span class="attr">a</span>: <span class="built_in">object</span>;</span><br><span class="line">a = &#123;&#125;;</span><br></pre></td></tr></table></figure>
+
+&#123;&#125;用来指定对象中可以包含哪些属性 语法：&#123;属性名：属性值&#125; **在属性名后面加上?，表示属性是可选的**
+</code></pre>
+<figure class="highlight ts"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">let</span> <span class="attr">b</span>:&#123;<span class="attr">name</span>:<span class="built_in">string</span>, age?:<span class="built_in">number</span>&#125;;</span><br><span class="line"><span class="comment">// 因为age后面加了？，所以age这个属性可加可不加</span></span><br><span class="line">b = &#123;<span class="attr">name</span>:<span class="string">&#x27;wh&#x27;</span>,<span class="attr">age</span>:<span class="number">18</span>&#125;;</span><br><span class="line"></span><br><span class="line"><span class="comment">// [propName:string]:any 表示任意类型的属性</span></span><br><span class="line"><span class="comment">// 表示只要是名字为字符串类型的变量，都可以存在</span></span><br><span class="line"><span class="keyword">let</span> <span class="attr">c</span>:&#123;<span class="attr">name</span>:<span class="built_in">string</span>, [<span class="attr">propName</span>:<span class="built_in">string</span>]:<span class="built_in">any</span>&#125;;</span><br><span class="line">c = &#123;<span class="attr">name</span>:<span class="string">&#x27;xxx&#x27;</span>,<span class="attr">age</span>:<span class="number">18</span>,<span class="attr">gender</span>:<span class="string">&#x27;男&#x27;</span>&#125;</span><br></pre></td></tr></table></figure>
+
+<ol start="12">
+<li>设置函数结构的类型声明： 语法：（形参：类型,形参：类型）&#x3D;&gt; 返回值</li>
+</ol>
+<figure class="highlight ts"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 函数表达式</span></span><br><span class="line"><span class="keyword">let</span> <span class="attr">d</span>: <span class="function">(<span class="params">a:<span class="built_in">number</span> , b:<span class="built_in">number</span></span>) =&gt;</span> <span class="built_in">number</span>;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 函数声明</span></span><br><span class="line">d = <span class="keyword">function</span> (<span class="params">a,b</span>):<span class="built_in">number</span>&#123;</span><br><span class="line">    <span class="keyword">return</span> a+b;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h2 id="2-2-ts的编译"><a href="#2-2-ts的编译" class="headerlink" title="2.2 ts的编译"></a>2.2 ts的编译</h2><ol>
+<li>基础编译：<code>tsc xxx.ts</code></li>
+<li>监视变化的编译：<code>tsc xxx.ts -w</code> 但是这两种方式都不太方便-.-</li>
+</ol>
+<p>所以一般使用的方法都是：<code>tsc --init</code>生成一个tsconfig.json文件 然后<code>tsc</code>进行编译。<code>tsc -w</code>进行所有文件的监视</p>
+<h2 id="2-3-用webpack打包ts代码"><a href="#2-3-用webpack打包ts代码" class="headerlink" title="2.3 用webpack打包ts代码"></a>2.3 用webpack打包ts代码</h2><ol>
+<li><p>对项目进行初始化 <code>npm init -y</code></p>
+</li>
+<li><p>下载依赖包<code>npm i -D webpack webpack-cli ts-loader</code></p>
+<ul>
+<li>-D代表的是在生产环境中安装的包，这些包只在开发环境中使用，用来进行代码打包等操作，不需要上传到服务环境中</li>
+</ul>
+</li>
+<li><p>使用<code>tsc --init</code>生成tsconfig.json文件</p>
+</li>
+<li><p>创建webpack.config.json文件</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 引入包</span></span><br><span class="line"><span class="keyword">const</span> path = <span class="built_in">require</span>(<span class="string">&#x27;path&#x27;</span>);</span><br><span class="line"><span class="comment">// webpack中的所有配置都应该写在module.exports中</span></span><br><span class="line"><span class="variable language_">module</span>.<span class="property">exports</span> = &#123;</span><br><span class="line"><span class="comment">// 指定入口文件</span></span><br><span class="line"><span class="attr">entry</span>: <span class="string">&#x27;./src/index.ts&#x27;</span>,</span><br><span class="line"></span><br><span class="line"><span class="comment">// 指定打包文件所在目录</span></span><br><span class="line"><span class="attr">output</span>:&#123;</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 指定打包文件的目录</span></span><br><span class="line">    <span class="attr">path</span>: path.<span class="title function_">resolve</span>(__dirname, <span class="string">&#x27;dist&#x27;</span>),</span><br><span class="line"></span><br><span class="line">    <span class="comment">//打包后文件的文件</span></span><br><span class="line">    <span class="attr">filename</span>: <span class="string">&#x27;bundle.js&#x27;</span></span><br><span class="line">&#125;,</span><br><span class="line"></span><br><span class="line"><span class="comment">// 设置开发环境(development)或者是生产环境(production)，webpack4.0新增</span></span><br><span class="line"><span class="attr">mode</span>:<span class="string">&#x27;development&#x27;</span>,</span><br><span class="line"></span><br><span class="line"><span class="comment">// 指定webpack打包时要使用的模块</span></span><br><span class="line"><span class="attr">module</span>:&#123;</span><br><span class="line">    <span class="comment">// 指定要加载的规则</span></span><br><span class="line">    <span class="attr">rules</span>:</span><br><span class="line">          [</span><br><span class="line">            &#123;</span><br><span class="line">            <span class="comment">// test指定的是规则生效的文件</span></span><br><span class="line">            <span class="attr">test</span>: <span class="regexp">/\.ts$/</span>,</span><br><span class="line">            <span class="comment">// 要使用的loader</span></span><br><span class="line">            <span class="attr">use</span>: <span class="string">&#x27;ts-loader&#x27;</span>,</span><br><span class="line">            <span class="comment">// 要排除的文件</span></span><br><span class="line">           <span class="attr">exclude</span>:<span class="regexp">/node-modules/</span></span><br><span class="line">            &#125;</span><br><span class="line">          ]</span><br><span class="line">&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>在package.json文件中加入build</p>
+<figure class="highlight json"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="punctuation">&#123;</span></span><br><span class="line"><span class="attr">&quot;name&quot;</span><span class="punctuation">:</span> <span class="string">&quot;ts_webpack&quot;</span><span class="punctuation">,</span></span><br><span class="line"><span class="attr">&quot;version&quot;</span><span class="punctuation">:</span> <span class="string">&quot;1.0.0&quot;</span><span class="punctuation">,</span></span><br><span class="line"><span class="attr">&quot;description&quot;</span><span class="punctuation">:</span> <span class="string">&quot;&quot;</span><span class="punctuation">,</span></span><br><span class="line"><span class="attr">&quot;main&quot;</span><span class="punctuation">:</span> <span class="string">&quot;index.js&quot;</span><span class="punctuation">,</span></span><br><span class="line"><span class="attr">&quot;scripts&quot;</span><span class="punctuation">:</span> <span class="punctuation">&#123;</span></span><br><span class="line"><span class="attr">&quot;test&quot;</span><span class="punctuation">:</span> <span class="string">&quot;echo \&quot;Error: no test specified\&quot; &amp;&amp; exit 1&quot;</span><span class="punctuation">,</span></span><br><span class="line"><span class="attr">&quot;build&quot;</span><span class="punctuation">:</span> <span class="string">&quot;webpack --mode development&quot;</span>  <span class="comment">//add this</span></span><br><span class="line"><span class="punctuation">&#125;</span><span class="punctuation">,</span></span><br><span class="line"><span class="attr">&quot;keywords&quot;</span><span class="punctuation">:</span> <span class="punctuation">[</span><span class="punctuation">]</span><span class="punctuation">,</span></span><br><span class="line"><span class="attr">&quot;author&quot;</span><span class="punctuation">:</span> <span class="string">&quot;&quot;</span><span class="punctuation">,</span></span><br><span class="line"><span class="attr">&quot;license&quot;</span><span class="punctuation">:</span> <span class="string">&quot;ISC&quot;</span><span class="punctuation">,</span></span><br><span class="line"><span class="attr">&quot;devDependencies&quot;</span><span class="punctuation">:</span> <span class="punctuation">&#123;</span></span><br><span class="line"><span class="attr">&quot;ts-loader&quot;</span><span class="punctuation">:</span> <span class="string">&quot;^9.3.1&quot;</span><span class="punctuation">,</span></span><br><span class="line"><span class="attr">&quot;webpack&quot;</span><span class="punctuation">:</span> <span class="string">&quot;^5.74.0&quot;</span><span class="punctuation">,</span></span><br><span class="line"><span class="attr">&quot;webpack-cli&quot;</span><span class="punctuation">:</span> <span class="string">&quot;^4.10.0&quot;</span></span><br><span class="line"><span class="punctuation">&#125;</span></span><br><span class="line"><span class="punctuation">&#125;</span></span><br></pre></td></tr></table></figure>
+</li>
+<li><p>运行<code>npm run build</code>进行编译 上面的这些步骤只是能够将ts文件编译成js文件，但是不能够满足项目上线的需求。 所以还需要一些别的操作：</p>
+</li>
+<li><p><code>npm i -D html-webpack-plugin</code>-–用于生成一个HTML模板并进行引用</p>
+</li>
+<li><p><code>npm i -D webpack-dev-server</code> —用于能够实时调试代码，实时更新</p>
+</li>
+<li><p><code>npm i -D clean-webpack-plugin</code> —用来清除旧代码，保证一直是最新的</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 引入包</span></span><br><span class="line"><span class="keyword">const</span> path = <span class="built_in">require</span>(<span class="string">&#x27;path&#x27;</span>);</span><br><span class="line"><span class="comment">// 引入html插件</span></span><br><span class="line"><span class="keyword">const</span> <span class="title class_">HTMLWebpackPlugin</span> = <span class="built_in">require</span>(<span class="string">&#x27;html-webpack-plugin&#x27;</span>);</span><br><span class="line"><span class="keyword">const</span> &#123; <span class="title class_">CleanWebpackPlugin</span> &#125; = <span class="built_in">require</span>(<span class="string">&#x27;clean-webpack-plugin&#x27;</span>);</span><br><span class="line"><span class="comment">// webpack中的所有配置都应该写在module.exports中</span></span><br><span class="line"><span class="variable language_">module</span>.<span class="property">exports</span> = &#123;</span><br><span class="line"><span class="comment">// 指定入口文件</span></span><br><span class="line"><span class="attr">entry</span>: <span class="string">&#x27;./src/index.ts&#x27;</span>,</span><br><span class="line"></span><br><span class="line"><span class="comment">// 指定打包文件所在目录</span></span><br><span class="line"><span class="attr">output</span>:&#123;</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 指定打包文件的目录</span></span><br><span class="line">    <span class="attr">path</span>: path.<span class="title function_">resolve</span>(__dirname, <span class="string">&#x27;dist&#x27;</span>),</span><br><span class="line"></span><br><span class="line">    <span class="comment">//打包后文件的文件</span></span><br><span class="line">    <span class="attr">filename</span>: <span class="string">&#x27;bundle.js&#x27;</span></span><br><span class="line">&#125;,</span><br><span class="line"></span><br><span class="line"><span class="comment">// 设置开发环境或者是生产环境，webpack4.0新增</span></span><br><span class="line"><span class="attr">mode</span>:<span class="string">&#x27;development&#x27;</span>,</span><br><span class="line"></span><br><span class="line"><span class="comment">// 指定webpack打包时要使用的模块</span></span><br><span class="line"><span class="attr">module</span>:&#123;</span><br><span class="line">    <span class="comment">// 指定要加载的规则</span></span><br><span class="line">    <span class="attr">rules</span>:[</span><br><span class="line">        &#123;</span><br><span class="line">        <span class="comment">// test指定的是规则生效的文件</span></span><br><span class="line">        <span class="attr">test</span>: <span class="regexp">/\.ts$/</span>,</span><br><span class="line">        <span class="comment">// 要使用的loader</span></span><br><span class="line">        <span class="attr">use</span>: <span class="string">&#x27;ts-loader&#x27;</span>,</span><br><span class="line">        <span class="comment">// 要排除的文件</span></span><br><span class="line">        <span class="attr">exclude</span>:<span class="regexp">/node-modules/</span></span><br><span class="line">        &#125;</span><br><span class="line">    ]</span><br><span class="line">&#125;,</span><br><span class="line"></span><br><span class="line"><span class="comment">// 配置webpack插件</span></span><br><span class="line"><span class="attr">plugins</span>: [</span><br><span class="line">  <span class="comment">// 清除旧代码</span></span><br><span class="line">    <span class="keyword">new</span> <span class="title class_">CleanWebpackPlugin</span>(),</span><br><span class="line">    <span class="comment">// 生成html文件</span></span><br><span class="line">    <span class="keyword">new</span> <span class="title class_">HTMLWebpackPlugin</span>(&#123;</span><br><span class="line">      <span class="comment">// 使用模板html文件</span></span><br><span class="line">        <span class="attr">template</span>:<span class="string">&quot;./src/index.html&quot;</span></span><br><span class="line">    &#125;),</span><br><span class="line">],</span><br><span class="line"></span><br><span class="line"><span class="comment">// 用来设置引用模块</span></span><br><span class="line"><span class="attr">resolve</span>:&#123;</span><br><span class="line">    <span class="attr">extensions</span>:[<span class="string">&#x27;.ts&#x27;</span>,<span class="string">&#x27;.js&#x27;</span>]</span><br><span class="line">&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>在package.json中加入一些新内容：</p>
+</li>
+</ol>
+<pre><code><figure class="highlight json"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="attr">&quot;scripts&quot;</span><span class="punctuation">:</span> <span class="punctuation">&#123;</span></span><br><span class="line"><span class="attr">&quot;test&quot;</span><span class="punctuation">:</span> <span class="string">&quot;echo \&quot;Error: no test specified\&quot; &amp;&amp; exit 1&quot;</span><span class="punctuation">,</span></span><br><span class="line"><span class="comment">// 表示是生产环境的webpack</span></span><br><span class="line"><span class="attr">&quot;build&quot;</span><span class="punctuation">:</span> <span class="string">&quot;webpack --mode development&quot;</span><span class="punctuation">,</span></span><br><span class="line"><span class="comment">// 能够通过npm start启动服务，并进行实时修改同步</span></span><br><span class="line"><span class="attr">&quot;start&quot;</span><span class="punctuation">:</span> <span class="string">&quot;webpack serve --open chrome.exe&quot;</span></span><br><span class="line"><span class="punctuation">&#125;</span><span class="punctuation">,</span></span><br></pre></td></tr></table></figure>
+</code></pre>
+<ol start="11">
+<li><p>为了更好的兼容性，还需要一些别的插件<code>npm i -D @babel/core @babel/preset-env babel-loader core-js</code></p>
+</li>
+<li><p>在webpack.config.js中的module中再添加一些东西</p>
+</li>
+</ol>
+<pre><code><figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 指定webpack打包时要使用的模块</span></span><br><span class="line"><span class="attr">module</span>:&#123;</span><br><span class="line">    <span class="comment">// 指定要加载的规则</span></span><br><span class="line">    <span class="attr">rules</span>:[</span><br><span class="line">        &#123;</span><br><span class="line">        <span class="comment">// test指定的是规则生效的文件</span></span><br><span class="line">        <span class="attr">test</span>: <span class="regexp">/\.ts$/</span>,</span><br><span class="line">        <span class="comment">// 要使用的loader</span></span><br><span class="line">        <span class="attr">use</span>: [</span><br><span class="line">            <span class="comment">// 配置babel</span></span><br><span class="line">            &#123;</span><br><span class="line">                <span class="comment">// 指定加载器</span></span><br><span class="line">                <span class="attr">loader</span>:<span class="string">&quot;babel-loader&quot;</span>,</span><br><span class="line">                <span class="comment">// 设置babel</span></span><br><span class="line">                <span class="attr">options</span>:&#123;</span><br><span class="line">                    <span class="comment">// 设置预定义的环境</span></span><br><span class="line">                    <span class="attr">presets</span>:[</span><br><span class="line">                        [</span><br><span class="line">                            <span class="comment">// 指定环境的插件</span></span><br><span class="line">                            <span class="string">&quot;@babel/preset-env&quot;</span>,</span><br><span class="line">                            &#123;</span><br><span class="line">                                <span class="comment">// 要兼容的目标浏览器</span></span><br><span class="line">                                <span class="attr">targets</span>:&#123;</span><br><span class="line">                                    <span class="string">&quot;chrome&quot;</span>:<span class="string">&#x27;58&#x27;</span>,</span><br><span class="line">                                    <span class="string">&quot;ie&quot;</span>:<span class="string">&#x27;11&#x27;</span></span><br><span class="line">                                &#125;,</span><br><span class="line"></span><br><span class="line">                                <span class="comment">// 指定corejs的版本</span></span><br><span class="line">                                <span class="string">&quot;corejs&quot;</span>:<span class="string">&quot;3&quot;</span>,</span><br><span class="line">                                <span class="comment">// 使用corejs的方式&quot;usage&quot;表示按需加载</span></span><br><span class="line">                                <span class="string">&quot;useBuiltIns&quot;</span>:<span class="string">&quot;usage&quot;</span></span><br><span class="line">                            &#125;</span><br><span class="line">                        ]</span><br><span class="line">                    ]</span><br><span class="line">                &#125;</span><br><span class="line">            &#125;,</span><br><span class="line">            <span class="string">&#x27;ts-loader&#x27;</span></span><br><span class="line">        ],</span><br><span class="line">        <span class="comment">// 要排除的文件</span></span><br><span class="line">        <span class="attr">exclude</span>:<span class="regexp">/node-modules/</span></span><br><span class="line">        &#125;</span><br><span class="line">    ]</span><br><span class="line">&#125;,</span><br></pre></td></tr></table></figure>
+</code></pre>
+<ol start="13">
+<li>如果为了兼容老ie，虽然现在基本没有咧。需要添加不转换箭头函数</li>
+</ol>
+<pre><code><figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 指定打包文件所在目录</span></span><br><span class="line"><span class="attr">output</span>:&#123;</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 指定打包文件的目录</span></span><br><span class="line">    <span class="attr">path</span>: path.<span class="title function_">resolve</span>(__dirname, <span class="string">&#x27;dist&#x27;</span>),</span><br><span class="line"></span><br><span class="line">    <span class="comment">//打包后文件的文件</span></span><br><span class="line">    <span class="attr">filename</span>: <span class="string">&#x27;bundle.js&#x27;</span>,</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 告诉webpack不要转换箭头函数</span></span><br><span class="line">    <span class="attr">environment</span>:&#123;</span><br><span class="line">        <span class="attr">arrowFunction</span>: <span class="literal">false</span></span><br><span class="line">    &#125;</span><br><span class="line">&#125;,</span><br></pre></td></tr></table></figure>
+</code></pre>
+<h2 id="2-4-类、构造函数和this"><a href="#2-4-类、构造函数和this" class="headerlink" title="2.4 类、构造函数和this"></a>2.4 类、构造函数和this</h2><figure class="highlight ts"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">class</span> <span class="title class_">Dog</span>&#123;</span><br><span class="line">  <span class="attr">name</span>: <span class="built_in">string</span>;</span><br><span class="line">  <span class="attr">age</span>: <span class="built_in">number</span>;</span><br><span class="line">  <span class="comment">// constructor被称为构造函数</span></span><br><span class="line">  <span class="comment">// 构造函数会在对象创建时调用</span></span><br><span class="line">  <span class="title function_">constructor</span>(<span class="params">name:<span class="built_in">string</span>, age:<span class="built_in">number</span></span>)&#123;</span><br><span class="line">    <span class="comment">// 在实例方法中，this就表示当前的实例</span></span><br><span class="line">    <span class="variable language_">this</span>.<span class="property">name</span> = name;</span><br><span class="line">    <span class="variable language_">this</span>.<span class="property">age</span> = age;</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  <span class="title function_">bark</span>(<span class="params"></span>)&#123;</span><br><span class="line">    <span class="variable language_">console</span>.<span class="title function_">log</span>(<span class="variable language_">this</span>);</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h2 id="2-5-继承和抽象类"><a href="#2-5-继承和抽象类" class="headerlink" title="2.5 继承和抽象类"></a>2.5 继承和抽象类</h2><ul>
+<li><p>Animal是父类，Dog是子类</p>
+</li>
+<li><p>使用继承后，子类将会拥有父类所有的方法和属性</p>
+</li>
+<li><p>通过继承可以将多个类中共有的代码写在一个父类中</p>
+</li>
+<li><p>在子类中添加了和父类相同的方法，则子类方法会覆盖掉父类方法</p>
+</li>
+<li><p>抽象类的作用就是专门用来被继承</p>
+</li>
+<li><p>抽象类中可以添加抽象方法</p>
+</li>
+<li><p>抽象类不能用来创建对象</p>
+<figure class="highlight ts"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 以abstract开头的类就是抽象类</span></span><br><span class="line"><span class="keyword">abstract</span> <span class="keyword">class</span> <span class="title class_">Animal</span>&#123;</span><br><span class="line"><span class="attr">name</span>:<span class="built_in">string</span>;</span><br><span class="line"><span class="attr">age</span>:<span class="built_in">number</span>;</span><br><span class="line"></span><br><span class="line"><span class="title function_">constructor</span>(<span class="params">name:<span class="built_in">string</span>, age:<span class="built_in">number</span></span>)&#123;</span><br><span class="line"><span class="variable language_">this</span>.<span class="property">name</span> = name;</span><br><span class="line"><span class="variable language_">this</span>.<span class="property">age</span> = age;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="title function_">sayHello</span>(<span class="params"></span>)&#123;</span><br><span class="line"><span class="variable language_">console</span>.<span class="title function_">log</span>(<span class="string">&#x27;动物在叫~&#x27;</span>);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 抽象方法只能定义在抽象类中，子类必须对抽象方法进行重写</span></span><br><span class="line"><span class="comment">// 抽象方法没有方法体</span></span><br><span class="line"><span class="keyword">abstract</span> <span class="title function_">say</span>():<span class="built_in">void</span>;</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">class</span> <span class="title class_">Dog</span> <span class="keyword">extends</span> <span class="title class_ inherited__">Animal</span>&#123;</span><br><span class="line"></span><br><span class="line"><span class="attr">age</span>: <span class="built_in">number</span>;</span><br><span class="line"><span class="comment">// 如果子类写了构造函数，必须写super调用父类</span></span><br><span class="line"><span class="comment">// 和react什么都一样</span></span><br><span class="line"><span class="title function_">constructor</span>(<span class="params">name:<span class="built_in">string</span>, age:<span class="built_in">number</span></span>)&#123;</span><br><span class="line"><span class="variable language_">super</span>(name);</span><br><span class="line"><span class="variable language_">this</span>.<span class="property">age</span> = age;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="title function_">sayHello</span>(<span class="params"></span>)&#123;</span><br><span class="line"><span class="comment">// 在类的方法中，super就表示当前类的父类</span></span><br><span class="line"><span class="variable language_">super</span>.<span class="title function_">sayHello</span>();</span><br><span class="line">&#125;</span><br><span class="line"><span class="title function_">run</span>(<span class="params"></span>)&#123;</span><br><span class="line"><span class="variable language_">console</span>.<span class="title function_">log</span>(<span class="string">`<span class="subst">$&#123;<span class="variable language_">this</span>.name&#125;</span>在跑...`</span>);</span><br><span class="line">&#125;</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">class</span> <span class="title class_">Cat</span> <span class="keyword">extends</span> <span class="title class_ inherited__">Animal</span> &#123;</span><br><span class="line"><span class="title function_">sayHello</span>(<span class="params"></span>)&#123;</span><br><span class="line"><span class="variable language_">console</span>.<span class="title function_">log</span>(<span class="string">&quot;喵喵喵&quot;</span>);</span><br><span class="line">&#125;</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">const</span> dog = <span class="keyword">new</span> <span class="title class_">Dog</span>(<span class="string">&quot;旺财&quot;</span>, <span class="number">4</span>);</span><br><span class="line"><span class="variable language_">console</span>.<span class="title function_">log</span>(dog);</span><br><span class="line">dog.<span class="title function_">run</span>();</span><br></pre></td></tr></table></figure></li>
+</ul>
+<h1 id="三、接口"><a href="#三、接口" class="headerlink" title="三、接口"></a>三、接口</h1><ul>
+<li>接口用来定义一个类结构,用来定义一个类中应该包含哪些属性和方法</li>
+<li>同时接口也可以当成类型声明去使用</li>
+<li>接口可以在定义类的时候去限制类的结构<ul>
+<li><strong>接口中的所有的属性不能有实际的值</strong></li>
+<li>接口只定义对象的结构，而不考虑实际值</li>
+<li>在接口中所有的方法都是抽象方法</li>
+<li>接口一般首字母大写</li>
+<li>定义的变量比接口多&#x2F;少一些属性是不允许的</li>
+<li><strong>赋值的时候，变量的形状必须和接口的形状保持一致</strong></li>
+</ul>
+</li>
+</ul>
+<figure class="highlight ts"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">interface</span> <span class="title class_">MyInter</span>&#123;</span><br><span class="line">  <span class="attr">name</span>:<span class="built_in">string</span>;</span><br><span class="line">  age?:<span class="built_in">number</span>;</span><br><span class="line">  <span class="comment">// 通过索引签名的形式可以使接口中有其他的任意属性</span></span><br><span class="line">  [<span class="attr">propName</span>: <span class="built_in">string</span>]: <span class="built_in">any</span>;</span><br><span class="line">  <span class="title function_">sayHello</span>():<span class="built_in">void</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>定义类时，可以使类去实现一个接口，也就是使类满足接口的要求</p>
+<figure class="highlight ts"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">class</span> <span class="title class_">MyClass</span> <span class="keyword">implements</span> <span class="title class_">MyInter</span>&#123;</span><br><span class="line">  <span class="attr">name</span>:<span class="built_in">string</span>;</span><br><span class="line">  <span class="title function_">constructor</span>(<span class="params">name:<span class="built_in">string</span>, age:<span class="built_in">number</span></span>)&#123;</span><br><span class="line">    <span class="variable language_">this</span>.<span class="property">name</span> = name;</span><br><span class="line">    <span class="variable language_">this</span>.<span class="property">age</span> = age;</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="title function_">sayHello</span>(<span class="params"></span>)&#123;</span><br><span class="line">    <span class="variable language_">console</span>.<span class="title function_">log</span>(<span class="string">&#x27;Hello&#x27;</span>);</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>接口可以定义多次，会被自动合并为单个接口。</p>
+<figure class="highlight ts"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">interface</span> <span class="title class_">Point</span> &#123; <span class="attr">x</span>: <span class="built_in">number</span>; &#125;</span><br><span class="line"><span class="keyword">interface</span> <span class="title class_">Point</span> &#123; <span class="attr">y</span>: <span class="built_in">number</span>; &#125;</span><br><span class="line"><span class="keyword">const</span> <span class="attr">point</span>: <span class="title class_">Point</span> = &#123; <span class="attr">x</span>: <span class="number">1</span>, <span class="attr">y</span>: <span class="number">2</span> &#125;;</span><br></pre></td></tr></table></figure>
+
+<h2 id="3-1-可选只读属性"><a href="#3-1-可选只读属性" class="headerlink" title="3.1 可选只读属性"></a>3.1 可选只读属性</h2><figure class="highlight ts"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">interface</span> <span class="title class_">Person</span> &#123;</span><br><span class="line">  <span class="keyword">readonly</span> <span class="attr">name</span>: <span class="built_in">string</span>;</span><br><span class="line">  age?: <span class="built_in">number</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>只读属性用于限制只能在对象刚刚创建的时候修改其值。此外 TypeScript 还提供了<code>ReadonlyArray&lt;T&gt;</code>类型，它与 <code>Array&lt;T&gt;</code>相似，只是把所有可变方法去掉了，因此可以确保数组创建后再也不能被修改。</p>
+<figure class="highlight ts"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">let</span> <span class="attr">a</span>: <span class="built_in">number</span>[] = [<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>, <span class="number">4</span>];</span><br><span class="line"><span class="keyword">let</span> <span class="attr">ro</span>: <span class="title class_">ReadonlyArray</span>&lt;<span class="built_in">number</span>&gt; = a;</span><br><span class="line">ro[<span class="number">0</span>] = <span class="number">12</span>; <span class="comment">// error!</span></span><br><span class="line">ro.<span class="title function_">push</span>(<span class="number">5</span>); <span class="comment">// error!</span></span><br><span class="line">ro.<span class="property">length</span> = <span class="number">100</span>; <span class="comment">// error!</span></span><br><span class="line">a = ro; <span class="comment">// error!</span></span><br></pre></td></tr></table></figure>
+
+<h2 id="3-2-几种绕开额外属性检查的方法"><a href="#3-2-几种绕开额外属性检查的方法" class="headerlink" title="3.2 几种绕开额外属性检查的方法"></a>3.2 几种绕开额外属性检查的方法</h2><h3 id="3-2-1-鸭式辩型法"><a href="#3-2-1-鸭式辩型法" class="headerlink" title="3.2.1 鸭式辩型法"></a>3.2.1 鸭式辩型法</h3><figure class="highlight ts"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">interface</span> <span class="title class_">LabeledValue</span> &#123;</span><br><span class="line">  <span class="attr">label</span>: <span class="built_in">string</span>;</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">function</span> <span class="title function_">printLabel</span>(<span class="params">labeledObj: LabeledValue</span>) &#123;</span><br><span class="line">  <span class="variable language_">console</span>.<span class="title function_">log</span>(labeledObj.<span class="property">label</span>);</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">let</span> myObj = &#123; <span class="attr">size</span>: <span class="number">10</span>, <span class="attr">label</span>: <span class="string">&quot;Size 10 Object&quot;</span> &#125;;</span><br><span class="line"><span class="title function_">printLabel</span>(myObj); <span class="comment">// OK</span></span><br></pre></td></tr></table></figure>
+
+<figure class="highlight ts"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">interface</span> <span class="title class_">LabeledValue</span> &#123;</span><br><span class="line">  <span class="attr">label</span>: <span class="built_in">string</span>;</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">function</span> <span class="title function_">printLabel</span>(<span class="params">labeledObj: LabeledValue</span>) &#123;</span><br><span class="line">  <span class="variable language_">console</span>.<span class="title function_">log</span>(labeledObj.<span class="property">label</span>);</span><br><span class="line">&#125;</span><br><span class="line"><span class="title function_">printLabel</span>(&#123; <span class="attr">size</span>: <span class="number">10</span>, <span class="attr">label</span>: <span class="string">&quot;Size 10 Object&quot;</span> &#125;); <span class="comment">// Error</span></span><br></pre></td></tr></table></figure>
+
+<p>上面代码，在参数里写对象就相当于是直接给<code>labeledObj</code>赋值，这个对象有严格的类型定义，所以不能多参或少参。而当你在外面将该对象用另一个变量<code>myObj</code>接收，<code>myObj</code>不会经过额外属性检查，但会根据类型推论为<code>let myObj: &#123; size: number; label: string &#125; = &#123; size: 10, label: &quot;Size 10 Object&quot; &#125;;</code>，然后将这个<code>myObj</code>再赋值给<code>labeledObj</code>，此时根据类型的兼容性，两种类型对象，参照鸭式辨型法，因为都具有<code>label</code>属性，所以被认定为两个相同，故而可以用此法来绕开多余的类型检查。</p>
+<h3 id="3-2-2-类型断言"><a href="#3-2-2-类型断言" class="headerlink" title="3.2.2 类型断言"></a>3.2.2 类型断言</h3><figure class="highlight ts"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">interface</span> <span class="title class_">Props</span> &#123; </span><br><span class="line">  <span class="attr">name</span>: <span class="built_in">string</span>; </span><br><span class="line">  <span class="attr">age</span>: <span class="built_in">number</span>; </span><br><span class="line">  money?: <span class="built_in">number</span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">let</span> <span class="attr">p</span>: <span class="title class_">Props</span> = &#123;</span><br><span class="line">  <span class="attr">name</span>: <span class="string">&quot;兔神&quot;</span>,</span><br><span class="line">  <span class="attr">age</span>: <span class="number">25</span>,</span><br><span class="line">  <span class="attr">money</span>: -<span class="number">100000</span>,</span><br><span class="line">  <span class="attr">girl</span>: <span class="literal">false</span></span><br><span class="line">&#125; <span class="keyword">as</span> <span class="title class_">Props</span>; <span class="comment">// OK</span></span><br></pre></td></tr></table></figure>
+
+<h3 id="3-2-3-索引签名"><a href="#3-2-3-索引签名" class="headerlink" title="3.2.3 索引签名"></a>3.2.3 索引签名</h3><figure class="highlight ts"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">interface</span> <span class="title class_">Props</span> &#123; </span><br><span class="line">  <span class="attr">name</span>: <span class="built_in">string</span>; </span><br><span class="line">  <span class="attr">age</span>: <span class="built_in">number</span>; </span><br><span class="line">  money?: <span class="built_in">number</span>;</span><br><span class="line">  [<span class="attr">key</span>: <span class="built_in">string</span>]: <span class="built_in">any</span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">let</span> <span class="attr">p</span>: <span class="title class_">Props</span> = &#123;</span><br><span class="line">  <span class="attr">name</span>: <span class="string">&quot;兔神&quot;</span>,</span><br><span class="line">  <span class="attr">age</span>: <span class="number">25</span>,</span><br><span class="line">  <span class="attr">money</span>: -<span class="number">100000</span>,</span><br><span class="line">  <span class="attr">girl</span>: <span class="literal">false</span></span><br><span class="line">&#125;; <span class="comment">// OK</span></span><br></pre></td></tr></table></figure>
+
+<h2 id="3-3-接口和类型别名"><a href="#3-3-接口和类型别名" class="headerlink" title="3.3 接口和类型别名"></a>3.3 接口和类型别名</h2><p>接口和类型别名在大多数情况下效果是等价的，但是实际还是有区别的。 首先从定义的角度：</p>
+<ul>
+<li><p>接口的作用就是为类型命名和为代码或第三方代码定义数据类型</p>
+</li>
+<li><p>type（类型别名）会给一个类型起个新名字。起别名不会新建一个类型，只是创建了一个新名字来引用某个类型。 从语法角度讲： Interface:</p>
+<figure class="highlight ts"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">interface</span> <span class="title class_">Point</span> &#123;</span><br><span class="line"><span class="attr">x</span>: <span class="built_in">number</span>;</span><br><span class="line"><span class="attr">y</span>: <span class="built_in">number</span>;</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">interface</span> <span class="title class_">SetPoint</span> &#123;</span><br><span class="line">(<span class="attr">x</span>: <span class="built_in">number</span>, <span class="attr">y</span>: <span class="built_in">number</span>): <span class="built_in">void</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>Type:</p>
+<figure class="highlight ts"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">type</span> <span class="title class_">Point</span> = &#123;</span><br><span class="line"><span class="attr">x</span>: <span class="built_in">number</span>;</span><br><span class="line"><span class="attr">y</span>: <span class="built_in">number</span>;</span><br><span class="line">&#125;;</span><br><span class="line"><span class="keyword">type</span> <span class="title class_">SetPoint</span> = <span class="function">(<span class="params">x: <span class="built_in">number</span>, y: <span class="built_in">number</span></span>) =&gt;</span> <span class="built_in">void</span>;</span><br></pre></td></tr></table></figure></li>
+</ul>
+<p>与接口不同，类型别名还可以用于其他类型，如基本类型（原始值）、联合类型、元组。</p>
+<figure class="highlight ts"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// primitive</span></span><br><span class="line"><span class="keyword">type</span> <span class="title class_">Name</span> = <span class="built_in">string</span>;</span><br><span class="line"></span><br><span class="line"><span class="comment">// object</span></span><br><span class="line"><span class="keyword">type</span> <span class="title class_">PartialPointX</span> = &#123; <span class="attr">x</span>: <span class="built_in">number</span>; &#125;;</span><br><span class="line"><span class="keyword">type</span> <span class="title class_">PartialPointY</span> = &#123; <span class="attr">y</span>: <span class="built_in">number</span>; &#125;;</span><br><span class="line"></span><br><span class="line"><span class="comment">// union</span></span><br><span class="line"><span class="keyword">type</span> <span class="title class_">PartialPoint</span> = <span class="title class_">PartialPointX</span>  <span class="title class_">PartialPointY</span>;</span><br><span class="line"></span><br><span class="line"><span class="comment">// tuple</span></span><br><span class="line"><span class="keyword">type</span> <span class="title class_">Data</span> = [<span class="built_in">number</span>, <span class="built_in">string</span>];</span><br><span class="line"></span><br><span class="line"><span class="comment">// dom</span></span><br><span class="line"><span class="keyword">let</span> div = <span class="variable language_">document</span>.<span class="title function_">createElement</span>(<span class="string">&#x27;div&#x27;</span>);</span><br><span class="line"><span class="keyword">type</span> B = <span class="keyword">typeof</span> div;</span><br></pre></td></tr></table></figure>
+
+<p><strong>接口可以定义多次,类型别名不可以</strong></p>
+<ul>
+<li>接口和类型别名的扩展方式不同，但并不互斥。接口可以扩展类型别名，同理，类型别名也可以扩展接口。</li>
+<li>接口的扩展就是继承，通过<code>extends</code>来实现。类型别名的扩展就是交叉类型，通过<code>&amp;</code>来实现。</li>
+</ul>
+<figure class="highlight ts"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">interface</span> <span class="title class_">PointX</span> &#123;</span><br><span class="line">    <span class="attr">x</span>: <span class="built_in">number</span></span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">interface</span> <span class="title class_">Point</span> <span class="keyword">extends</span> <span class="title class_">PointX</span> &#123;</span><br><span class="line">    <span class="attr">y</span>: <span class="built_in">number</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight ts"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">type</span> <span class="title class_">PointX</span> = &#123;</span><br><span class="line">    <span class="attr">x</span>: <span class="built_in">number</span></span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">type</span> <span class="title class_">Point</span> = <span class="title class_">PointX</span> &amp; &#123;</span><br><span class="line">    <span class="attr">y</span>: <span class="built_in">number</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h1 id="四、属性的封装"><a href="#四、属性的封装" class="headerlink" title="四、属性的封装"></a>四、属性的封装</h1><p>通过在属性前添加属性的修饰符</p>
+<ul>
+<li><p>public: 修饰的属性可以在任意位置访问（修改）默认值</p>
+</li>
+<li><p>private:私有属性，私有属性只能在类内部进行访问（修改）</p>
+</li>
+<li><p>通过在类中添加方法使得私有属性可以被外部访问</p>
+</li>
+<li><p>protected:受保护的属性，只能在当前类和当前类的子类中访问</p>
+<figure class="highlight ts"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">class</span> <span class="title class_">Person</span> &#123;</span><br><span class="line"><span class="keyword">private</span> <span class="attr">_name</span>: <span class="built_in">string</span>;</span><br><span class="line"><span class="keyword">private</span> <span class="attr">_age</span>: <span class="built_in">number</span>;</span><br><span class="line"></span><br><span class="line"><span class="title function_">constructor</span>(<span class="params">name: <span class="built_in">string</span>, age: <span class="built_in">number</span></span>) &#123;</span><br><span class="line">    <span class="variable language_">this</span>.<span class="property">_name</span> = name;</span><br><span class="line">    <span class="variable language_">this</span>.<span class="property">_age</span> = age;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">get</span> <span class="title function_">name</span>() &#123;</span><br><span class="line">    <span class="keyword">return</span> <span class="variable language_">this</span>.<span class="property">_name</span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">set</span> <span class="title function_">name</span>(<span class="params">value: <span class="built_in">string</span></span>) &#123;</span><br><span class="line">    <span class="variable language_">this</span>.<span class="property">_name</span> = value;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">get</span> <span class="title function_">age</span>() &#123;</span><br><span class="line">    <span class="keyword">return</span> <span class="variable language_">this</span>.<span class="property">_age</span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">set</span> <span class="title function_">age</span>(<span class="params">value: <span class="built_in">number</span></span>) &#123;</span><br><span class="line">    <span class="keyword">if</span> (value &gt; <span class="number">0</span>) &#123;</span><br><span class="line">        <span class="variable language_">this</span>.<span class="property">_age</span> = value;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">const</span> per = <span class="keyword">new</span> <span class="title class_">Person</span>(<span class="string">&#x27;tom&#x27;</span>,<span class="number">18</span>);</span><br><span class="line"><span class="variable language_">console</span>.<span class="title function_">log</span>(per);   <span class="comment">//tom 18</span></span><br><span class="line">per.<span class="property">name</span> = <span class="string">&#x27;jack&#x27;</span>;</span><br><span class="line">per.<span class="property">age</span> = -<span class="number">18</span>;</span><br><span class="line"><span class="variable language_">console</span>.<span class="title function_">log</span>(per);  <span class="comment">// jack 18</span></span><br></pre></td></tr></table></figure>
+
+<p>可以直接将属性定义在构造函数中：</p>
+<figure class="highlight ts"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">class</span> <span class="title class_">C</span>&#123;</span><br><span class="line"><span class="title function_">constructor</span>(<span class="params"><span class="keyword">private</span> name:<span class="built_in">string</span>,</span></span><br><span class="line"><span class="params">          <span class="keyword">private</span> age:<span class="built_in">number</span>,</span></span><br><span class="line"><span class="params">          <span class="keyword">protected</span> gender:<span class="built_in">string</span>,</span></span><br><span class="line"><span class="params">          <span class="keyword">public</span> flag:<span class="built_in">boolean</span></span>) &#123;</span><br><span class="line"></span><br><span class="line">&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></li>
+</ul>
+<h1 id="五、泛型"><a href="#五、泛型" class="headerlink" title="五、泛型"></a>五、泛型</h1><ul>
+<li><p>在定义函数或是类时，如果遇到类型不明确就可以使用泛型</p>
+</li>
+<li><p>泛型可以同时指定多个</p>
+<figure class="highlight ts"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"><span class="keyword">function</span> fn&lt;T&gt;(<span class="attr">a</span>: T): T&#123;</span><br><span class="line"><span class="keyword">return</span> a;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></li>
+</ul>
+<p>&#x2F;&#x2F; 可以直接调用具有泛型的函数 let result &#x3D; fn(a:10); &#x2F;&#x2F;不指定泛型，TS可以自动对类型进行推断 let result2 &#x3D; fn<string>(a: ‘hello’); &#x2F;&#x2F;指定泛型</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">在泛型中T代表Type，在定义泛型时通常用作第一个类型变量名称。但实际上T可以用任何有效名称代替。除了T之外，以下是常见泛型变量代表的意思：</span><br><span class="line">- K（Key）：表示对象中的键类型；</span><br><span class="line">- V（Value）：表示对象中的值类型；</span><br><span class="line">- E（Element）：表示元素类型。</span><br><span class="line"></span><br><span class="line">使用extends关键字让T继承接口的类型从而实现类型约束。简单来说就是你定义一个类型，然后让 T 实现这个接口即可</span><br><span class="line">```ts</span><br><span class="line">interface Sizeable &#123;</span><br><span class="line">  size: number;</span><br><span class="line">&#125;</span><br><span class="line">function trace&lt;T extends Sizeable&gt;(arg: T): T &#123;</span><br><span class="line">  console.log(arg.size);</span><br><span class="line">  return arg;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h2 id="5-1-typeof"><a href="#5-1-typeof" class="headerlink" title="5.1 typeof"></a>5.1 typeof</h2><p><strong>typeof 的主要用途是在类型上下文中获取变量或者属性的类型</strong></p>
+<figure class="highlight ts"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">interface</span> <span class="title class_">Person</span> &#123;</span><br><span class="line">  <span class="attr">name</span>: <span class="built_in">string</span>;</span><br><span class="line">  <span class="attr">age</span>: <span class="built_in">number</span>;</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">const</span> <span class="attr">sem</span>: <span class="title class_">Person</span> = &#123; <span class="attr">name</span>: <span class="string">&quot;semlinker&quot;</span>, <span class="attr">age</span>: <span class="number">30</span> &#125;;</span><br><span class="line"><span class="keyword">type</span> <span class="title class_">Sem</span> = <span class="keyword">typeof</span> sem; <span class="comment">// type Sem = Person</span></span><br></pre></td></tr></table></figure>
+
+<p>typeof 操作符除了可以获取对象的结构类型之外，它也可以用来获取函数对象的类型，比如：</p>
+<figure class="highlight ts"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">function</span> <span class="title function_">toArray</span>(<span class="params">x: <span class="built_in">number</span></span>): <span class="title class_">Array</span>&lt;<span class="built_in">number</span>&gt; &#123;</span><br><span class="line">  <span class="keyword">return</span> [x];</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">type</span> <span class="title class_">Func</span> = <span class="keyword">typeof</span> toArray; <span class="comment">// -&gt; (x: number) =&gt; number[]</span></span><br></pre></td></tr></table></figure>
+
+<h2 id="5-2-keyof"><a href="#5-2-keyof" class="headerlink" title="5.2 keyof"></a>5.2 keyof</h2><p>keyof可以用于获取某种类型的所有键，其返回类型是联合类型。</p>
+<figure class="highlight ts"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">interface</span> <span class="title class_">Person</span> &#123;</span><br><span class="line">  <span class="attr">name</span>: <span class="built_in">string</span>;</span><br><span class="line">  <span class="attr">age</span>: <span class="built_in">number</span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">type</span> <span class="variable constant_">K1</span> = keyof <span class="title class_">Person</span>; <span class="comment">// &quot;name&quot;  &quot;age&quot;</span></span><br><span class="line"><span class="keyword">type</span> <span class="variable constant_">K2</span> = keyof <span class="title class_">Person</span>[]; <span class="comment">// &quot;length&quot;  &quot;toString&quot;  &quot;pop&quot;  &quot;push&quot;  &quot;concat&quot;  &quot;join&quot; </span></span><br><span class="line"><span class="keyword">type</span> <span class="variable constant_">K3</span> = keyof &#123; [<span class="attr">x</span>: <span class="built_in">string</span>]: <span class="title class_">Person</span> &#125;;  <span class="comment">// string  number</span></span><br></pre></td></tr></table></figure>
+
+<h1 id="六、tsconfig-json文件"><a href="#六、tsconfig-json文件" class="headerlink" title="六、tsconfig.json文件"></a>六、tsconfig.json文件</h1><ul>
+<li>files - 设置要编译的文件的名称；</li>
+<li>include - 设置需要进行编译的文件，支持路径模式匹配；</li>
+<li>exclude - 设置无需进行编译的文件，支持路径模式匹配；</li>
+<li>compilerOptions - 设置与编译流程相关的选项。</li>
+</ul>
+<figure class="highlight json"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br></pre></td><td class="code"><pre><span class="line"><span class="punctuation">&#123;</span></span><br><span class="line">  <span class="attr">&quot;compilerOptions&quot;</span><span class="punctuation">:</span> <span class="punctuation">&#123;</span></span><br><span class="line"></span><br><span class="line">    <span class="comment">/* 基本选项 */</span></span><br><span class="line">    <span class="attr">&quot;target&quot;</span><span class="punctuation">:</span> <span class="string">&quot;es5&quot;</span><span class="punctuation">,</span>                       <span class="comment">// 指定 ECMAScript 目标版本: &#x27;ES3&#x27; (default), &#x27;ES5&#x27;, &#x27;ES6&#x27;/&#x27;ES2015&#x27;, &#x27;ES2016&#x27;, &#x27;ES2017&#x27;, or &#x27;ESNEXT&#x27;</span></span><br><span class="line">    <span class="attr">&quot;module&quot;</span><span class="punctuation">:</span> <span class="string">&quot;commonjs&quot;</span><span class="punctuation">,</span>                  <span class="comment">// 指定使用模块: &#x27;commonjs&#x27;, &#x27;amd&#x27;, &#x27;system&#x27;, &#x27;umd&#x27; or &#x27;es2015&#x27;</span></span><br><span class="line">    <span class="attr">&quot;lib&quot;</span><span class="punctuation">:</span> <span class="punctuation">[</span><span class="punctuation">]</span><span class="punctuation">,</span>                             <span class="comment">// 指定要包含在编译中的库文件</span></span><br><span class="line">    <span class="attr">&quot;allowJs&quot;</span><span class="punctuation">:</span> <span class="literal"><span class="keyword">true</span></span><span class="punctuation">,</span>                       <span class="comment">// 允许编译 javascript 文件</span></span><br><span class="line">    <span class="attr">&quot;checkJs&quot;</span><span class="punctuation">:</span> <span class="literal"><span class="keyword">true</span></span><span class="punctuation">,</span>                       <span class="comment">// 报告 javascript 文件中的错误</span></span><br><span class="line">    <span class="attr">&quot;jsx&quot;</span><span class="punctuation">:</span> <span class="string">&quot;preserve&quot;</span><span class="punctuation">,</span>                     <span class="comment">// 指定 jsx 代码的生成: &#x27;preserve&#x27;, &#x27;react-native&#x27;, or &#x27;react&#x27;</span></span><br><span class="line">    <span class="attr">&quot;declaration&quot;</span><span class="punctuation">:</span> <span class="literal"><span class="keyword">true</span></span><span class="punctuation">,</span>                   <span class="comment">// 生成相应的 &#x27;.d.ts&#x27; 文件</span></span><br><span class="line">    <span class="attr">&quot;sourceMap&quot;</span><span class="punctuation">:</span> <span class="literal"><span class="keyword">true</span></span><span class="punctuation">,</span>                     <span class="comment">// 生成相应的 &#x27;.map&#x27; 文件</span></span><br><span class="line">    <span class="attr">&quot;outFile&quot;</span><span class="punctuation">:</span> <span class="string">&quot;./&quot;</span><span class="punctuation">,</span>                       <span class="comment">// 将输出文件合并为一个文件</span></span><br><span class="line">    <span class="attr">&quot;outDir&quot;</span><span class="punctuation">:</span> <span class="string">&quot;./&quot;</span><span class="punctuation">,</span>                        <span class="comment">// 指定输出目录</span></span><br><span class="line">    <span class="attr">&quot;rootDir&quot;</span><span class="punctuation">:</span> <span class="string">&quot;./&quot;</span><span class="punctuation">,</span>                       <span class="comment">// 用来控制输出目录结构 --outDir.</span></span><br><span class="line">    <span class="attr">&quot;removeComments&quot;</span><span class="punctuation">:</span> <span class="literal"><span class="keyword">true</span></span><span class="punctuation">,</span>                <span class="comment">// 删除编译后的所有的注释</span></span><br><span class="line">    <span class="attr">&quot;noEmit&quot;</span><span class="punctuation">:</span> <span class="literal"><span class="keyword">true</span></span><span class="punctuation">,</span>                        <span class="comment">// 不生成输出文件</span></span><br><span class="line">    <span class="attr">&quot;importHelpers&quot;</span><span class="punctuation">:</span> <span class="literal"><span class="keyword">true</span></span><span class="punctuation">,</span>                 <span class="comment">// 从 tslib 导入辅助工具函数</span></span><br><span class="line">    <span class="attr">&quot;isolatedModules&quot;</span><span class="punctuation">:</span> <span class="literal"><span class="keyword">true</span></span><span class="punctuation">,</span>               <span class="comment">// 将每个文件做为单独的模块 （与 &#x27;ts.transpileModule&#x27; 类似）.</span></span><br><span class="line"></span><br><span class="line">    <span class="comment">/* 严格的类型检查选项 */</span></span><br><span class="line">    <span class="attr">&quot;strict&quot;</span><span class="punctuation">:</span> <span class="literal"><span class="keyword">true</span></span><span class="punctuation">,</span>                        <span class="comment">// 启用所有严格类型检查选项</span></span><br><span class="line">    <span class="attr">&quot;noImplicitAny&quot;</span><span class="punctuation">:</span> <span class="literal"><span class="keyword">true</span></span><span class="punctuation">,</span>                 <span class="comment">// 在表达式和声明上有隐含的 any类型时报错</span></span><br><span class="line">    <span class="attr">&quot;strictNullChecks&quot;</span><span class="punctuation">:</span> <span class="literal"><span class="keyword">true</span></span><span class="punctuation">,</span>              <span class="comment">// 启用严格的 null 检查</span></span><br><span class="line">    <span class="attr">&quot;noImplicitThis&quot;</span><span class="punctuation">:</span> <span class="literal"><span class="keyword">true</span></span><span class="punctuation">,</span>                <span class="comment">// 当 this 表达式值为 any 类型的时候，生成一个错误</span></span><br><span class="line">    <span class="attr">&quot;alwaysStrict&quot;</span><span class="punctuation">:</span> <span class="literal"><span class="keyword">true</span></span><span class="punctuation">,</span>                  <span class="comment">// 以严格模式检查每个模块，并在每个文件里加入 &#x27;use strict&#x27;</span></span><br><span class="line"></span><br><span class="line">    <span class="comment">/* 额外的检查 */</span></span><br><span class="line">    <span class="attr">&quot;noUnusedLocals&quot;</span><span class="punctuation">:</span> <span class="literal"><span class="keyword">true</span></span><span class="punctuation">,</span>                <span class="comment">// 有未使用的变量时，抛出错误</span></span><br><span class="line">    <span class="attr">&quot;noUnusedParameters&quot;</span><span class="punctuation">:</span> <span class="literal"><span class="keyword">true</span></span><span class="punctuation">,</span>            <span class="comment">// 有未使用的参数时，抛出错误</span></span><br><span class="line">    <span class="attr">&quot;noImplicitReturns&quot;</span><span class="punctuation">:</span> <span class="literal"><span class="keyword">true</span></span><span class="punctuation">,</span>             <span class="comment">// 并不是所有函数里的代码都有返回值时，抛出错误</span></span><br><span class="line">    <span class="attr">&quot;noFallthroughCasesInSwitch&quot;</span><span class="punctuation">:</span> <span class="literal"><span class="keyword">true</span></span><span class="punctuation">,</span>    <span class="comment">// 报告 switch 语句的 fallthrough 错误。（即，不允许 switch 的 case 语句贯穿）</span></span><br><span class="line"></span><br><span class="line">    <span class="comment">/* 模块解析选项 */</span></span><br><span class="line">    <span class="attr">&quot;moduleResolution&quot;</span><span class="punctuation">:</span> <span class="string">&quot;node&quot;</span><span class="punctuation">,</span>            <span class="comment">// 选择模块解析策略： &#x27;node&#x27; (Node.js) or &#x27;classic&#x27; (TypeScript pre-1.6)</span></span><br><span class="line">    <span class="attr">&quot;baseUrl&quot;</span><span class="punctuation">:</span> <span class="string">&quot;./&quot;</span><span class="punctuation">,</span>                       <span class="comment">// 用于解析非相对模块名称的基目录</span></span><br><span class="line">    <span class="attr">&quot;paths&quot;</span><span class="punctuation">:</span> <span class="punctuation">&#123;</span><span class="punctuation">&#125;</span><span class="punctuation">,</span>                           <span class="comment">// 模块名到基于 baseUrl 的路径映射的列表</span></span><br><span class="line">    <span class="attr">&quot;rootDirs&quot;</span><span class="punctuation">:</span> <span class="punctuation">[</span><span class="punctuation">]</span><span class="punctuation">,</span>                        <span class="comment">// 根文件夹列表，其组合内容表示项目运行时的结构内容</span></span><br><span class="line">    <span class="attr">&quot;typeRoots&quot;</span><span class="punctuation">:</span> <span class="punctuation">[</span><span class="punctuation">]</span><span class="punctuation">,</span>                       <span class="comment">// 包含类型声明的文件列表</span></span><br><span class="line">    <span class="attr">&quot;types&quot;</span><span class="punctuation">:</span> <span class="punctuation">[</span><span class="punctuation">]</span><span class="punctuation">,</span>                           <span class="comment">// 需要包含的类型声明文件名列表</span></span><br><span class="line">    <span class="attr">&quot;allowSyntheticDefaultImports&quot;</span><span class="punctuation">:</span> <span class="literal"><span class="keyword">true</span></span><span class="punctuation">,</span>  <span class="comment">// 允许从没有设置默认导出的模块中默认导入。</span></span><br><span class="line"></span><br><span class="line">    <span class="comment">/* Source Map Options */</span></span><br><span class="line">    <span class="attr">&quot;sourceRoot&quot;</span><span class="punctuation">:</span> <span class="string">&quot;./&quot;</span><span class="punctuation">,</span>                    <span class="comment">// 指定调试器应该找到 TypeScript 文件而不是源文件的位置</span></span><br><span class="line">    <span class="attr">&quot;mapRoot&quot;</span><span class="punctuation">:</span> <span class="string">&quot;./&quot;</span><span class="punctuation">,</span>                       <span class="comment">// 指定调试器应该找到映射文件而不是生成文件的位置</span></span><br><span class="line">    <span class="attr">&quot;inlineSourceMap&quot;</span><span class="punctuation">:</span> <span class="literal"><span class="keyword">true</span></span><span class="punctuation">,</span>               <span class="comment">// 生成单个 soucemaps 文件，而不是将 sourcemaps 生成不同的文件</span></span><br><span class="line">    <span class="attr">&quot;inlineSources&quot;</span><span class="punctuation">:</span> <span class="literal"><span class="keyword">true</span></span><span class="punctuation">,</span>                 <span class="comment">// 将代码与 sourcemaps 生成到一个文件中，要求同时设置了 --inlineSourceMap 或 --sourceMap 属性</span></span><br><span class="line"></span><br><span class="line">    <span class="comment">/* 其他选项 */</span></span><br><span class="line">    <span class="attr">&quot;experimentalDecorators&quot;</span><span class="punctuation">:</span> <span class="literal"><span class="keyword">true</span></span><span class="punctuation">,</span>        <span class="comment">// 启用装饰器</span></span><br><span class="line">    <span class="attr">&quot;emitDecoratorMetadata&quot;</span><span class="punctuation">:</span> <span class="literal"><span class="keyword">true</span></span>          <span class="comment">// 为装饰器提供元数据的支持</span></span><br><span class="line">  <span class="punctuation">&#125;</span></span><br><span class="line"><span class="punctuation">&#125;</span></span><br></pre></td></tr></table></figure>
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/2022/08/16/git%E6%97%B6%E5%BF%BD%E7%95%A5node-modules%E7%9A%84%E6%96%B9%E6%B3%95/" rel="prev" title="git时忽略node_modules的方法">
+                  <i class="fa fa-chevron-left"></i> git时忽略node_modules的方法
+                </a>
+            </div>
+            <div class="post-nav-item">
+                <a href="/2022/09/26/finediving-a-fine-grained-dataset-for-procedure-aware-action-quality-assessment/" rel="next" title="FineDiving: A Fine-grained Dataset for Procedure-aware Action Quality Assessment">
+                  FineDiving: A Fine-grained Dataset for Procedure-aware Action Quality Assessment <i class="fa fa-chevron-right"></i>
+                </a>
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+
+<div class="copyright">
+  &copy; 
+  <span itemprop="copyrightYear">2023</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Wh&CC</span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io/" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.js.org/pisces/" rel="noopener" target="_blank">NexT.Pisces</a> 强力驱动
+  </div>
+
+    </div>
+  </footer>
+
+  
+  <div class="back-to-top" role="button" aria-label="返回顶部">
+    <i class="fa fa-arrow-up fa-lg"></i>
+    <span>0%</span>
+  </div>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+  
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.1/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous"></script>
+<script src="/js/comments.js"></script><script src="/js/utils.js"></script><script src="/js/motion.js"></script><script src="/js/next-boot.js"></script>
+
+  
+
+
+
+
+  
+
+
+
+
+
+</body>
+</html>
