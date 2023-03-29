@@ -1,3 +1,5 @@
+http://example.com/2023/03/29/%E7%89%9B%E5%AE%A2%E8%BE%93%E5%85%A5%E8%BE%93%E5%87%BA/
+http://example.com/2022/03/12/html%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/
 http://example.com/2023/03/14/Next-js/
 http://example.com/2023/03/27/restful-api/
 http://example.com/2022/04/20/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E7%AC%AC%E4%BA%94%E5%A4%A9/
@@ -34,7 +36,6 @@ http://example.com/2022/04/15/js%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/
 http://example.com/2023/02/15/JS%E4%B8%AD%E7%9A%84%E9%93%BE%E8%A1%A8/
 http://example.com/2022/07/21/js%E4%B8%AD%E7%9A%84class/
 http://example.com/2022/05/13/human-activity-recognition-machine-with-an-anchor-based-loss-function/
-http://example.com/2022/03/12/html%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/
 http://example.com/2022/12/28/Hexo+github+PicGo+%E9%98%BF%E9%87%8C%E4%BA%91OSS%E5%8D%9A%E5%AE%A2%E6%90%AD%E5%BB%BA%E6%B5%81%E7%A8%8B/
 http://example.com/2022/08/16/git%E6%97%B6%E5%BF%BD%E7%95%A5node-modules%E7%9A%84%E6%96%B9%E6%B3%95/
 http://example.com/2022/07/21/getter%E5%92%8Csetter%E6%96%B9%E6%B3%95/
@@ -51,3 +52,4 @@ http://example.com/
 http://example.com/categories/%E5%89%8D%E7%AB%AF%E7%9F%A5%E8%AF%86/
 http://example.com/categories/%E8%AE%A1%E7%AE%97%E6%9C%BA%E8%A7%86%E8%A7%89/
 http://example.com/categories/LeetCode/
+http://example.com/categories/%E9%9D%A2%E8%AF%95%E7%9B%B8%E5%85%B3/
