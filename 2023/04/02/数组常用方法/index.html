@@ -1,0 +1,414 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+<meta name="theme-color" content="#222"><meta name="generator" content="Hexo 6.3.0">
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.1/css/all.min.css" integrity="sha256-Z1K5uhUaJXA7Ll0XrZ/0JhX4lAtZFpT6jkKrEDT0drU=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.1.1/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
+
+<script class="next-config" data-name="main" type="application/json">{"hostname":"example.com","root":"/","images":"/images","scheme":"Pisces","darkmode":false,"version":"8.14.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12},"copycode":{"enable":false,"style":null},"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"stickytabs":false,"motion":{"enable":true,"async":false,"transition":{"menu_item":"fadeInDown","post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"}}</script><script src="/js/config.js"></script>
+
+    <meta name="description" content="参考资料：https:&#x2F;&#x2F;developer.mozilla.org&#x2F;zh-CN&#x2F;docs&#x2F;Web&#x2F;JavaScript&#x2F;Reference&#x2F;Global_Objects&#x2F;Array 生成方法Array.from()将两类对象转为真正的数组：类似数组的对象和可遍历（iterable）的对象（包括 ES6 新增的数据结构 Set 和 Map） 1234567let arrayLike &#x3D; &amp;#123">
+<meta property="og:type" content="article">
+<meta property="og:title" content="数组常用方法">
+<meta property="og:url" content="http://example.com/2023/04/02/%E6%95%B0%E7%BB%84%E5%B8%B8%E7%94%A8%E6%96%B9%E6%B3%95/index.html">
+<meta property="og:site_name" content="小吴的Blog">
+<meta property="og:description" content="参考资料：https:&#x2F;&#x2F;developer.mozilla.org&#x2F;zh-CN&#x2F;docs&#x2F;Web&#x2F;JavaScript&#x2F;Reference&#x2F;Global_Objects&#x2F;Array 生成方法Array.from()将两类对象转为真正的数组：类似数组的对象和可遍历（iterable）的对象（包括 ES6 新增的数据结构 Set 和 Map） 1234567let arrayLike &#x3D; &amp;#123">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2023-04-02T12:50:52.000Z">
+<meta property="article:modified_time" content="2023-04-03T12:31:07.855Z">
+<meta property="article:author" content="Wh&amp;CC">
+<meta name="twitter:card" content="summary">
+
+
+<link rel="canonical" href="http://example.com/2023/04/02/%E6%95%B0%E7%BB%84%E5%B8%B8%E7%94%A8%E6%96%B9%E6%B3%95/">
+
+
+
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"zh-CN","comments":true,"permalink":"http://example.com/2023/04/02/%E6%95%B0%E7%BB%84%E5%B8%B8%E7%94%A8%E6%96%B9%E6%B3%95/","path":"2023/04/02/数组常用方法/","title":"数组常用方法"}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">""</script>
+<title>数组常用方法 | 小吴的Blog</title>
+  
+
+
+
+
+
+
+  <script async defer data-website-id="" src=""></script>
+
+  <script defer data-domain="" src=""></script>
+
+  <noscript>
+    <link rel="stylesheet" href="/css/noscript.css">
+  </noscript>
+<link rel="alternate" href="/atom.xml" title="小吴的Blog" type="application/atom+xml">
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <div class="headband"></div>
+
+  <main class="main">
+    <div class="column">
+      <header class="header" itemscope itemtype="http://schema.org/WPHeader"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏" role="button">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <p class="site-title">小吴的Blog</p>
+      <i class="logo-line"></i>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger" aria-label="搜索" role="button">
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu"><li class="menu-item menu-item-home"><a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a></li><li class="menu-item menu-item-about"><a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>关于</a></li><li class="menu-item menu-item-tags"><a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签</a></li><li class="menu-item menu-item-categories"><a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类</a></li><li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档</a></li>
+  </ul>
+</nav>
+
+
+
+
+</header>
+        
+  
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%94%9F%E6%88%90%E6%96%B9%E6%B3%95"><span class="nav-number">1.</span> <span class="nav-text">生成方法</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#Array-from"><span class="nav-number">1.0.1.</span> <span class="nav-text">Array.from()</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#Array-of"><span class="nav-number">1.0.2.</span> <span class="nav-text">Array.of()</span></a></li></ol></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%89%81%E5%B9%B3%E5%8C%96%E6%96%B9%E6%B3%95"><span class="nav-number">2.</span> <span class="nav-text">扁平化方法</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%A2%9E%E5%88%A0%E6%96%B9%E6%B3%95"><span class="nav-number">3.</span> <span class="nav-text">增删方法</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#Array-push-%E3%80%81Array-pop"><span class="nav-number">3.0.1.</span> <span class="nav-text">Array.push()、Array.pop()</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#Array-shift-%E3%80%81Array-unshift"><span class="nav-number">3.0.2.</span> <span class="nav-text">Array.shift()、Array.unshift()</span></a></li></ol></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%8E%92%E5%BA%8F%E6%96%B9%E6%B3%95"><span class="nav-number">4.</span> <span class="nav-text">排序方法</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#Array-sort"><span class="nav-number">4.0.1.</span> <span class="nav-text">Array.sort()</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#Array-reverse"><span class="nav-number">4.0.2.</span> <span class="nav-text">Array.reverse()</span></a></li></ol></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%AD%97%E7%AC%A6%E4%B8%B2%E6%96%B9%E6%B3%95"><span class="nav-number">5.</span> <span class="nav-text">字符串方法</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#Array-join"><span class="nav-number">5.0.1.</span> <span class="nav-text">Array.join()</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#Array-toString"><span class="nav-number">5.0.2.</span> <span class="nav-text">Array.toString()</span></a></li></ol></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%88%86%E5%89%B2%E6%96%B9%E6%B3%95"><span class="nav-number">6.</span> <span class="nav-text">分割方法</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#Array-slice"><span class="nav-number">6.0.1.</span> <span class="nav-text">Array.slice()</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#Array-splice"><span class="nav-number">6.0.2.</span> <span class="nav-text">Array.splice()</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#Array-copyWithin"><span class="nav-number">6.0.3.</span> <span class="nav-text">Array.copyWithin()</span></a></li></ol></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%AF%BB%E6%89%BE%E6%96%B9%E6%B3%95"><span class="nav-number">7.</span> <span class="nav-text">寻找方法</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#Array-find-%E3%80%81Array-findIndex"><span class="nav-number">7.0.1.</span> <span class="nav-text">Array.find()、Array.findIndex()</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#Array-includes"><span class="nav-number">7.0.2.</span> <span class="nav-text">Array.includes()</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#Array-indexOf"><span class="nav-number">7.0.3.</span> <span class="nav-text">Array.indexOf()</span></a></li></ol></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#entries-%EF%BC%8Ckeys-%EF%BC%8Cvalues"><span class="nav-number">8.</span> <span class="nav-text">entries()，keys()，values()</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%85%B6%E4%BB%96%E6%96%B9%E6%B3%95"><span class="nav-number">9.</span> <span class="nav-text">其他方法</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#Array-forEach"><span class="nav-number">9.0.1.</span> <span class="nav-text">Array.forEach()</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#Array-fill"><span class="nav-number">9.0.2.</span> <span class="nav-text">Array.fill()</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#Array-map"><span class="nav-number">9.0.3.</span> <span class="nav-text">Array.map()</span></a></li></ol></li></ol></li></ol></div>
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-author animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="Wh&CC"
+      src="/images/avatar.gif">
+  <p class="site-author-name" itemprop="name">Wh&CC</p>
+  <div class="site-description" itemprop="description">Per aspera ad astra</div>
+</div>
+<div class="site-state-wrap animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+        <a href="/archives/">
+          <span class="site-state-item-count">50</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+          <a href="/categories/">
+        <span class="site-state-item-count">4</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author animated">
+      <span class="links-of-author-item">
+        <a href="https://github.com/sacrifice-w" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;sacrifice-w" rel="noopener me" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="mailto:761612239@qq.com" title="E-Mail → mailto:761612239@qq.com" rel="noopener me" target="_blank"><i class="fa fa-envelope fa-fw"></i>E-Mail</a>
+      </span>
+  </div>
+
+        </div>
+      </div>
+    </div>
+
+    
+  </aside>
+
+
+    </div>
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2023/04/02/%E6%95%B0%E7%BB%84%E5%B8%B8%E7%94%A8%E6%96%B9%E6%B3%95/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="Wh&CC">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="小吴的Blog">
+      <meta itemprop="description" content="Per aspera ad astra">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="数组常用方法 | 小吴的Blog">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          数组常用方法
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+
+      <time title="创建时间：2023-04-02 20:50:52" itemprop="dateCreated datePublished" datetime="2023-04-02T20:50:52+08:00">2023-04-02</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar-check"></i>
+      </span>
+      <span class="post-meta-item-text">更新于</span>
+      <time title="修改时间：2023-04-03 20:31:07" itemprop="dateModified" datetime="2023-04-03T20:31:07+08:00">2023-04-03</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">分类于</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/%E9%9D%A2%E8%AF%95%E7%9B%B8%E5%85%B3/" itemprop="url" rel="index"><span itemprop="name">面试相关</span></a>
+        </span>
+    </span>
+
+  
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+        <p>参考资料：<a target="_blank" rel="noopener" href="https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Reference/Global_Objects/Array">https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Reference/Global_Objects/Array</a></p>
+<h3 id="生成方法"><a href="#生成方法" class="headerlink" title="生成方法"></a>生成方法</h3><h5 id="Array-from"><a href="#Array-from" class="headerlink" title="Array.from()"></a>Array.from()</h5><p>将两类对象转为真正的数组：类似数组的对象和可遍历<code>（iterable）</code>的对象（包括 <code>ES6</code> 新增的数据结构 <code>Set</code> 和 <code>Map</code>）</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">let</span> arrayLike = &#123;</span><br><span class="line">    <span class="string">&#x27;0&#x27;</span>: <span class="string">&#x27;a&#x27;</span>,</span><br><span class="line">    <span class="string">&#x27;1&#x27;</span>: <span class="string">&#x27;b&#x27;</span>,</span><br><span class="line">    <span class="string">&#x27;2&#x27;</span>: <span class="string">&#x27;c&#x27;</span>,</span><br><span class="line">    <span class="attr">length</span>: <span class="number">3</span></span><br><span class="line">&#125;;</span><br><span class="line"><span class="keyword">let</span> arr2 = <span class="title class_">Array</span>.<span class="title function_">from</span>(arrayLike); <span class="comment">// [&#x27;a&#x27;, &#x27;b&#x27;, &#x27;c&#x27;]</span></span><br></pre></td></tr></table></figure>
+
+<p>还可以接受第二个参数，用来对每个元素进行处理，将处理后的值放入返回的数组</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="title class_">Array</span>.<span class="title function_">from</span>([<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>], <span class="function">(<span class="params">x</span>) =&gt;</span> x * x)</span><br><span class="line"><span class="comment">// [1, 4, 9]</span></span><br></pre></td></tr></table></figure>
+
+<span id="more"></span>
+
+<h5 id="Array-of"><a href="#Array-of" class="headerlink" title="Array.of()"></a>Array.of()</h5><p>用于将一组值，转换为数组</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="title class_">Array</span>.<span class="title function_">of</span>(<span class="number">3</span>, <span class="number">11</span>, <span class="number">8</span>) <span class="comment">// [3,11,8]</span></span><br></pre></td></tr></table></figure>
+
+<p>没有参数的时候，返回一个空数组</p>
+<p>当参数只有一个的时候，实际上是指定数组的长度</p>
+<p>参数个数不少于 2 个时，<code>Array()</code>才会返回由参数组成的新数组</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="title class_">Array</span>() <span class="comment">// []</span></span><br><span class="line"><span class="title class_">Array</span>(<span class="number">3</span>) <span class="comment">// [, , ,]</span></span><br><span class="line"><span class="title class_">Array</span>(<span class="number">3</span>, <span class="number">11</span>, <span class="number">8</span>) <span class="comment">// [3, 11, 8]</span></span><br></pre></td></tr></table></figure>
+
+<h3 id="扁平化方法"><a href="#扁平化方法" class="headerlink" title="扁平化方法"></a>扁平化方法</h3><p>将数组扁平化处理，返回一个新数组，对原数据没有影响</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">[<span class="number">1</span>, <span class="number">2</span>, [<span class="number">3</span>, <span class="number">4</span>]].<span class="title function_">flat</span>()</span><br><span class="line"><span class="comment">// [1, 2, 3, 4]</span></span><br></pre></td></tr></table></figure>
+
+<p><code>flat()</code>默认只会“拉平”一层，如果想要“拉平”多层的嵌套数组，可以将<code>flat()</code>方法的参数写成一个整数，表示想要拉平的层数，默认为1</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">[<span class="number">1</span>, <span class="number">2</span>, [<span class="number">3</span>, [<span class="number">4</span>, <span class="number">5</span>]]].<span class="title function_">flat</span>()</span><br><span class="line"><span class="comment">// [1, 2, 3, [4, 5]]</span></span><br><span class="line"></span><br><span class="line">[<span class="number">1</span>, <span class="number">2</span>, [<span class="number">3</span>, [<span class="number">4</span>, <span class="number">5</span>]]].<span class="title function_">flat</span>(<span class="number">2</span>)</span><br><span class="line"><span class="comment">// [1, 2, 3, 4, 5]</span></span><br></pre></td></tr></table></figure>
+
+<p><code>flatMap()</code>方法对原数组的每个成员执行一个函数相当于执行<code>Array.prototype.map()</code>，然后对返回值组成的数组执行<code>flat()</code>方法。该方法返回一个新数组，不改变原数组</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 相当于 [[2, 4], [3, 6], [4, 8]].flat()</span></span><br><span class="line">[<span class="number">2</span>, <span class="number">3</span>, <span class="number">4</span>].<span class="title function_">flatMap</span>(<span class="function">(<span class="params">x</span>) =&gt;</span> [x, x * <span class="number">2</span>])</span><br><span class="line"><span class="comment">// [2, 4, 3, 6, 4, 8]</span></span><br></pre></td></tr></table></figure>
+
+<p><code>flatMap()</code>方法还可以有第二个参数，用来绑定遍历函数里面的<code>this</code></p>
+<h3 id="增删方法"><a href="#增删方法" class="headerlink" title="增删方法"></a>增删方法</h3><h5 id="Array-push-、Array-pop"><a href="#Array-push-、Array-pop" class="headerlink" title="Array.push()、Array.pop()"></a>Array.push()、Array.pop()</h5><p><code>pop()</code>方法从末尾删除<strong>最后一个</strong>元素，并返回该元素的值，会改变数组的长度</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> plants = [<span class="string">&#x27;broccoli&#x27;</span>, <span class="string">&#x27;cauliflower&#x27;</span>, <span class="string">&#x27;cabbage&#x27;</span>, <span class="string">&#x27;kale&#x27;</span>, <span class="string">&#x27;tomato&#x27;</span>];</span><br><span class="line"></span><br><span class="line"><span class="variable language_">console</span>.<span class="title function_">log</span>(plants.<span class="title function_">pop</span>());</span><br><span class="line"><span class="comment">// Expected output: &quot;tomato&quot;</span></span><br><span class="line"></span><br><span class="line"><span class="variable language_">console</span>.<span class="title function_">log</span>(plants);</span><br><span class="line"><span class="comment">// Expected output: Array [&quot;broccoli&quot;, &quot;cauliflower&quot;, &quot;cabbage&quot;, &quot;kale&quot;]</span></span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<p><code>push()</code>方法将<strong>一个或多个</strong>元素添加到数组的末尾，并返回该数组的新长度</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> animals = [<span class="string">&#x27;pigs&#x27;</span>, <span class="string">&#x27;goats&#x27;</span>, <span class="string">&#x27;sheep&#x27;</span>];</span><br><span class="line"></span><br><span class="line"><span class="keyword">const</span> count = animals.<span class="title function_">push</span>(<span class="string">&#x27;cows&#x27;</span>);</span><br><span class="line"><span class="variable language_">console</span>.<span class="title function_">log</span>(count);</span><br><span class="line"><span class="comment">// Expected output: 4</span></span><br><span class="line"><span class="variable language_">console</span>.<span class="title function_">log</span>(animals);</span><br><span class="line"><span class="comment">// Expected output: Array [&quot;pigs&quot;, &quot;goats&quot;, &quot;sheep&quot;, &quot;cows&quot;]</span></span><br></pre></td></tr></table></figure>
+
+<h5 id="Array-shift-、Array-unshift"><a href="#Array-shift-、Array-unshift" class="headerlink" title="Array.shift()、Array.unshift()"></a>Array.shift()、Array.unshift()</h5><p><code>shift()</code> 方法从数组中删除<strong>第一个</strong>元素，并返回该元素的值。此方法更改数组的长度</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> array1 = [<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>];</span><br><span class="line"></span><br><span class="line"><span class="keyword">const</span> firstElement = array1.<span class="title function_">shift</span>();</span><br><span class="line"></span><br><span class="line"><span class="variable language_">console</span>.<span class="title function_">log</span>(array1);</span><br><span class="line"><span class="comment">// Expected output: Array [2, 3]</span></span><br></pre></td></tr></table></figure>
+
+<p><code>unshift()</code> 方法将一个或多个元素添加到数组的<strong>开头</strong>，并返回该数组的<strong>新长度</strong>。</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> array1 = [<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>];</span><br><span class="line"></span><br><span class="line"><span class="variable language_">console</span>.<span class="title function_">log</span>(array1.<span class="title function_">unshift</span>(<span class="number">4</span>, <span class="number">5</span>));</span><br><span class="line"><span class="comment">// Expected output: 5</span></span><br><span class="line"></span><br><span class="line"><span class="variable language_">console</span>.<span class="title function_">log</span>(array1);</span><br><span class="line"><span class="comment">// Expected output: Array [4, 5, 1, 2, 3]</span></span><br></pre></td></tr></table></figure>
+
+<h3 id="排序方法"><a href="#排序方法" class="headerlink" title="排序方法"></a>排序方法</h3><h5 id="Array-sort"><a href="#Array-sort" class="headerlink" title="Array.sort()"></a>Array.sort()</h5><p><strong><code>sort()</code></strong> 方法用<a target="_blank" rel="noopener" href="https://zh.wikipedia.org/wiki/%E5%8E%9F%E5%9C%B0%E7%AE%97%E6%B3%95">原地算法</a>对数组的元素进行排序，并返回数组。默认排序顺序是在将元素转换为字符串，然后比较它们的 UTF-16 代码单元值序列时构建的</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> months = [<span class="string">&#x27;March&#x27;</span>, <span class="string">&#x27;Jan&#x27;</span>, <span class="string">&#x27;Feb&#x27;</span>, <span class="string">&#x27;Dec&#x27;</span>];</span><br><span class="line">months.<span class="title function_">sort</span>();</span><br><span class="line"><span class="variable language_">console</span>.<span class="title function_">log</span>(months);</span><br><span class="line"><span class="comment">// Expected output: Array [&quot;Dec&quot;, &quot;Feb&quot;, &quot;Jan&quot;, &quot;March&quot;]</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">const</span> array1 = [<span class="number">1</span>, <span class="number">30</span>, <span class="number">4</span>, <span class="number">21</span>, <span class="number">100000</span>];</span><br><span class="line">array1.<span class="title function_">sort</span>();</span><br><span class="line"><span class="variable language_">console</span>.<span class="title function_">log</span>(array1);</span><br><span class="line"><span class="comment">// Expected output: Array [1, 100000, 21, 30, 4]</span></span><br></pre></td></tr></table></figure>
+
+<p>要比较数字而非字符串，比较函数可以简单的用 <code>a</code> 减 <code>b</code>，如下的函数将会将数组升序排列（如果它不包含 <code>Infinity</code> 和 <code>NaN</code>）：</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="title class_">Array</span>.<span class="title function_">sort</span>(<span class="function">(<span class="params">a,b</span>) =&gt;</span> a-b);</span><br></pre></td></tr></table></figure>
+
+<h5 id="Array-reverse"><a href="#Array-reverse" class="headerlink" title="Array.reverse()"></a>Array.reverse()</h5><p><strong><code>reverse()</code></strong> 方法将数组中元素的位置颠倒，并返回该数组。数组的第一个元素会变成最后一个，数组的最后一个元素变成第一个。该方法会改变原数组。</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> array1 = [<span class="string">&#x27;one&#x27;</span>, <span class="string">&#x27;two&#x27;</span>, <span class="string">&#x27;three&#x27;</span>];</span><br><span class="line"><span class="variable language_">console</span>.<span class="title function_">log</span>(<span class="string">&#x27;array1:&#x27;</span>, array1);</span><br><span class="line"><span class="comment">// Expected output: &quot;array1:&quot; Array [&quot;one&quot;, &quot;two&quot;, &quot;three&quot;]</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">const</span> reversed = array1.<span class="title function_">reverse</span>();</span><br><span class="line"><span class="variable language_">console</span>.<span class="title function_">log</span>(<span class="string">&#x27;reversed:&#x27;</span>, reversed);</span><br><span class="line"><span class="comment">// Expected output: &quot;reversed:&quot; Array [&quot;three&quot;, &quot;two&quot;, &quot;one&quot;]</span></span><br></pre></td></tr></table></figure>
+
+<h3 id="字符串方法"><a href="#字符串方法" class="headerlink" title="字符串方法"></a>字符串方法</h3><h5 id="Array-join"><a href="#Array-join" class="headerlink" title="Array.join()"></a>Array.join()</h5><p><strong><code>join()</code></strong> 方法将一个数组（或一个<a target="_blank" rel="noopener" href="https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Guide/Indexed_collections#%E4%BD%BF%E7%94%A8%E7%B1%BB%E6%95%B0%E7%BB%84%E5%AF%B9%E8%B1%A1_array-like_objects">类数组对象</a>）的所有元素连接成一个字符串并返回这个字符串，用逗号或指定的分隔符字符串分隔。如果数组只有一个元素，那么将返回该元素而不使用分隔符。</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> elements = [<span class="string">&#x27;Fire&#x27;</span>, <span class="string">&#x27;Air&#x27;</span>, <span class="string">&#x27;Water&#x27;</span>];</span><br><span class="line"></span><br><span class="line"><span class="variable language_">console</span>.<span class="title function_">log</span>(elements.<span class="title function_">join</span>());</span><br><span class="line"><span class="comment">// Expected output: &quot;Fire,Air,Water&quot;</span></span><br><span class="line"></span><br><span class="line"><span class="variable language_">console</span>.<span class="title function_">log</span>(elements.<span class="title function_">join</span>(<span class="string">&#x27;&#x27;</span>));</span><br><span class="line"><span class="comment">// Expected output: &quot;FireAirWater&quot;</span></span><br><span class="line"></span><br><span class="line"><span class="variable language_">console</span>.<span class="title function_">log</span>(elements.<span class="title function_">join</span>(<span class="string">&#x27;-&#x27;</span>));</span><br><span class="line"><span class="comment">// Expected output: &quot;Fire-Air-Water&quot;</span></span><br></pre></td></tr></table></figure>
+
+<h5 id="Array-toString"><a href="#Array-toString" class="headerlink" title="Array.toString()"></a>Array.toString()</h5><p><strong><code>toString()</code></strong> 方法返回一个字符串，表示指定的数组及其元素。其默认用逗号进行分割</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> array1 = [<span class="number">1</span>, <span class="number">2</span>, <span class="string">&#x27;a&#x27;</span>, <span class="string">&#x27;1a&#x27;</span>];</span><br><span class="line"></span><br><span class="line"><span class="variable language_">console</span>.<span class="title function_">log</span>(array1.<span class="title function_">toString</span>());</span><br><span class="line"><span class="comment">// Expected output: &quot;1,2,a,1a&quot;</span></span><br></pre></td></tr></table></figure>
+
+<p>还有一些奇怪的用法，比如你可以使用<code>toString()</code>方法方便的完成进制转换</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> a = <span class="string">&#x27;0xff&#x27;</span></span><br><span class="line"><span class="variable language_">console</span>.<span class="title function_">log</span>(a.<span class="title function_">toString</span>(<span class="number">2</span>)); <span class="comment">// 11111111</span></span><br><span class="line"><span class="variable language_">console</span>.<span class="title function_">log</span>(a.<span class="title function_">toString</span>(<span class="number">10</span>)); <span class="comment">// 255</span></span><br></pre></td></tr></table></figure>
+
+<h3 id="分割方法"><a href="#分割方法" class="headerlink" title="分割方法"></a>分割方法</h3><h5 id="Array-slice"><a href="#Array-slice" class="headerlink" title="Array.slice()"></a>Array.slice()</h5><p><strong><code>slice()</code></strong> 方法返回一个新的数组对象，这一对象是一个由 <code>begin</code> 和 <code>end</code> 决定的原数组的<strong>浅拷贝</strong>（包括 <code>begin</code>，不包括<code>end</code>）。原始数组不会被改变。</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> animals = [<span class="string">&#x27;ant&#x27;</span>, <span class="string">&#x27;bison&#x27;</span>, <span class="string">&#x27;camel&#x27;</span>, <span class="string">&#x27;duck&#x27;</span>, <span class="string">&#x27;elephant&#x27;</span>];</span><br><span class="line"></span><br><span class="line"><span class="variable language_">console</span>.<span class="title function_">log</span>(animals.<span class="title function_">slice</span>(<span class="number">2</span>));</span><br><span class="line"><span class="comment">// Expected output: Array [&quot;camel&quot;, &quot;duck&quot;, &quot;elephant&quot;]</span></span><br><span class="line"></span><br><span class="line"><span class="variable language_">console</span>.<span class="title function_">log</span>(animals.<span class="title function_">slice</span>(<span class="number">2</span>, <span class="number">4</span>));</span><br><span class="line"><span class="comment">// Expected output: Array [&quot;camel&quot;, &quot;duck&quot;]</span></span><br><span class="line"></span><br><span class="line"><span class="variable language_">console</span>.<span class="title function_">log</span>(animals.<span class="title function_">slice</span>(<span class="number">1</span>, <span class="number">5</span>));</span><br><span class="line"><span class="comment">// Expected output: Array [&quot;bison&quot;, &quot;camel&quot;, &quot;duck&quot;, &quot;elephant&quot;]</span></span><br></pre></td></tr></table></figure>
+
+<h5 id="Array-splice"><a href="#Array-splice" class="headerlink" title="Array.splice()"></a>Array.splice()</h5><p><strong><code>splice()</code></strong> 方法通过删除或替换现有元素或者原地添加新的元素来修改数组，并以数组形式返回被修改的内容。此方法会改变原数组。</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> months = [<span class="string">&#x27;Jan&#x27;</span>, <span class="string">&#x27;March&#x27;</span>, <span class="string">&#x27;April&#x27;</span>, <span class="string">&#x27;June&#x27;</span>];</span><br><span class="line">months.<span class="title function_">splice</span>(<span class="number">1</span>, <span class="number">0</span>, <span class="string">&#x27;Feb&#x27;</span>);</span><br><span class="line"><span class="comment">// Inserts at index 1</span></span><br><span class="line"><span class="variable language_">console</span>.<span class="title function_">log</span>(months);</span><br><span class="line"><span class="comment">// Expected output: Array [&quot;Jan&quot;, &quot;Feb&quot;, &quot;March&quot;, &quot;April&quot;, &quot;June&quot;]</span></span><br><span class="line"></span><br><span class="line">months.<span class="title function_">splice</span>(<span class="number">4</span>, <span class="number">1</span>, <span class="string">&#x27;May&#x27;</span>);</span><br><span class="line"><span class="comment">// Replaces 1 element at index 4</span></span><br><span class="line"><span class="variable language_">console</span>.<span class="title function_">log</span>(months);</span><br><span class="line"><span class="comment">// Expected output: Array [&quot;Jan&quot;, &quot;Feb&quot;, &quot;March&quot;, &quot;April&quot;, &quot;May&quot;]</span></span><br></pre></td></tr></table></figure>
+
+<h5 id="Array-copyWithin"><a href="#Array-copyWithin" class="headerlink" title="Array.copyWithin()"></a>Array.copyWithin()</h5><p><strong><code>copyWithin()</code></strong> 方法浅复制数组的一部分到同一数组中的另一个位置，并返回它，不会改变原数组的长度。</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> array1 = [<span class="string">&#x27;a&#x27;</span>, <span class="string">&#x27;b&#x27;</span>, <span class="string">&#x27;c&#x27;</span>, <span class="string">&#x27;d&#x27;</span>, <span class="string">&#x27;e&#x27;</span>];</span><br><span class="line"></span><br><span class="line"><span class="comment">// Copy to index 0 the element at index 3</span></span><br><span class="line"><span class="variable language_">console</span>.<span class="title function_">log</span>(array1.<span class="title function_">copyWithin</span>(<span class="number">0</span>, <span class="number">3</span>, <span class="number">4</span>));</span><br><span class="line"><span class="comment">// Expected output: Array [&quot;d&quot;, &quot;b&quot;, &quot;c&quot;, &quot;d&quot;, &quot;e&quot;]</span></span><br><span class="line"></span><br><span class="line"><span class="comment">// Copy to index 1 all elements from index 3 to the end</span></span><br><span class="line"><span class="variable language_">console</span>.<span class="title function_">log</span>(array1.<span class="title function_">copyWithin</span>(<span class="number">1</span>, <span class="number">3</span>));</span><br><span class="line"><span class="comment">// Expected output: Array [&quot;d&quot;, &quot;d&quot;, &quot;e&quot;, &quot;d&quot;, &quot;e&quot;]</span></span><br></pre></td></tr></table></figure>
+
+<h3 id="寻找方法"><a href="#寻找方法" class="headerlink" title="寻找方法"></a>寻找方法</h3><h5 id="Array-find-、Array-findIndex"><a href="#Array-find-、Array-findIndex" class="headerlink" title="Array.find()、Array.findIndex()"></a>Array.find()、Array.findIndex()</h5><p><code>find()</code>用于找出第一个符合条件的数组成员</p>
+<p>参数是一个回调函数，接受三个参数依次为当前的值、当前的位置和原数组</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">[<span class="number">1</span>, <span class="number">5</span>, <span class="number">10</span>, <span class="number">15</span>].<span class="title function_">find</span>(<span class="keyword">function</span>(<span class="params">value, index, arr</span>) &#123;</span><br><span class="line">  <span class="keyword">return</span> value &gt; <span class="number">9</span>;</span><br><span class="line">&#125;) <span class="comment">// 10</span></span><br></pre></td></tr></table></figure>
+
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">findIndex<span class="string">`返回第一个符合条件的数组成员的位置，如果所有成员都不符合条件，则返回`</span>-<span class="number">1</span></span><br><span class="line">[<span class="number">1</span>, <span class="number">5</span>, <span class="number">10</span>, <span class="number">15</span>].<span class="title function_">findIndex</span>(<span class="keyword">function</span>(<span class="params">value, index, arr</span>) &#123;</span><br><span class="line">  <span class="keyword">return</span> value &gt; <span class="number">9</span>;</span><br><span class="line">&#125;) <span class="comment">// 2</span></span><br></pre></td></tr></table></figure>
+
+<p>这两个方法都可以接受第二个参数，用来绑定回调函数的<code>this</code>对象。</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">function</span> <span class="title function_">f</span>(<span class="params">v</span>)&#123;</span><br><span class="line">  <span class="keyword">return</span> v &gt; <span class="variable language_">this</span>.<span class="property">age</span>;</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">let</span> person = &#123;<span class="attr">name</span>: <span class="string">&#x27;John&#x27;</span>, <span class="attr">age</span>: <span class="number">20</span>&#125;;</span><br><span class="line">[<span class="number">10</span>, <span class="number">12</span>, <span class="number">26</span>, <span class="number">15</span>].<span class="title function_">find</span>(f, person);    <span class="comment">// 26</span></span><br></pre></td></tr></table></figure>
+
+<h5 id="Array-includes"><a href="#Array-includes" class="headerlink" title="Array.includes()"></a>Array.includes()</h5><p>用于判断数组是否包含给定的值</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">[<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>].<span class="title function_">includes</span>(<span class="number">2</span>)     <span class="comment">// true</span></span><br><span class="line">[<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>].<span class="title function_">includes</span>(<span class="number">4</span>)     <span class="comment">// false</span></span><br><span class="line">[<span class="number">1</span>, <span class="number">2</span>, <span class="title class_">NaN</span>].<span class="title function_">includes</span>(<span class="title class_">NaN</span>) <span class="comment">// true</span></span><br></pre></td></tr></table></figure>
+
+<p>方法的第二个参数表示搜索的起始位置，默认为<code>0</code></p>
+<p>参数为负数则表示倒数的位置</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">[<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>].<span class="title function_">includes</span>(<span class="number">3</span>, <span class="number">3</span>);  <span class="comment">// false</span></span><br><span class="line">[<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>].<span class="title function_">includes</span>(<span class="number">3</span>, -<span class="number">1</span>); <span class="comment">// true</span></span><br></pre></td></tr></table></figure>
+
+<h5 id="Array-indexOf"><a href="#Array-indexOf" class="headerlink" title="Array.indexOf()"></a>Array.indexOf()</h5><p><strong><code>indexOf()</code></strong> 方法返回在数组中可以找到给定元素的第一个索引，如果不存在，则返回 -1。后面的参数是开始查找的位置</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> beasts = [<span class="string">&#x27;ant&#x27;</span>, <span class="string">&#x27;bison&#x27;</span>, <span class="string">&#x27;camel&#x27;</span>, <span class="string">&#x27;duck&#x27;</span>, <span class="string">&#x27;bison&#x27;</span>];</span><br><span class="line"></span><br><span class="line"><span class="variable language_">console</span>.<span class="title function_">log</span>(beasts.<span class="title function_">indexOf</span>(<span class="string">&#x27;bison&#x27;</span>));</span><br><span class="line"><span class="comment">// Expected output: 1</span></span><br><span class="line"></span><br><span class="line"><span class="comment">// Start from index 2</span></span><br><span class="line"><span class="variable language_">console</span>.<span class="title function_">log</span>(beasts.<span class="title function_">indexOf</span>(<span class="string">&#x27;bison&#x27;</span>, <span class="number">2</span>));</span><br><span class="line"><span class="comment">// Expected output: 4</span></span><br><span class="line"></span><br><span class="line"><span class="variable language_">console</span>.<span class="title function_">log</span>(beasts.<span class="title function_">indexOf</span>(<span class="string">&#x27;giraffe&#x27;</span>));</span><br><span class="line"><span class="comment">// Expected output: -1</span></span><br></pre></td></tr></table></figure>
+
+<h3 id="entries-，keys-，values"><a href="#entries-，keys-，values" class="headerlink" title="entries()，keys()，values()"></a>entries()，keys()，values()</h3><p><code>keys()</code>是对键名的遍历、<code>values()</code>是对键值的遍历，<code>entries()</code>是对键值对的遍历</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line">or (<span class="keyword">let</span> index <span class="keyword">of</span> [<span class="string">&#x27;a&#x27;</span>, <span class="string">&#x27;b&#x27;</span>].<span class="title function_">keys</span>()) &#123;</span><br><span class="line">  <span class="variable language_">console</span>.<span class="title function_">log</span>(index);</span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">// 0</span></span><br><span class="line"><span class="comment">// 1</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">for</span> (<span class="keyword">let</span> elem <span class="keyword">of</span> [<span class="string">&#x27;a&#x27;</span>, <span class="string">&#x27;b&#x27;</span>].<span class="title function_">values</span>()) &#123;</span><br><span class="line">  <span class="variable language_">console</span>.<span class="title function_">log</span>(elem);</span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">// &#x27;a&#x27;</span></span><br><span class="line"><span class="comment">// &#x27;b&#x27;</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">for</span> (<span class="keyword">let</span> [index, elem] <span class="keyword">of</span> [<span class="string">&#x27;a&#x27;</span>, <span class="string">&#x27;b&#x27;</span>].<span class="title function_">entries</span>()) &#123;</span><br><span class="line">  <span class="variable language_">console</span>.<span class="title function_">log</span>(index, elem);</span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">// 0 &quot;a&quot;</span></span><br></pre></td></tr></table></figure>
+
+<h3 id="其他方法"><a href="#其他方法" class="headerlink" title="其他方法"></a>其他方法</h3><h5 id="Array-forEach"><a href="#Array-forEach" class="headerlink" title="Array.forEach()"></a>Array.forEach()</h5><p><strong><code>forEach()</code></strong> 方法对数组的每个元素执行一次给定的函数。</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> array1 = [<span class="string">&#x27;a&#x27;</span>, <span class="string">&#x27;b&#x27;</span>, <span class="string">&#x27;c&#x27;</span>];</span><br><span class="line"></span><br><span class="line">array1.<span class="title function_">forEach</span>(<span class="function"><span class="params">element</span> =&gt;</span> <span class="variable language_">console</span>.<span class="title function_">log</span>(element));</span><br><span class="line"></span><br><span class="line"><span class="comment">// Expected output: &quot;a&quot;</span></span><br><span class="line"><span class="comment">// Expected output: &quot;b&quot;</span></span><br><span class="line"><span class="comment">// Expected output: &quot;c&quot;</span></span><br></pre></td></tr></table></figure>
+
+<h5 id="Array-fill"><a href="#Array-fill" class="headerlink" title="Array.fill()"></a>Array.fill()</h5><p>使用给定值，填充一个数组</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">[<span class="string">&#x27;a&#x27;</span>, <span class="string">&#x27;b&#x27;</span>, <span class="string">&#x27;c&#x27;</span>].<span class="title function_">fill</span>(<span class="number">7</span>)</span><br><span class="line"><span class="comment">// [7, 7, 7]</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">new</span> <span class="title class_">Array</span>(<span class="number">3</span>).<span class="title function_">fill</span>(<span class="number">7</span>)</span><br><span class="line"><span class="comment">// [7, 7, 7]</span></span><br></pre></td></tr></table></figure>
+
+<p>还可以接受第二个和第三个参数，用于指定填充的起始位置和结束位置</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">[<span class="string">&#x27;a&#x27;</span>, <span class="string">&#x27;b&#x27;</span>, <span class="string">&#x27;c&#x27;</span>].<span class="title function_">fill</span>(<span class="number">7</span>, <span class="number">1</span>, <span class="number">2</span>)</span><br><span class="line"><span class="comment">// [&#x27;a&#x27;, 7, &#x27;c&#x27;]</span></span><br></pre></td></tr></table></figure>
+
+<h5 id="Array-map"><a href="#Array-map" class="headerlink" title="Array.map()"></a>Array.map()</h5><p><strong><code>map()</code></strong> 方法创建一个<strong>新数组</strong>，这个新数组由原数组中的每个元素都调用一次提供的函数后的返回值组成。</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> array1 = [<span class="number">1</span>, <span class="number">4</span>, <span class="number">9</span>, <span class="number">16</span>];</span><br><span class="line"></span><br><span class="line"><span class="comment">// Pass a function to map</span></span><br><span class="line"><span class="keyword">const</span> map1 = array1.<span class="title function_">map</span>(<span class="function"><span class="params">x</span> =&gt;</span> x * <span class="number">2</span>);</span><br><span class="line"></span><br><span class="line"><span class="variable language_">console</span>.<span class="title function_">log</span>(map1);</span><br><span class="line"><span class="comment">// Expected output: Array [2, 8, 18, 32]</span></span><br></pre></td></tr></table></figure>
+
+<p>利用map可以方便的创建多维数组</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> m = <span class="number">3</span>;</span><br><span class="line"><span class="keyword">const</span> n = <span class="number">5</span>;</span><br><span class="line"><span class="keyword">let</span> arr = <span class="title class_">Array</span>(m).<span class="title function_">fill</span>().<span class="title function_">map</span>(<span class="function">() =&gt;</span> <span class="title class_">Array</span>(n));</span><br><span class="line"><span class="variable language_">console</span>.<span class="title function_">log</span>(arr);  </span><br><span class="line"><span class="comment">// Output: [ [ &lt;5 empty items&gt; ], [ &lt;5 empty items&gt; ], [ &lt;5 empty items&gt;]]</span></span><br></pre></td></tr></table></figure>
+
+<p>或者也可以使用from方法创建多维数组</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> m = <span class="number">3</span>;</span><br><span class="line"><span class="keyword">const</span> n = <span class="number">5</span>;</span><br><span class="line"><span class="keyword">let</span> arr = <span class="title class_">Array</span>.<span class="title function_">from</span>(<span class="title class_">Array</span>(m), <span class="function">() =&gt;</span> <span class="keyword">new</span> <span class="title class_">Array</span>(n));</span><br><span class="line"><span class="variable language_">console</span>.<span class="title function_">log</span>(arr); </span><br><span class="line"><span class="comment">// Output:[ [ &lt;5 empty items&gt; ], [ &lt;5 empty items&gt; ], [ &lt;5 empty items&gt; ],]</span></span><br></pre></td></tr></table></figure>
+
+
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/2023/04/02/%E6%8B%93%E5%B1%95%E8%BF%90%E7%AE%97%E7%AC%A6(...)/" rel="prev" title="拓展运算符（...）">
+                  <i class="fa fa-chevron-left"></i> 拓展运算符（...）
+                </a>
+            </div>
+            <div class="post-nav-item">
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+
+<div class="copyright">
+  &copy; 
+  <span itemprop="copyrightYear">2023</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Wh&CC</span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io/" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.js.org/pisces/" rel="noopener" target="_blank">NexT.Pisces</a> 强力驱动
+  </div>
+
+    </div>
+  </footer>
+
+  
+  <div class="back-to-top" role="button" aria-label="返回顶部">
+    <i class="fa fa-arrow-up fa-lg"></i>
+    <span>0%</span>
+  </div>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+  
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.1/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous"></script>
+<script src="/js/comments.js"></script><script src="/js/utils.js"></script><script src="/js/motion.js"></script><script src="/js/next-boot.js"></script>
+
+  
+
+
+
+
+  
+
+
+
+
+
+</body>
+</html>
